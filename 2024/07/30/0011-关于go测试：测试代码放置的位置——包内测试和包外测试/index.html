@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="muxunting" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      关于go测试概念：测试代码放置的位置——包内测试和包外测试 
+      
+      
+      |
+    
+     Tech Space
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Tech Space</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/diary/">
+          <a href="/diary/">Diary</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">关于go测试概念：测试代码放置的位置——包内测试和包外测试</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-07-30 23:33:54
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h4 id="go-test执行测试的基本原理"><a href="#go-test执行测试的基本原理" class="headerlink" title="go test执行测试的基本原理"></a>go test执行测试的基本原理</h4><blockquote>
+<p>由于Go构建工具链在编译包时会自动根据文件名是否具有_test.go后缀将包源文件和包的测试源文件分开，测试代码不会进入包正常构建的范畴，因此测试代码使用与被测包名相同的包内测试方法是一个很自然的选择。</p>
+</blockquote>
+<p>‍</p>
+<h4 id="包内测试的优点"><a href="#包内测试的优点" class="headerlink" title="包内测试的优点"></a>包内测试的优点</h4><blockquote>
+<p>包内测试可以测的对象包括：</p>
+<ul>
+<li>由于测试代码与被测包源码在同一包下，包下的所有符号，包括导出符号和未导出符号都是包内测试的对象。</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>包内测试可以更为直接地构造测试数据和实施测试逻辑，可以很容易地达到较高的测试覆盖率。因此对于追求高测试覆盖率的项目而言，包内测试是不二之选。</p>
+</blockquote>
+<h4 id="包内测试的不足"><a href="#包内测试的不足" class="headerlink" title="包内测试的不足"></a>包内测试的不足</h4><blockquote>
+<p>包内测试-白盒测试的问题一：</p>
+<ul>
+<li><p>包内测试的白盒测试本质意味着它是一种<strong>面向实现</strong>的测试——即和具体的实现紧耦合。</p>
+</li>
+<li><p>测试代码的测试数据结构和测试逻辑通常与被测包的特定数据结构设计和函数&#x2F;方法的具体实现逻辑仅耦合。</p>
+<ul>
+<li>紧耦合具体体现在：一旦被测包的数据结构设计出现调整或函数&#x2F;方法的实现逻辑出现变动，那么对应的测试代码也要随之同步调整，否则整个包将无法通过测试甚至测试代码本身的构建都会失败。</li>
+<li>而包的内部实现逻辑又是易变的，其优化调整是一种经常性行为，这就意味着采用包内测试的测试代码也需要经常性的维护。</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>除此以外：</p>
+<blockquote>
+<p>包内测试-白盒测试的问题二：—— 包循环引用</p>
+<blockquote>
+<p>在 Go 语言中，包循环引用是指两个或多个包之间相互引用，形成环状结构的情况。</p>
+<p>例如，包 a 中的代码依赖了包 b，而包 b 中的代码又依赖了包 a，这样就导致了包循环引用。</p>
+</blockquote>
+<ul>
+<li><p>Go编译器不允许包循环引用</p>
+<ul>
+<li><p>经典的就是<code>strings</code>​包和<code>testing</code>​包的两包循环引用。</p>
+</li>
+<li><p>​<img src="https://4blog.s3.bitiful.net/image-20240728223818-bn1l99t.png" alt="image-20240728223818-bn1l99t.png">​</p>
+<p>图解：</p>
+<ul>
+<li>图里面俩包：testing包的testing.go文件 以及 strings包的strings.go文件和strings_test.go文件。</li>
+<li>那么根据具体文件的引用情况，就是两个包在互相引用。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>‍</p>
+<h4 id="包外测试的优点"><a href="#包外测试的优点" class="headerlink" title="包外测试的优点"></a>包外测试的优点</h4><blockquote>
+<p>包外测试的好处：</p>
+<ul>
+<li><p>包外测试：包外测试的本质是一种面向接口的黑盒测试。</p>
+<ul>
+<li>接口是指被测试包对外导出的AIP。</li>
+<li>这些API是被测包与外部交互的契约。契约一旦确定就会长期保持稳定，无论被测包的内部实现逻辑和数据结构设计如何调整与优化，一般都不会影响这些契约。</li>
+<li>包外测试代码和被测试包充分解耦，包外测试代码很健壮。</li>
+</ul>
+</li>
+<li><p>包内测试不存在“包循环引用”的硬伤，直观来讲就是，两个包拆成三个包了。</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240728172546-bis1dc3.png" alt="image-20240728172546-bis1dc3.png">​</p>
+</li>
+<li><p>包外测试这种纯黑盒的测试还有一个功能域之外的好处，那就是可以更加聚焦地从用户视角验证被测试包导出API的设计的合理性和易用性。</p>
+</li>
+</ul>
+</blockquote>
+<p>‍</p>
+<h4 id="包外测试的不足"><a href="#包外测试的不足" class="headerlink" title="包外测试的不足"></a>包外测试的不足</h4><blockquote>
+<p>包外测试的局限：</p>
+<ul>
+<li>存在测试盲区</li>
+<li>仅有权限访问被测包的导出符号和导出API。</li>
+<li>基于以上约束，容易出现对被测试包的测试覆盖不足的情况。</li>
+</ul>
+<p>这个是包外测试的局限性</p>
+<p>‍</p>
+<p>​<img src="https://4blog.s3.bitiful.net/try.drawio-20240728204055-fgglpr0.svg" alt="try.drawio-20240728204055-fgglpr0.svg">​</p>
+</blockquote>
+<p>‍</p>
+<h4 id="通过export-test-go为包外测试添加“后门”以增加测试覆盖"><a href="#通过export-test-go为包外测试添加“后门”以增加测试覆盖" class="headerlink" title="通过export_test.go为包外测试添加“后门”以增加测试覆盖"></a>通过export_test.go为包外测试添加“后门”以增加测试覆盖</h4><blockquote>
+<p>如何解决包外测试覆盖不足的问题 —— 安插后门：</p>
+<ul>
+<li><p>方法一：</p>
+<p>创建一个export_test.go文件到被测包下</p>
+<ul>
+<li><p>该文件的特点一：它属于_test.go文件, 由于Go构建工具链在编译包时会自动根据文件名是否具有_test.go后缀将包源文件和包的测试源文件分开。因此它不会被构建入正式代码中。</p>
+</li>
+<li><p>但是它本身不包含任何测试代码，而仅用于将被测试包的内部符号在测试阶段暴露给包外测试代码。</p>
+</li>
+<li><p>示例如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> fmt</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> IsSpace = isSpace</span><br><span class="line"><span class="keyword">var</span> Parsenum = parsenum</span><br></pre></td></tr></table></figure>
+
+<p>这个上面就是变量的赋值实现的。</p>
+<p>函数在go语言中是一等公民，那么也可以通过变量赋值的形式来使得其可导出吧。应该是吧。到时候试一试。</p>
+</li>
+</ul>
+</li>
+<li><p>方法二：</p>
+<ul>
+<li><p>方法二这边白明说的不是很清晰：<br><strong>定义辅助包外测试的代码，比如扩展被测包的方法集合。</strong></p>
+</li>
+<li><p>书里给了一点代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// $GOROOT/src/strings/export_test.go</span></span><br><span class="line"><span class="keyword">package</span> strings</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Replacer)</span></span> Replacer() <span class="keyword">interface</span>&#123;&#125; &#123;</span><br><span class="line">    r.once.Do(r.buildOnce)</span><br><span class="line">    <span class="keyword">return</span> r.r</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(r *Replacer)</span></span> PrintTrie() <span class="type">string</span> &#123;</span><br><span class="line">    r.once.Do(r.buildOnce)</span><br><span class="line">    gen := r.r.(*genericReplacer)</span><br><span class="line">    <span class="keyword">return</span> gen.printNode(&amp;gen.root, <span class="number">0</span>)</span><br><span class="line">&#125;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<p>这个代码的具体功能和作用我没有理解，但是，有一点是可以理解的。</p>
+<p>那就是，它实际上是对对象Replacer补充了两个指针类型的方法。</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>‍</p>
+<h4 id="优先使用包外测试"><a href="#优先使用包外测试" class="headerlink" title="优先使用包外测试"></a>优先使用包外测试</h4><blockquote>
+<p>白明倾向于优先使用包外测试，理由，包外测试可以：</p>
+<ul>
+<li>优先保证被测试包导出API的正确性。—— 毕竟是要提供服务的嘛。</li>
+<li>可从用户角度验证导出API的有效性。—— 还是要有限保证服务的可用。</li>
+<li>保持测试代码的健壮性，尽可能地降低对测试代码维护的投入</li>
+<li>不失灵活！可通过export_test.go这个“后门”来导出我们需要的内部符号，满足窥探包内实现逻辑的需求。</li>
+</ul>
+</blockquote>
+<p>‍</p>
+<h4 id="同时使用包内测试和包外测试以聚焦不同的测试范畴"><a href="#同时使用包内测试和包外测试以聚焦不同的测试范畴" class="headerlink" title="同时使用包内测试和包外测试以聚焦不同的测试范畴"></a>同时使用包内测试和包外测试以聚焦不同的测试范畴</h4><blockquote>
+<p>同时利用包内测试和包外测试：</p>
+<ul>
+<li><p>以<code>net/http</code>​为例：</p>
+<ul>
+<li><p>包外测试由于将测试代码放入独立的包中，它更适合编写偏向集成测试的用例，它可以任意导入外部包，并测试与外部多个组件的交互。</p>
+</li>
+<li><p>而包内测试更聚焦于内部逻辑的测试，通过给函数&#x2F;方法传入一些特意构造的数据的方式来验证内部逻辑的正确性</p>
+</li>
+<li><p>最好能通过测试代码的文件名来区分所属测试类别：</p>
+<ul>
+<li>net&#x2F;http包使用transport_internal_test.go来明确包内测试</li>
+<li>对应的transport_test.go为包外测试</li>
+</ul>
+</li>
+</ul>
+<p>‍</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="参考文献："><a href="#参考文献：" class="headerlink" title="参考文献："></a>参考文献：</h4><blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://weread.qq.com/web/reader/b8f32d2072895edbb8fbb04">Go语言精进之路：从新手到高手的编程思想、方法和技巧2</a></li>
+</ul>
+</blockquote>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/07/30/0010-win11%E4%B8%8Bhexo-github-vscode-piclist-%E7%BC%A4%E7%BA%B7%E4%BA%91%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B7%A5%E4%BD%9C%E6%B5%81/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-07-30 23:33:54
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#go-test%E6%89%A7%E8%A1%8C%E6%B5%8B%E8%AF%95%E7%9A%84%E5%9F%BA%E6%9C%AC%E5%8E%9F%E7%90%86"><span class="toc-text">go test执行测试的基本原理</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%85%E5%86%85%E6%B5%8B%E8%AF%95%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-text">包内测试的优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%85%E5%86%85%E6%B5%8B%E8%AF%95%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-text">包内测试的不足</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95%E7%9A%84%E4%BC%98%E7%82%B9"><span class="toc-text">包外测试的优点</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95%E7%9A%84%E4%B8%8D%E8%B6%B3"><span class="toc-text">包外测试的不足</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%9A%E8%BF%87export-test-go%E4%B8%BA%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95%E6%B7%BB%E5%8A%A0%E2%80%9C%E5%90%8E%E9%97%A8%E2%80%9D%E4%BB%A5%E5%A2%9E%E5%8A%A0%E6%B5%8B%E8%AF%95%E8%A6%86%E7%9B%96"><span class="toc-text">通过export_test.go为包外测试添加“后门”以增加测试覆盖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BC%98%E5%85%88%E4%BD%BF%E7%94%A8%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95"><span class="toc-text">优先使用包外测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%90%8C%E6%97%B6%E4%BD%BF%E7%94%A8%E5%8C%85%E5%86%85%E6%B5%8B%E8%AF%95%E5%92%8C%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95%E4%BB%A5%E8%81%9A%E7%84%A6%E4%B8%8D%E5%90%8C%E7%9A%84%E6%B5%8B%E8%AF%95%E8%8C%83%E7%95%B4"><span class="toc-text">同时使用包内测试和包外测试以聚焦不同的测试范畴</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE%EF%BC%9A"><span class="toc-text">参考文献：</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Tech Space</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索中...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%85%B3%E4%BA%8Ego%E6%B5%8B%E8%AF%95%E6%A6%82%E5%BF%B5%EF%BC%9A%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%E6%94%BE%E7%BD%AE%E7%9A%84%E4%BD%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%8C%85%E5%86%85%E6%B5%8B%E8%AF%95%E5%92%8C%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F30%2F0011-%25E5%2585%25B3%25E4%25BA%258Ego%25E6%25B5%258B%25E8%25AF%2595%25EF%25BC%259A%25E6%25B5%258B%25E8%25AF%2595%25E4%25BB%25A3%25E7%25A0%2581%25E6%2594%25BE%25E7%25BD%25AE%25E7%259A%2584%25E4%25BD%258D%25E7%25BD%25AE%25E2%2580%2594%25E2%2580%2594%25E5%258C%2585%25E5%2586%2585%25E6%25B5%258B%25E8%25AF%2595%25E5%2592%258C%25E5%258C%2585%25E5%25A4%2596%25E6%25B5%258B%25E8%25AF%2595%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/30/0011-%E5%85%B3%E4%BA%8Ego%E6%B5%8B%E8%AF%95%EF%BC%9A%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%E6%94%BE%E7%BD%AE%E7%9A%84%E4%BD%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%8C%85%E5%86%85%E6%B5%8B%E8%AF%95%E5%92%8C%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
