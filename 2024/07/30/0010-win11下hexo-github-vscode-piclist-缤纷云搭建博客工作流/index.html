@@ -161,12 +161,125 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-07-30 11:20:52
+          2024-07-30 16:17:54
         </span>
         
       </div>
       <div class="markdown-body">
-        <h3 id="piclist在vscode中的插件使用"><a href="#piclist在vscode中的插件使用" class="headerlink" title="piclist在vscode中的插件使用"></a>piclist在vscode中的插件使用</h3><p>这个的前置步骤是这个：<a href="/2024/07/29/0009-Piclist-%E7%BC%A4%E7%BA%B7%E4%BA%91-%E4%B8%AA%E4%BA%BA%E5%9B%BE%E5%BA%8A/" title="Piclist+缤纷云&#x3D;个人图床">Piclist+缤纷云&#x3D;个人图床</a></p>
+        <h3 id="〇-前置步骤"><a href="#〇-前置步骤" class="headerlink" title="〇. 前置步骤"></a>〇. 前置步骤</h3><p>这个的前置步骤是这个：<a href="/2024/07/29/0009-Piclist-%E7%BC%A4%E7%BA%B7%E4%BA%91-%E4%B8%AA%E4%BA%BA%E5%9B%BE%E5%BA%8A/" title="Piclist+缤纷云&#x3D;个人图床">Piclist+缤纷云&#x3D;个人图床</a><br>使得Piclist软件可用。</p>
+<ul>
+<li>目前的实践是基于win11的平台。</li>
+<li>之前尝试是BLOG这些hexo等放在WSL2平台，vscode、piclist安装在win11。vscode打开博客编写markdown.<br>piclist在win平台打开。<br>问题出现：vs-piclist插件无法上传或者操作WSL2内部的图片，因为vs-piclist默认的路径格式是Win11下的。<br>在WSL2中的图片路径在上传的时候都会加上一个C盘的前缀。</li>
+<li>为了简单，没有尝试其他修改或者探索，直接把hexo那一套迁移到Win11中的OneDrive同步文件夹中。<br>也没啥问题。</li>
+<li>同样的，npm不要忘了配置淘宝镜像。最新版的那个，不要老的。</li>
+</ul>
+<h3 id="一-一般配置"><a href="#一-一般配置" class="headerlink" title="一. 一般配置"></a>一. 一般配置</h3><h5 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h5><p>​<img src="https://4blog.s3.bitiful.net/image-20240730152910-i2fxp8q.png" alt="image-20240730152910-i2fxp8q.png">​</p>
+<h4 id="配置vs-PicList"><a href="#配置vs-PicList" class="headerlink" title="配置vs-PicList"></a>配置vs-PicList</h4><p>​<img src="https://4blog.s3.bitiful.net/image-20240730152946-d8s4ttt.png" alt="image-20240730152946-d8s4ttt.png">​</p>
+<p>配置项很少，就这7个，一般来说不要动。Delete APIUrl和Upload APIUrl是在你本地的Piclist没有启动的时候，它就会尝试用调用这个API URL。</p>
+<p>按我理解，这个是部署了一个piclist服务，但是我没搞，无所了，先不管。</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730153120-bdm9ry4.png" alt="image-20240730153120-bdm9ry4.png">​</p>
+<h4 id="vs-piclist命令"><a href="#vs-piclist命令" class="headerlink" title="vs-piclist命令"></a>vs-piclist命令</h4><p>​<code>F1</code>​或者<code>Ctrl + Shift + P</code>​，主要是下面7个命令：</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730153426-ak4v1do.png" alt="image-20240730153426-ak4v1do.png">​</p>
+<h6 id="PicList-Upload-all-images-in-the-file"><a href="#PicList-Upload-all-images-in-the-file" class="headerlink" title="PicList: Upload all images in the file"></a>PicList: Upload all images in the file</h6><p>这个命令很有价值，最佳实践就是：</p>
+<ul>
+<li><p>你先在本地markdown中编辑好文档，图片啥的都按照本地路径写好。</p>
+</li>
+<li><p>然后你执行这个命令。</p>
+</li>
+<li><p>它首先把你文章中的所有图片上传到你的图床。</p>
+</li>
+<li><p>然后把markdown中的图片URL都替换成图床中的。</p>
+</li>
+</ul>
+<h6 id="Upload-from-explorer"><a href="#Upload-from-explorer" class="headerlink" title="Upload from explorer"></a>Upload from explorer</h6><ul>
+<li><p>就是很基础从文件夹中选图片上传。</p>
+</li>
+<li><p>可以按住ctrl多选。</p>
+</li>
+<li><p>这个功能不太适合流程化操作，适合用于“修修补补”。</p>
+</li>
+</ul>
+<h6 id="PicList：Upload-from-input-path-or-url"><a href="#PicList：Upload-from-input-path-or-url" class="headerlink" title="PicList：Upload from input path or url"></a>PicList：Upload from input path or url</h6><ul>
+<li>没怎么使用，估计如其描述所述吧。</li>
+</ul>
+<h6 id="PicList：Open-PicList-image-database"><a href="#PicList：Open-PicList-image-database" class="headerlink" title="PicList：Open PicList image database"></a>PicList：Open PicList image database</h6><ul>
+<li>没怎么使用，不太清楚。</li>
+</ul>
+<h6 id="PicList：Upload-Image-by-PicList"><a href="#PicList：Upload-Image-by-PicList" class="headerlink" title="PicList：Upload Image by PicList"></a>PicList：Upload Image by PicList</h6><ul>
+<li>不清楚</li>
+</ul>
+<h6 id="PicList-Delte-Image-by-PicList"><a href="#PicList-Delte-Image-by-PicList" class="headerlink" title="PicList: Delte Image by PicList"></a>PicList: Delte Image by PicList</h6><ul>
+<li>还没用</li>
+</ul>
+<h6 id="PicList：Upload-from-clipboard"><a href="#PicList：Upload-from-clipboard" class="headerlink" title="PicList：Upload from clipboard"></a>PicList：Upload from clipboard</h6><ul>
+<li>还没用</li>
+</ul>
+<h6 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h6><p>还有几个好用的功能没有用到，但是作者在README中有gif的展示。</p>
+<p>不要忘了时刻学习。</p>
+<h3 id="二-SiYuan笔记-VScode实践"><a href="#二-SiYuan笔记-VScode实践" class="headerlink" title="二. SiYuan笔记+VScode实践"></a>二. SiYuan笔记+VScode实践</h3><p>这个主要是起一个草稿+发布的搭配。当然了，SiYuan笔记还可以起到一个备份的作用。</p>
+<p>流程就是：</p>
+<blockquote>
+<ul>
+<li><p>在思源中撰写笔记，主要粘贴普通的截图方便，直接贴到思源里面就可以了。</p>
+<ul>
+<li>但是基于vs-piclist其实可以做到“复制图片”——&gt;“markdown中粘贴”——&gt;“直接生成URL的操作的”。</li>
+<li>但是SiYuan主要还有一个备份的作用。先这样吧。</li>
+</ul>
+</li>
+<li><p>然后把SiYuan的该文档导出为markdown。</p>
+<ul>
+<li><p>SiYuan的导出文件有两个：</p>
+<ul>
+<li>markdown文件</li>
+<li>asset文件夹：里面就是用到的图片</li>
+</ul>
+</li>
+<li><p>以如下的格式打开：</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730154657-pbvehi5.png" alt="image-20240730154657-pbvehi5.png">​</p>
+</li>
+<li><p>然后F1——&gt;PicList: Upload all images in the file</p>
+<p>就可以进行文档中图片的上传和URL替换。</p>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<p>‍</p>
+<h3 id="三-drawio-vscode实践"><a href="#三-drawio-vscode实践" class="headerlink" title="三. drawio+vscode实践"></a>三. drawio+vscode实践</h3><ul>
+<li><p>上面的SiYuan操作主要是由于普通的截图+贴图然后可以先很顺畅的完成整个文章的撰写，然后再利用vs-piclist统一的上传转换，这个感受上是比较完整和顺的，不会太碎。</p>
+</li>
+<li><p>但是如果这个图是我们上个博文中提到的是用drawio的vscode插件绘制的话。</p>
+<p>就会没有那么顺畅了。因为这些图片不能用“复制+粘贴”或者拖动来插入到SiYuan的文档中。必须要”&#x2F;图片“ 符号触发菜单——&gt;“插入图片和文件”——&gt;“浏览选中”这样。这个流程就不顺滑了。</p>
+</li>
+<li><p>或者就是上面菜单中选择”插入图片连接”，然后在vscode中复制图片的连接地址来插入，这个稍微顺滑一点。</p>
+</li>
+<li><p>或者就是打开drawio图片的文件夹，然后拖拽进来，也可以。</p>
+</li>
+<li><p>但是最顺畅的就是“复制+粘贴”，然后本地所见即所得。</p>
+</li>
+</ul>
+<p>所以可以进行如下流程：</p>
+<blockquote>
+<ul>
+<li>直接在vscode中撰写markdown</li>
+<li>直接在vscode中绘制drawio图片</li>
+<li>直接复制画好的图片本身</li>
+<li>直接往markdown的光标的地方粘贴，不出问题会变成markdown的url的形势。</li>
+<li>最后文章结束后：PicList: Upload all images in the file.</li>
+</ul>
+</blockquote>
+<p>上面这个流程的问题是，在SiYuan本地中没有备份了。但是也可以用SiYuan的导入功能，也还好其实。</p>
+<p>‍</p>
+<h3 id="四-关于vs-piclist插件"><a href="#四-关于vs-piclist插件" class="headerlink" title="四. 关于vs-piclist插件"></a>四. 关于vs-piclist插件</h3><ul>
+<li><p>这个插件的演示gif里面有很好的功能，但是好像总是报错。等后续搞明白了再补充吧。</p>
+</li>
+<li><p>譬如很好用的在vscode中直接复制粘贴图片，它会立刻上传然后转成图床的url粘贴到markdown中，相当于不用在SiYuan中实现这个复制粘贴的功能了。</p>
+</li>
+<li><p>但是对于我个人来说，更倾向于SiYuan先在本地写好同步到云(本人用的SiYuan的官方云存储)，然后再发布到博客这个流程。</p>
+</li>
+<li><p>后面搞明白了为啥vs-piclist会报错再说吧。并且这个报错是在其他功能能用的时候报的。</p>
+</li>
+</ul>
 
       </div>
       
@@ -182,7 +295,7 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-07-30 11:20:52
+              2024-07-30 16:17:54
             </span>
             
           </div>
@@ -200,7 +313,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#piclist%E5%9C%A8vscode%E4%B8%AD%E7%9A%84%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8"><span class="toc-text">piclist在vscode中的插件使用</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E3%80%87-%E5%89%8D%E7%BD%AE%E6%AD%A5%E9%AA%A4"><span class="toc-text">〇. 前置步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80-%E4%B8%80%E8%88%AC%E9%85%8D%E7%BD%AE"><span class="toc-text">一. 一般配置</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#%E4%B8%8B%E8%BD%BD"><span class="toc-text">下载</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%85%8D%E7%BD%AEvs-PicList"><span class="toc-text">配置vs-PicList</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#vs-piclist%E5%91%BD%E4%BB%A4"><span class="toc-text">vs-piclist命令</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#PicList-Upload-all-images-in-the-file"><span class="toc-text">PicList: Upload all images in the file</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Upload-from-explorer"><span class="toc-text">Upload from explorer</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PicList%EF%BC%9AUpload-from-input-path-or-url"><span class="toc-text">PicList：Upload from input path or url</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PicList%EF%BC%9AOpen-PicList-image-database"><span class="toc-text">PicList：Open PicList image database</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PicList%EF%BC%9AUpload-Image-by-PicList"><span class="toc-text">PicList：Upload Image by PicList</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PicList-Delte-Image-by-PicList"><span class="toc-text">PicList: Delte Image by PicList</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#PicList%EF%BC%9AUpload-from-clipboard"><span class="toc-text">PicList：Upload from clipboard</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#%E6%B3%A8%E6%84%8F%EF%BC%9A"><span class="toc-text">注意：</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BA%8C-SiYuan%E7%AC%94%E8%AE%B0-VScode%E5%AE%9E%E8%B7%B5"><span class="toc-text">二. SiYuan笔记+VScode实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89-drawio-vscode%E5%AE%9E%E8%B7%B5"><span class="toc-text">三. drawio+vscode实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9B%9B-%E5%85%B3%E4%BA%8Evs-piclist%E6%8F%92%E4%BB%B6"><span class="toc-text">四. 关于vs-piclist插件</span></a></li></ol>
       
     </div>
   </div>
