@@ -161,12 +161,64 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-07-30 00:48:30
+          2024-07-30 14:46:34
         </span>
         
       </div>
       <div class="markdown-body">
-        <h4 id="一-在缤纷云创建桶"><a href="#一-在缤纷云创建桶" class="headerlink" title="一. 在缤纷云创建桶"></a>一. 在缤纷云创建桶</h4><h4 id="二-下载Piclist"><a href="#二-下载Piclist" class="headerlink" title="二. 下载Piclist"></a>二. 下载Piclist</h4><h4 id="三-配置Piclist的npm镜像源并安装Amazon-S3插件"><a href="#三-配置Piclist的npm镜像源并安装Amazon-S3插件" class="headerlink" title="三. 配置Piclist的npm镜像源并安装Amazon S3插件"></a>三. 配置Piclist的npm镜像源并安装Amazon S3插件</h4><h4 id="四-配置S3和存储桶"><a href="#四-配置S3和存储桶" class="headerlink" title="四. 配置S3和存储桶"></a>四. 配置S3和存储桶</h4><h4 id="五-管理图片"><a href="#五-管理图片" class="headerlink" title="五. 管理图片"></a>五. 管理图片</h4><h4 id="六-效果查看"><a href="#六-效果查看" class="headerlink" title="六. 效果查看"></a>六. 效果查看</h4><p><img src="/../../../CodingRoom/drawiopic/%E5%8C%85%E5%A4%96%E9%83%A8%E6%B5%8B%E8%AF%95%E7%9A%84%E5%B1%80%E9%99%90.drawio.png" alt="alt text"></p>
+        <h1 id="缤纷云-Piclist"><a href="#缤纷云-Piclist" class="headerlink" title="缤纷云+Piclist"></a>缤纷云+Piclist</h1><h4 id="一-在缤纷云创建桶"><a href="#一-在缤纷云创建桶" class="headerlink" title="一. 在缤纷云创建桶"></a>一. 在缤纷云创建桶</h4><p>​<img src="https://4blog.s3.bitiful.net/image-20240730141430-vrwweuf.png" alt="image-20240730141430-vrwweuf.png">​</p>
+<p>创建完成后进入访问管理。</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730141544-cb8j362.png" alt="image-20240730141544-cb8j362.png">​</p>
+<p>主要关注如下两个：“桶信息”和“访问管理”这两块儿。</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730141650-24ymhkg.png" alt="image-20240730141650-24ymhkg.png">​</p>
+<ul>
+<li><p>“桶信息”用于后续的Piclist的配置。</p>
+</li>
+<li><p>“访问管理”里面：</p>
+<ul>
+<li><p>这个应该是比较必要，白名单里面配置的是自己的博客的地址。</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730141946-x0jrrch.png" alt="image-20240730141946-x0jrrch.png">​</p>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="二-配置Piclist的npm镜像源并安装Amazon-S3插件并配置"><a href="#二-配置Piclist的npm镜像源并安装Amazon-S3插件并配置" class="headerlink" title="二. 配置Piclist的npm镜像源并安装Amazon S3插件并配置"></a>二. 配置Piclist的npm镜像源并安装Amazon S3插件并配置</h4><ol>
+<li><p>下载地址：<a target="_blank" rel="noopener" href="https://piclist.cn/">PicList</a>。</p>
+</li>
+<li><p>设置npm镜像</p>
+<p> ​<img src="https://4blog.s3.bitiful.net/image-20240730142442-wqpf8jd.png" alt="image-20240730142442-wqpf8jd.png">​</p>
+<p> ​<img src="https://4blog.s3.bitiful.net/image-20240730142457-e5yccys.png" alt="image-20240730142457-e5yccys.png">​</p>
+<p> 就是插件安装镜像那边：<a target="_blank" rel="noopener" href="https://registry.npmmirror.com/">https://registry.npmmirror.com</a></p>
+</li>
+<li><p>搜索s3插件并安装</p>
+<p> ​<img src="https://4blog.s3.bitiful.net/image-20240730142613-5izjg7i.png" alt="image-20240730142613-5izjg7i.png">​</p>
+</li>
+<li><p>创建配置：</p>
+<p> ​<img src="https://4blog.s3.bitiful.net/image-20240730142756-60umdh8.png" alt="image-20240730142756-60umdh8.png">​</p>
+</li>
+<li><p>打开配置并配置：</p>
+<p> ​<img src="https://4blog.s3.bitiful.net/image-20240730142946-5xsthcw.png" alt="image-20240730142946-5xsthcw.png">​</p>
+<ul>
+<li><p>主要是这7个配置。</p>
+</li>
+<li><p>应用密钥ID和应用密钥是缤纷云创建桶的时候出来的，记住。</p>
+</li>
+<li><p>自定义结点和地区，就是缤纷云桶信息那块儿。</p>
+<p>自定义节点这个记得加上https就行。</p>
+</li>
+</ul>
+</li>
+<li><p>确定</p>
+<p> ​<img src="https://4blog.s3.bitiful.net/image-20240730143255-l5obts1.png" alt="image-20240730143255-l5obts1.png">​</p>
+</li>
+</ol>
+<h4 id="三-上传图片"><a href="#三-上传图片" class="headerlink" title="三. 上传图片"></a>三. 上传图片</h4><p>​<img src="https://4blog.s3.bitiful.net/image-20240730143320-x08l76l.png" alt="image-20240730143320-x08l76l.png">​</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730143337-fcldbh3.png" alt="image-20240730143337-fcldbh3.png">​</p>
+<p>​<img src="https://4blog.s3.bitiful.net/image-20240730143429-9z5fsx8.png" alt="image-20240730143429-9z5fsx8.png">​</p>
+<h4 id="四-贴到博客里面"><a href="#四-贴到博客里面" class="headerlink" title="四. 贴到博客里面"></a>四. 贴到博客里面</h4><p>​<img src="https://4blog.s3.bitiful.net/image-20240730143639-0va95qe.png" alt="image-20240730143639-0va95qe.png">​</p>
+<p>​<code>&quot;![](https://4blog.s3.bitiful.net/test.drawio.svg)&quot;</code>​</p>
+<p>下面就是呈现：</p>
+<p>​<img src="https://4blog.s3.bitiful.net/test.drawio.svg">​</p>
 <h4 id="附录-参考连接"><a href="#附录-参考连接" class="headerlink" title="附录: 参考连接"></a>附录: 参考连接</h4><ol>
 <li><a target="_blank" rel="noopener" href="https://www.yvii.cn/archives/2014.html">https://www.yvii.cn/archives/2014.html</a></li>
 <li><a target="_blank" rel="noopener" href="https://piclist.cn/manage#s3s">https://piclist.cn/manage#s3s</a></li>
@@ -188,13 +240,13 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-07-30 00:48:30
+              2024-07-30 14:46:34
             </span>
             
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2024/07/30/0010-win11%E4%B8%8Bhexo-github-vscode-piclist-%E7%BC%A4%E7%BA%B7%E4%BA%91%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B7%A5%E4%BD%9C%E6%B5%81/" target="_self">
+              <a href="/2024/07/30/0000-hello-world/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
@@ -211,7 +263,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%9C%A8%E7%BC%A4%E7%BA%B7%E4%BA%91%E5%88%9B%E5%BB%BA%E6%A1%B6"><span class="toc-text">一. 在缤纷云创建桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-%E4%B8%8B%E8%BD%BDPiclist"><span class="toc-text">二. 下载Piclist</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-%E9%85%8D%E7%BD%AEPiclist%E7%9A%84npm%E9%95%9C%E5%83%8F%E6%BA%90%E5%B9%B6%E5%AE%89%E8%A3%85Amazon-S3%E6%8F%92%E4%BB%B6"><span class="toc-text">三. 配置Piclist的npm镜像源并安装Amazon S3插件</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B-%E9%85%8D%E7%BD%AES3%E5%92%8C%E5%AD%98%E5%82%A8%E6%A1%B6"><span class="toc-text">四. 配置S3和存储桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%94-%E7%AE%A1%E7%90%86%E5%9B%BE%E7%89%87"><span class="toc-text">五. 管理图片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AD-%E6%95%88%E6%9E%9C%E6%9F%A5%E7%9C%8B"><span class="toc-text">六. 效果查看</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%84%E5%BD%95-%E5%8F%82%E8%80%83%E8%BF%9E%E6%8E%A5"><span class="toc-text">附录: 参考连接</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BC%A4%E7%BA%B7%E4%BA%91-Piclist"><span class="toc-text">缤纷云+Piclist</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E5%9C%A8%E7%BC%A4%E7%BA%B7%E4%BA%91%E5%88%9B%E5%BB%BA%E6%A1%B6"><span class="toc-text">一. 在缤纷云创建桶</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-%E9%85%8D%E7%BD%AEPiclist%E7%9A%84npm%E9%95%9C%E5%83%8F%E6%BA%90%E5%B9%B6%E5%AE%89%E8%A3%85Amazon-S3%E6%8F%92%E4%BB%B6%E5%B9%B6%E9%85%8D%E7%BD%AE"><span class="toc-text">二. 配置Piclist的npm镜像源并安装Amazon S3插件并配置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-%E4%B8%8A%E4%BC%A0%E5%9B%BE%E7%89%87"><span class="toc-text">三. 上传图片</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B-%E8%B4%B4%E5%88%B0%E5%8D%9A%E5%AE%A2%E9%87%8C%E9%9D%A2"><span class="toc-text">四. 贴到博客里面</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%99%84%E5%BD%95-%E5%8F%82%E8%80%83%E8%BF%9E%E6%8E%A5"><span class="toc-text">附录: 参考连接</span></a></li></ol></li></ol></li></ol></li></ol>
       
     </div>
   </div>
