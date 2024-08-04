@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="muxunting" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      CNCF开源社区以及如何参与社区 
+      
+      
+      |
+    
+     Tech Space
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Tech Space</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/diary/">
+          <a href="/diary/">Diary</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">CNCF开源社区以及如何参与社区</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-08-04 16:10:53
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h1 id="说明"><a href="#说明" class="headerlink" title="说明"></a>说明</h1><p>该篇文章搬运自：<a target="_blank" rel="noopener" href="https://github.com/tanjunchen/cloud-native-travel">tanjunchen&#x2F;cloud-native-travel</a></p>
+<h1 id="开源社区"><a href="#开源社区" class="headerlink" title="开源社区"></a>开源社区</h1><p>本仓库已迁移至 <a target="_blank" rel="noopener" href="https://github.com/tanjunchen/cloud-native-travel">tanjunchen&#x2F;cloud-native-travel</a>，欢迎大家关注新仓库，与大家一起分享探索云原生趣事。</p>
+<h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p><em>开源社区又称开放源代码社区，一般由拥有共同兴趣爱好的人所组成，根据相应的开源软件许可证协议公布软件源代码的网络平台，同时也为网络成员提供一个自由学习交流的空间。由于开放源码软件主要被散布在全世界的编程者所开发，开源社区就成了他们沟通交流的必要途径，因此开源社区在推动开源软件发展的过程中起着巨大的作用。【百度百科】</em></p>
+<p>在如今的软件设计，架构及开发中，开源扮演着越来越重要的角色。作为开发工程师，服务器、数据库、各种编程语言和框架的源代码，我们可以随时利用这些开源技术实现自己的业务要求。方便且免费地使用这些技术，当然离不开上述各种技术的开源，当今世界，这是一个开源的时代，所以，我们应该主动拥抱开源，工作之余了解与学习开源社区那些事。</p>
+<h2 id="开源社区分类"><a href="#开源社区分类" class="headerlink" title="开源社区分类"></a>开源社区分类</h2><p>其实，开源社区已经存在许久啦，但是对于我和一些人来说，可能比较新奇，所以本文介绍了一些开源社区的概念、如何参与社区、为什么要参与社区？开源社区很多，找到适合自己的才是最好的。</p>
+<p><a href="!%5B">CNCF 基金会</a>](<a target="_blank" rel="noopener" href="https://4blog.s3.bitiful.net/%29)%E3%80%81[kubernetes](https://github.com/kubernetes/kubernetes)%E3%80%81[Istio](https://github.com/istio/istio)%E3%80%81[Apache">https://4blog.s3.bitiful.net/%29)、[kubernetes](https://github.com/kubernetes/kubernetes)、[Istio](https://github.com/istio/istio)、[Apache</a> 软件基金会](<a target="_blank" rel="noopener" href="https://www.apache.org/)%E3%80%81[Apache">https://www.apache.org/)、[Apache</a> 项目列表](<img src="https://4blog.s3.bitiful.net/index.html" alt="index.html"></p>
+<h2 id="如何挑选开源社区"><a href="#如何挑选开源社区" class="headerlink" title="如何挑选开源社区"></a>如何挑选开源社区</h2><p>这里简单地列出了几个条件：</p>
+<ol>
+<li>社区&#x2F;项目方向是否符合你的期望&#x2F;兴趣。比如希望更多关注在后端领域，那很多前端方向的开源项目就可以放弃。</li>
+<li>社区&#x2F;项目的技术栈是否与你匹配，匹配的技术栈可以使你以更快的速度熟悉代码。技术栈包括编程语言、采用的框架或者库等。</li>
+<li>社区接纳新人的友好程度。这对于初入开源，而且并不以开源为生的新人来说，是非常重要的。对于新人来说，开源的贡献活动并不能带给他们任何短期可见的回报，因此需要友好的社区来给予他们正面的反馈，使得贡献活动进入一个良性循环。友好程度，有很多地方可以反映，比如项目是否有清晰易懂的贡献指南，是否具有完善的 CI&#x2F;CD 支持，是否有完善的晋升路线（新贡献者 -&gt; Reviewer -&gt; Commiter -&gt; Maintainer），是否可以简单直接地直接接触到项目的维护人员，有完善的答疑渠道等方面。不过要注意，友好程度跟项目的受欢迎程度是两回事，受欢迎（Star 多）的项目未必有一个友好的社区。一个额外的小建议，刚开始参与开源时，不要选择公司开源的开源项目进行贡献。公司开源的项目通常会不如社区驱动的开源项目友好。</li>
+<li>是否是使用过或者熟悉的开源项目。一个好的贡献者也是一个好的用户。如果之前就有使用过的开源项目，会免去熟悉的过程。</li>
+</ol>
+<p>最后，在我看来，选择的优先级是：[1] &gt; [3] &gt; [4] &gt; [2]。因为方向无论如何是最重要的，在确定方向后，社区的友好程度应该是更加值得考虑的，这也是我在接触开源以后才发现的。最后，是技术栈的熟悉程度。个人认为，编程语言等等的选择，相对不是那么重要的。如果是 Java 后端的话，可能 Apache or Eclipse 基金会下那一堆开源项目或者 Spring 等等会比较合适。</p>
+<p>下面是一些参与开源社区的方法：</p>
+<ol>
+<li><p>找到一个感兴趣的项目：找到一个你感兴趣的开源项目，了解它的目标、代码库、社区文化和贡献方式。可以通过 Github、Gitlab 或 Bitbucket 等平台找到开源项目。</p>
+</li>
+<li><p>加入社区：参与开源社区最重要的是加入社区，这意味着你需要加入邮件列表、聊天室或论坛。加入社区可以让你了解最新的开发动态，同时也能结交其他志同道合的人。</p>
+</li>
+<li><p>阅读文档：了解项目的文档是非常重要的，可以帮助你了解项目的架构、代码规范和开发流程等信息。</p>
+</li>
+<li><p>发现问题：在项目的 issue 列表中寻找可以解决的问题。一些问题可能很简单，例如修复拼写错误或格式问题，而其他问题则需要更深入的技术知识。</p>
+</li>
+<li><p>提交代码：提交代码是最重要的贡献方式之一，你需要了解项目的代码库和开发流程，以便你的代码可以被审核和合并到主分支中。</p>
+</li>
+<li><p>参加社区活动：参加社区活动是了解其他开发者和项目的好方法，例如 hackathon、meetup 和代码贡献日等。</p>
+</li>
+<li><p>尊重他人：参与开源社区需要尊重他人的意见和工作。要时刻保持礼貌和耐心，积极参与社区的讨论和决策。</p>
+</li>
+</ol>
+<p>参与开源社区需要花费一些时间和精力，但它是一个非常有益的经历，可以让你成为一个更好的开发者，并为开源项目做出贡献。</p>
+<h2 id="如何参与开源社区"><a href="#如何参与开源社区" class="headerlink" title="如何参与开源社区"></a>如何参与开源社区</h2><p>这里以 CNCF 开源社区为例，举例说明如何参与 CNCF Kubernetes 开源社区。</p>
+<h3 id="参与社区"><a href="#参与社区" class="headerlink" title="参与社区"></a>参与社区</h3><p>如何向 Kubernetes、Istio 等开源仓库贡献呢？这里提供一点参考。</p>
+<h3 id="初识-CNCF"><a href="#初识-CNCF" class="headerlink" title="初识 CNCF"></a>初识 CNCF</h3><p>CNCF 是一个开源软件基金会，致力于使云原生计算具有普遍性和可持续性。云原生计算使用开源软件技术栈将应用程序部署为微服务，将每个部分打包到自己的容器中，并动态编排这些容器以优化资源利用率。云原生技术使软件开发人员能够更快地构建出色的产品。具体详情可以参考以下网址：</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.cncf.io/">英文官网</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.kubernetes.org.cn/">中文社区</a></p>
+</li>
+</ul>
+<h3 id="CNCF-DashBoard-展示"><a href="#CNCF-DashBoard-展示" class="headerlink" title="CNCF DashBoard 展示"></a>CNCF DashBoard 展示</h3><p>其中 <a target="_blank" rel="noopener" href="https://github.com/cncf/devstats">cncf&#x2F;devstats</a> 罗列世界上活跃于 CNCF 组织的各个公司以及非营利组织与个人。Grafana 展示效果：</p>
+<p><img src="https://4blog.s3.bitiful.net/cncf.io.png" alt="cncf.io.png"></p>
+<p><img src="https://4blog.s3.bitiful.net/cncf_develop.png" alt="cncf_develop.png"></p>
+<p><img src="https://4blog.s3.bitiful.net/country.png" alt="country.png"></p>
+<p><img src="https://4blog.s3.bitiful.net/kubernetes.png" alt="kubernetes.png"></p>
+<h3 id="贡献准备"><a href="#贡献准备" class="headerlink" title="贡献准备"></a>贡献准备</h3><h3 id="注册-GitHub-签署-CNCF-CLA"><a href="#注册-GitHub-签署-CNCF-CLA" class="headerlink" title="注册 GitHub &amp; 签署 CNCF-CLA"></a>注册 GitHub &amp; 签署 CNCF-CLA</h3><ul>
+<li><p>注册 <a target="_blank" rel="noopener" href="https://github.com/">Github</a> 账户，提倡 @gmail.com 邮箱注册(尽量避免 QQ 邮箱)。<em>避免以后关联 slack 出现问题</em></p>
+<p>  <img src="https://4blog.s3.bitiful.net/github.png" alt="github.png"></p>
+</li>
+<li><p>签署 CNCF-CLA 协议，登录 <a target="_blank" rel="noopener" href="https://identity.linuxfoundation.org/">linuxfoundation</a> 进行注册以及签署协议。</p>
+<p>  <img src="https://4blog.s3.bitiful.net/linuxfoundation.png" alt="linuxfoundation.png"></p>
+</li>
+</ul>
+<p>注意事项：签署 CLA 协议的邮箱应该与 Git 客户端本地配置邮箱保持一致，否则验证不过。访问 CLA 签署网站需要科学上网。所以注册邮箱不推荐使用 QQ 邮箱。具体流程可以参考：<a href="!%5BCLA.md%5D(https://4blog.s3.bitiful.net/CLA.md">官方指导</a></p>
+<h3 id="参与贡献"><a href="#参与贡献" class="headerlink" title="参与贡献"></a>参与贡献</h3><h3 id="知识必备"><a href="#知识必备" class="headerlink" title="知识必备"></a>知识必备</h3><p><a href="!%5Bsig-list.md%5D(https://4blog.s3.bitiful.net/sig-list.md">SIGs and Working Groups</a> Kubernetes 社区中关注特定模块的组织，Kubernetes 作为一个拥有几十万行源代码的项目，某些小组专门负责不同的某块，如网络、调度、安全等。<br>目前主要有 API Machinery、Apps、Architecture、Auth、Autoscaling、CLI、Cloud Provider、Cluster Lifecycle、Contributor Experience、Docs、Instrumentation、Multicluster、Network、Node、Release、Scalability、Scheduling、Service Catalog、Storage、Storage、Testing、UI、Usability、Windows。</p>
+<h3 id="熟悉-PR-流程"><a href="#熟悉-PR-流程" class="headerlink" title="熟悉 PR 流程"></a>熟悉 PR 流程</h3><p><img src="https://4blog.s3.bitiful.net/pr.png" alt="pr.png"></p>
+<p>详情参考官网 <a target="_blank" rel="noopener" href="https://kubernetes.io/docs/contribute">website</a><br><img src="https://4blog.s3.bitiful.net/contribute.png" alt="contribute.png"></p>
+<h3 id="以-CNCF-Kubernetes-为例"><a href="#以-CNCF-Kubernetes-为例" class="headerlink" title="以 CNCF Kubernetes 为例"></a>以 CNCF Kubernetes 为例</h3><p>向 Kubernetes 提交 issue&#x2F;pr，详见 <a href="!%5Bcommunity%5D(https://4blog.s3.bitiful.net/community">新手参与 Kubernetes 贡献</a></p>
+<h3 id="Linux-开发环境"><a href="#Linux-开发环境" class="headerlink" title="Linux 开发环境"></a>Linux 开发环境</h3><p>熟悉基本 Linux 操作、Git 操作，推荐 <a target="_blank" rel="noopener" href="https://git-scm.com/docs">Git</a> 操作教程。</p>
+<h3 id="开始第一个贡献"><a href="#开始第一个贡献" class="headerlink" title="开始第一个贡献"></a>开始第一个贡献</h3><p>如何向 Kubernetes 贡献你的第一个贡献呢？</p>
+<p><img src="https://4blog.s3.bitiful.net/kk-pr.png" alt="kk-pr.png"></p>
+<p>如上图所示，在 Issues 中输入 <code>help</code> 或者 <code>good first issue</code> 进行过滤，新手一般都是从这里开始参与社区贡献之门。</p>
+<p><img src="https://4blog.s3.bitiful.net/kk-search.png" alt="kk-search.png"></p>
+<p><img src="https://4blog.s3.bitiful.net/kk-search2.png" alt="kk-search2.png"></p>
+<h3 id="进阶之路"><a href="#进阶之路" class="headerlink" title="进阶之路"></a>进阶之路</h3><ol>
+<li><p>参见 <a href="!%5BREADME.md%5D(https://4blog.s3.bitiful.net/README.md">贡献指南</a> kubernetes 其他仓库，如 <a target="_blank" rel="noopener" href="https://github.com/kubernetes/enhancements">enhancements</a>、<a target="_blank" rel="noopener" href="https://github.com/kubernetes/community">community</a>、<a target="_blank" rel="noopener" href="https://github.com/kubernetes/website">website</a>，enhancements 有关最近 kk 以及未来的发展方向、community 有关 kk 的各种规章制度、website 表示 kk 官网。</p>
+</li>
+<li><p>加入 kk 社区的 <a href="!%5Bsig-docs">Slack</a>](<a target="_blank" rel="noopener" href="https://4blog.s3.bitiful.net/sig-docs%29">https://4blog.s3.bitiful.net/sig-docs%29</a>) 频道，熟悉 KEP， <a href="!%5Bkeps%5D(https://4blog.s3.bitiful.net/keps">KEP</a> 的全称是 Kubernetes Enhancement Proposal，因为 Kubernetes 目前已经是比较成熟的项目了，所有的变更都会影响下游的使用者，对于功能和 API 的修改都需要先在 kubernetes&#x2F;enhancements 仓库对应 SIG 的目录下提交提案才能实施，所有的提案都必须经过讨论、通过社区 SIG Leader 的批准。</p>
+</li>
+<li><p>研究 kubernetes 源码，关注 <a href="!%5Bkeps%5D(https://4blog.s3.bitiful.net/keps">KEPS</a> <a href="!%5Bcommunication%5D(https://4blog.s3.bitiful.net/communication">线上会议</a></p>
+</li>
+</ol>
+<h3 id="kubernetes-汉化"><a href="#kubernetes-汉化" class="headerlink" title="kubernetes 汉化"></a>kubernetes 汉化</h3><p>参与 kubernetes 本地化工作，具体可以参考 <a href="!%5Bk8s-official-translation%5D(https://4blog.s3.bitiful.net/k8s-official-translation">K8SMeetup 翻译流程与翻译校稿规范</a></p>
+<h2 id="期待与收获"><a href="#期待与收获" class="headerlink" title="期待与收获"></a>期待与收获</h2><p>Kubernetes 目前已经是云时代的操作系统，作为容器编排领域和云原生领域的事实标准，了解与学习 Kubernetes 的使用和原理成为云原生时代开发工程师的必备技能。</p>
+<p>开源社区如此之多，选择自己感兴趣的或者对自己从事的工作有帮助的是最好不过的啦，开源与工作相结合是比较推崇的，既可以提升平时工作的效率(社区中比较好用的工具应用到工作中)，也可以提升对开源社区的兴趣(比如你对某项开源项目中的某个 topic 或 issue 感兴趣，则可以尝试用自己所掌握的知识去实现它)。从不同的社区中我们能够学习到不同的东西，比如：社区的管理与运作方式、提升某项技能、增强编码能力与编码规范。在开源社区能够收获什么呢？</p>
+<ol>
+<li>提升编码水平与规范。</li>
+<li>与世界上最优秀的工程师们交流，能够开拓视野，如 k8s 新增一项功能，必须严格遵循 alpha -&gt; beta -&gt; release -&gt; GA 等阶段、e2e 测试、编写完整的文档、代码注释等。</li>
+<li>可以快速理解项目的实现原理以及工作流程，提升工作效率，提升个人水平。</li>
+<li>大厂加分项等等</li>
+<li>……</li>
+</ol>
+<h3 id="Github-常用语"><a href="#Github-常用语" class="headerlink" title="Github 常用语"></a>Github 常用语</h3><ol>
+<li>PR: Pull Request。拉取请求。</li>
+<li>LGTM: Looks Good To Me。看起来不错，代码已 review，可以合并。</li>
+<li>SGTM: Sounds Good To Me。和上面那句意思差不多。</li>
+<li>WIP: Work In Progress。若你有个改动很大的 PR，可在写了部分的情况下先提交，在标题里写上 WIP，以告诉项目维护者这个功能还未完成，方便维护者提前 review 部分提交的代码。</li>
+<li>PTAL: Please Take A Look。你来瞅瞅？用来提示别人来看一下。</li>
+<li>TBR: To Be Reviewed。提示维护者进行 review。</li>
+<li>TL;DR: Too Long; Didn’t Read。太长，未看。</li>
+<li>TBD: To Be Done(or Defined&#x2F;Discussed&#x2F;Decided&#x2F;Determined)。根据语境不同意义有所区别，但一般都是还没 xx。</li>
+<li>SPOF: Single point of failure。单节点崩溃。</li>
+<li>ASAP: As soon as possible。马上，尽快。</li>
+<li>BTW: By the way。顺便说一下。</li>
+<li>FYI : For your information。供你参考。</li>
+<li>TTYL: Talk to you later。待会回复你。</li>
+<li>Plz: Please 的谐音。</li>
+<li>Thx: Thanks。谢谢。</li>
+<li>AFAIK: As far as I know。据我所知。</li>
+<li>U: you。</li>
+<li>R: are。经常用于 where R U？ 邮件里面用的不太多，大多数用在非正式场合之中。</li>
+<li>Wanna: want to。这个属于约定俗成，表示想做什么。</li>
+<li>Pvt: private。经常用在表示所有权上面，比如说私有库，或者私有代码。</li>
+<li>Doc: Document。如果用在其它场合，也可能表示医生。所以需要结合上下文来判断。</li>
+<li>i.e。也就是。。。(id est)。</li>
+<li>e.g。例如 for example。</li>
+<li>etc。 et cetera等等。</li>
+<li>Repository：简称 Repo，可以理解为”仓库”。</li>
+<li>Issues：可以理解为”问题”，举一个简单的例子，如果我们开源一个项目，如果别人看了我们的项目，并且发现了 bug，或者感觉那个地方有待改进，他就可以给我们提出 Issue，等我们把 Issue 解决之后，就可以把这些 Issue 关闭；反之，我们也可以给他人提出 Issue。</li>
+<li>Star：可以理解为”点赞”，当我们感觉某一个项目做的比较好之后，就可以为这个项目点赞，而且我们点赞过的项目，都会保存到我们的 Star 之中，方便我们随时查看。在 GitHub 之中，如果一个项目的点星数能够超百，那么说明这个项目已经很不错了。</li>
+<li>Fork：可以理解为”拉分支”，如果我们对某一个项目比较感兴趣，并且想在此基础之上开发新的功能，这时我们就可以 Fork 这个项目，这表示复制一个完成相同的项目到我们的 GitHub 账号之中，而且独立于原项目。之后，我们就可以在自己复制的项目中进行开发了。</li>
+<li>Merge：可以理解为”合并”，如果别人 Fork 了我们的项目，对其进行了修改，并且提出了 Pull 请求，这时我们就可以对这个 Pull 请求进行审核。如果这个 Pull 请求的内容满足我们的要求，并且跟我们原有的项目没有冲突的话，就可以将其合并到我们的项目之中。当然，是否进行合并，由我们决定。</li>
+<li>Watch：可以理解为”观察”，如果我们 Watch 了一个项目之后，如果这个项目有了任何更新，我们都会在第一时候收到该项目的更新通知。</li>
+<li>Gist：如果我们没有项目可以开源或者只是单纯的想分享一些代码片段的话，我们就可以选择 Gist。</li>
+<li>等等……</li>
+</ol>
+<h3 id="Github-常见-Topic"><a href="#Github-常见-Topic" class="headerlink" title="Github 常见 Topic"></a>Github 常见 Topic</h3><p><a target="_blank" rel="noopener" href="https://github.com/trending">GitHub Trend</a> 页面总结了每天&#x2F;每周&#x2F;每月周期的热门 Repositories 和 Developers，你可以看到在某个周期处于热门状态的开发项目和开发者。而 <a target="_blank" rel="noopener" href="https://github.com/topics">GitHub Topic</a> 展示了最新和最流行的讨论主题，在这里你不仅能够看到开发项目，还能看到更多非开发技术的讨论主题，比如 Job、Chrome 浏览器等。</p>
+<p><img src="https://4blog.s3.bitiful.net/github_trending.png" alt="github_trending.png"></p>
+<p><img src="https://4blog.s3.bitiful.net/github_topic.png" alt="github_topic.png"></p>
+<h2 id="Github-得力助手"><a href="#Github-得力助手" class="headerlink" title="Github 得力助手"></a>Github 得力助手</h2><p>在 Github 上有很多的项目，我们应该如何去抉择呢？有很多种方式提高我们的搜索效率。如搜索某个用户：</p>
+<p>location:china language:java followers:&gt;&#x3D;1000</p>
+<p><img src="https://4blog.s3.bitiful.net/github_developer.jpg" alt="github_developer.jpg"></p>
+<p><img src="https://4blog.s3.bitiful.net/user_search.png" alt="user_search.png"></p>
+<p>搜索某个项目，awesome:高并发 language:java starts:&gt;&#x3D;500 forks:200</p>
+<p><img src="https://4blog.s3.bitiful.net/github_user.jpg" alt="github_user.jpg"></p>
+<p><img src="https://4blog.s3.bitiful.net/user_search.png" alt="user_search.png"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>学习与阅读源码是一门苦差事，参与开源社区也需要耐心与持之以恒的决心。参与开源社区是一个非常有益的经历，可以让你学习新技能、结交志同道合的人、增加你的开发经验和在开源项目上做出贡献。</p>
+<p>参与 Kubernetes 社区，从中学习到了很多，比如不仅学习到了 Go 语言的开发规范、庞大的开源社区的治理方式，还从社区中的很多优秀工程师身上学到了软件设计的一些技巧，与优秀的开发者交流提高了我的见解，这些都是在日常工作中很难得到的。可能与我们平时的工作内容相关，毕竟大部分集中于业务开发，框架的使用。优秀的开源社区真的是值得我们去学习与借鉴，等着我们去挖掘和学习。加入开源社区吧、后浪们 ！！！</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/08/04/0016-vs-piclist%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-08-04 16:10:53
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AF%B4%E6%98%8E"><span class="toc-text">说明</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA"><span class="toc-text">开源社区</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8B%E7%BB%8D"><span class="toc-text">介绍</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E5%88%86%E7%B1%BB"><span class="toc-text">开源社区分类</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%8C%91%E9%80%89%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA"><span class="toc-text">如何挑选开源社区</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E5%8F%82%E4%B8%8E%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA"><span class="toc-text">如何参与开源社区</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E4%B8%8E%E7%A4%BE%E5%8C%BA"><span class="toc-text">参与社区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%9D%E8%AF%86-CNCF"><span class="toc-text">初识 CNCF</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CNCF-DashBoard-%E5%B1%95%E7%A4%BA"><span class="toc-text">CNCF DashBoard 展示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B4%A1%E7%8C%AE%E5%87%86%E5%A4%87"><span class="toc-text">贡献准备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E5%86%8C-GitHub-%E7%AD%BE%E7%BD%B2-CNCF-CLA"><span class="toc-text">注册 GitHub &amp; 签署 CNCF-CLA</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%82%E4%B8%8E%E8%B4%A1%E7%8C%AE"><span class="toc-text">参与贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%9F%A5%E8%AF%86%E5%BF%85%E5%A4%87"><span class="toc-text">知识必备</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%86%9F%E6%82%89-PR-%E6%B5%81%E7%A8%8B"><span class="toc-text">熟悉 PR 流程</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%A5-CNCF-Kubernetes-%E4%B8%BA%E4%BE%8B"><span class="toc-text">以 CNCF Kubernetes 为例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Linux-%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="toc-text">Linux 开发环境</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%A7%8B%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%B4%A1%E7%8C%AE"><span class="toc-text">开始第一个贡献</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E9%98%B6%E4%B9%8B%E8%B7%AF"><span class="toc-text">进阶之路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#kubernetes-%E6%B1%89%E5%8C%96"><span class="toc-text">kubernetes 汉化</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9C%9F%E5%BE%85%E4%B8%8E%E6%94%B6%E8%8E%B7"><span class="toc-text">期待与收获</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Github-%E5%B8%B8%E7%94%A8%E8%AF%AD"><span class="toc-text">Github 常用语</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Github-%E5%B8%B8%E8%A7%81-Topic"><span class="toc-text">Github 常见 Topic</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github-%E5%BE%97%E5%8A%9B%E5%8A%A9%E6%89%8B"><span class="toc-text">Github 得力助手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Tech Space</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索中...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + CNCF%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%8F%82%E4%B8%8E%E7%A4%BE%E5%8C%BA + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F04%2F0017-CNCF%25E5%25BC%2580%25E6%25BA%2590%25E7%25A4%25BE%25E5%258C%25BA%25E4%25BB%25A5%25E5%258F%258A%25E5%25A6%2582%25E4%25BD%2595%25E5%258F%2582%25E4%25B8%258E%25E7%25A4%25BE%25E5%258C%25BA%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/04/0017-CNCF%E5%BC%80%E6%BA%90%E7%A4%BE%E5%8C%BA%E4%BB%A5%E5%8F%8A%E5%A6%82%E4%BD%95%E5%8F%82%E4%B8%8E%E7%A4%BE%E5%8C%BA/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
