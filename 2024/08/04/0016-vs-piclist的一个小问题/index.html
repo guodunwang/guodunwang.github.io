@@ -13,7 +13,7 @@
   
   <title>
     
-      archive_a: 2024/8 
+      vs-piclist的一个小问题 
       
       
       |
@@ -112,176 +112,129 @@
 
 
       <div class="flex-container">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2024</span>
-          </h2>
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">vs-piclist的一个小问题</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-08-04 16:07:22
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <p>在使用vs-piclist自动上传“当前文件中的图片”的时候，会把部分普通的url连接也尝试上传，有些只是一些普通的网址而已，也被尝试上传到图床。</p>
+<p>最关键的是，这些连接还会被替换。这是个小问题。</p>
+<p>不知道后面有没有机会修改一下它这个源代码，做一下限制，只识别给定后缀的那种url链接。</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/08/01/0015-Kubernetes%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E6%BC%94%E7%BB%83/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-08-04 16:07:22
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
         </div>
       
-      <div class="post-item" title="vs-piclist的一个小问题">
-        <div class="time-m-d">08-04</div>
-        <div class="title">
-          <a href="/2024/08/04/0016-vs-piclist%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/">
-            <span>vs-piclist的一个小问题</span>
-          </a>
-        </div>
-      </div>
+    </div>
     
-      <div class="post-item" title="Kubernetes部署及应用部署演练">
-        <div class="time-m-d">08-01</div>
-        <div class="title">
-          <a href="/2024/08/01/0015-Kubernetes%E9%83%A8%E7%BD%B2%E5%8F%8A%E5%BA%94%E7%94%A8%E9%83%A8%E7%BD%B2%E6%BC%94%E7%BB%83/">
-            <span>Kubernetes部署及应用部署演练</span>
-          </a>
-        </div>
-      </div>
+
     
-      <div class="post-item" title="再整理git的基本用法和基本概念—基于案例">
-        <div class="time-m-d">07-31</div>
-        <div class="title">
-          <a href="/2024/07/31/0014-%E5%86%8D%E6%95%B4%E7%90%86git%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%94%A8%E6%B3%95%E5%92%8C%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5%E2%80%94%E5%9F%BA%E4%BA%8E%E6%A1%88%E4%BE%8B/">
-            <span>再整理git的基本用法和基本概念—基于案例</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="什么是平台工程">
-        <div class="time-m-d">07-31</div>
-        <div class="title">
-          <a href="/2024/07/31/0013-%E4%BB%80%E4%B9%88%E6%98%AF%E5%B9%B3%E5%8F%B0%E5%B7%A5%E7%A8%8B/">
-            <span>什么是平台工程</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Kubernetes快速入门(01篇)-第2版">
-        <div class="time-m-d">07-31</div>
-        <div class="title">
-          <a href="/2024/07/31/0012-Kubernetes%E5%BF%AB%E9%80%9F%E5%85%A5%E9%97%A8(01%E7%AF%87)-%E7%AC%AC2%E7%89%88/">
-            <span>Kubernetes快速入门(01篇)-第2版</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="关于go测试概念：测试代码放置的位置——包内测试和包外测试">
-        <div class="time-m-d">07-30</div>
-        <div class="title">
-          <a href="/2024/07/30/0011-%E5%85%B3%E4%BA%8Ego%E6%B5%8B%E8%AF%95%EF%BC%9A%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%E6%94%BE%E7%BD%AE%E7%9A%84%E4%BD%8D%E7%BD%AE%E2%80%94%E2%80%94%E5%8C%85%E5%86%85%E6%B5%8B%E8%AF%95%E5%92%8C%E5%8C%85%E5%A4%96%E6%B5%8B%E8%AF%95/">
-            <span>关于go测试概念：测试代码放置的位置——包内测试和包外测试</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="win11下hexo+github+vscode+piclist+缤纷云搭建博客工作流">
-        <div class="time-m-d">07-30</div>
-        <div class="title">
-          <a href="/2024/07/30/0010-win11%E4%B8%8Bhexo-github-vscode-piclist-%E7%BC%A4%E7%BA%B7%E4%BA%91%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E5%B7%A5%E4%BD%9C%E6%B5%81/">
-            <span>win11下hexo+github+vscode+piclist+缤纷云搭建博客工作流</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Hello World">
-        <div class="time-m-d">07-30</div>
-        <div class="title">
-          <a href="/2024/07/30/0000-hello-world/">
-            <span>Hello World</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Piclist+缤纷云=个人图床">
-        <div class="time-m-d">07-29</div>
-        <div class="title">
-          <a href="/2024/07/29/0009-Piclist-%E7%BC%A4%E7%BA%B7%E4%BA%91-%E4%B8%AA%E4%BA%BA%E5%9B%BE%E5%BA%8A/">
-            <span>Piclist+缤纷云=个人图床</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="draw.io插件在vscode中使用的几个要点。">
-        <div class="time-m-d">07-28</div>
-        <div class="title">
-          <a href="/2024/07/28/0008-draw-io%E6%8F%92%E4%BB%B6%E5%9C%A8vscode%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E8%A6%81%E7%82%B9%E3%80%82/">
-            <span>draw.io插件在vscode中使用的几个要点。</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="gotest和go test的使用">
-        <div class="time-m-d">07-27</div>
-        <div class="title">
-          <a href="/2024/07/27/0007-go-test%E4%BD%BF%E7%94%A8/">
-            <span>gotest和go test的使用</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="关于本地搭建一个leetcode-go的刷题项目框架">
-        <div class="time-m-d">07-27</div>
-        <div class="title">
-          <a href="/2024/07/27/0006-%E5%85%B3%E4%BA%8E%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAleetcode-go%E7%9A%84%E5%88%B7%E9%A2%98%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/">
-            <span>关于本地搭建一个leetcode-go的刷题项目框架</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="平衡二叉搜索树-AVL">
-        <div class="time-m-d">07-27</div>
-        <div class="title">
-          <a href="/2024/07/27/0005-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-AVL/">
-            <span>平衡二叉搜索树-AVL</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="初步利用go、llm、k8s、docker、pg、pgvector打造rag应用">
-        <div class="time-m-d">07-27</div>
-        <div class="title">
-          <a href="/2024/07/27/0004-%E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E8%87%AA%E5%8A%A8%E5%8C%96%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%81%E6%B3%A8%E9%87%8A/">
-            <span>初步利用go、llm、k8s、docker、pg、pgvector打造rag应用</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="Leetcode-合并两个有序数组">
-        <div class="time-m-d">07-27</div>
-        <div class="title">
-          <a href="/2024/07/27/0003-%E5%9D%9A%E6%8C%81%E5%88%B7%E9%A2%98/">
-            <span>Leetcode-合并两个有序数组</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="楔子">
-        <div class="time-m-d">07-25</div>
-        <div class="title">
-          <a href="/2024/07/25/0001-%E6%A5%94%E5%AD%90/">
-            <span>楔子</span>
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="二叉搜索树-BST">
-        <div class="time-m-d">07-24</div>
-        <div class="title">
-          <a href="/2024/07/24/0002-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-BST/">
-            <span>二叉搜索树-BST</span>
-          </a>
-        </div>
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
       </div>
     
   </div>
-</div>
+
 
         
 <div class="footer">
@@ -538,6 +491,24 @@
 
 
         
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + vs-piclist%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F04%2F0016-vs-piclist%25E7%259A%2584%25E4%25B8%2580%25E4%25B8%25AA%25E5%25B0%258F%25E9%2597%25AE%25E9%25A2%2598%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/04/0016-vs-piclist%E7%9A%84%E4%B8%80%E4%B8%AA%E5%B0%8F%E9%97%AE%E9%A2%98/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
   
   
 <script src="/js/shares.js"></script>
