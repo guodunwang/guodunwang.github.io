@@ -13,7 +13,7 @@
   
   <title>
     
-      平衡二叉搜索树-AVL 
+      关于本地搭建一个leetcode-go的刷题项目框架 
       
       
       |
@@ -157,57 +157,40 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">平衡二叉搜索树-AVL</div>
+      <div class="post-title">关于本地搭建一个leetcode-go的刷题项目框架</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-07-30 00:48:30
+          2024-07-31 22:33:22
         </span>
         
-              <span class="post-categories">
-                <i class="iconfont icon-bookmark" title="Categories"></i>
-                
-                <span class="span--category">
-                  <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构">
-                    <b>#</b> 数据结构
-                  </a>
-                </span>
-                
-              </span>
-          
-              <span class="post-tags">
-                <i class="iconfont icon-tags mr-10" title="Tags"></i>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E5%9F%BA%E6%9C%AC%E5%8A%9F/" title="基本功">
-                    #基本功
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E6%A0%91/" title="树">
-                    #树
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E6%90%9C%E7%B4%A2%E6%8A%80%E6%9C%AF/" title="搜索技术">
-                    #搜索技术
-                  </a>
-                </span>
-                
-              </span>
-          
       </div>
       <div class="markdown-body">
-        <p>todo…</p>
-
+        <h3 id="go-leetecode-模块的测试代码放到哪儿"><a href="#go-leetecode-模块的测试代码放到哪儿" class="headerlink" title="go-leetecode 模块的测试代码放到哪儿"></a>go-leetecode 模块的测试代码放到哪儿</h3><ul>
+<li>由于只是小小的刷题项目，项目功能不大也不复杂，题目与题目之间完全没有关联。</li>
+<li>文件名字是题目的名字有中文。</li>
+<li>leetcode的代码格式，函数的命名是小写开头，非导出。</li>
+<li>并且你是一道题一道题独立刷的，写完直接就开始测试，所以包内测试也更加直观。</li>
+<li>需要快速入手刷题，别jb墨迹了。</li>
+<li>因此，选择包内测试来做。</li>
+</ul>
+<h3 id="go-leetcode-包内如何组织测试代码"><a href="#go-leetcode-包内如何组织测试代码" class="headerlink" title="go-leetcode 包内如何组织测试代码"></a>go-leetcode 包内如何组织测试代码</h3><ul>
+<li>一个题目一个文件夹，就是很简单的包内平铺就完事了。</li>
+<li>如果是一题多解也没问题，平铺模式中，每个测试函数都是独立的，互不关联，避免相互干扰。</li>
+</ul>
+<h3 id="go-leetcode中测试函数的内部代码如何编写"><a href="#go-leetcode中测试函数的内部代码如何编写" class="headerlink" title="go-leetcode中测试函数的内部代码如何编写"></a>go-leetcode中测试函数的内部代码如何编写</h3><ul>
+<li>表驱动测试——自定义结构体类型的切片。</li>
+<li>这个切片实例的构造就像一个表。</li>
+<li>因此，这个就是叫做表驱动测试。</li>
+<li>白明在书中推荐，优先编写基于表驱动的测试。</li>
+</ul>
+<h3 id="基本的目录结构如下："><a href="#基本的目录结构如下：" class="headerlink" title="基本的目录结构如下："></a>基本的目录结构如下：</h3>
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/07/27/0004-%E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E8%87%AA%E5%8A%A8%E5%8C%96%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%81%E6%B3%A8%E9%87%8A/" target="_self">
+              <a href="/2024/07/27/0004-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-AVL/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -216,47 +199,13 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-07-30 00:48:30
+              2024-07-31 22:33:22
             </span>
             
-                  <span class="post-categories">
-                    <i class="iconfont icon-bookmark" title="Categories"></i>
-                    
-                    <span class="span--category">
-                      <a href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" title="数据结构">
-                        <b>#</b> 数据结构
-                      </a>
-                    </span>
-                    
-                  </span>
-              
-                  <span class="post-tags">
-                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E5%9F%BA%E6%9C%AC%E5%8A%9F/" title="基本功">
-                        #基本功
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E6%A0%91/" title="树">
-                        #树
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E6%90%9C%E7%B4%A2%E6%8A%80%E6%9C%AF/" title="搜索技术">
-                        #搜索技术
-                      </a>
-                    </span>
-                    
-                  </span>
-              
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2024/07/27/0006-%E5%85%B3%E4%BA%8E%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAleetcode-go%E7%9A%84%E5%88%B7%E9%A2%98%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/" target="_self">
+              <a href="/2024/07/27/0006-go-test%E4%BD%BF%E7%94%A8/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
@@ -266,6 +215,23 @@
       
     </div>
     
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#go-leetecode-%E6%A8%A1%E5%9D%97%E7%9A%84%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%E6%94%BE%E5%88%B0%E5%93%AA%E5%84%BF"><span class="toc-text">go-leetecode 模块的测试代码放到哪儿</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#go-leetcode-%E5%8C%85%E5%86%85%E5%A6%82%E4%BD%95%E7%BB%84%E7%BB%87%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81"><span class="toc-text">go-leetcode 包内如何组织测试代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#go-leetcode%E4%B8%AD%E6%B5%8B%E8%AF%95%E5%87%BD%E6%95%B0%E7%9A%84%E5%86%85%E9%83%A8%E4%BB%A3%E7%A0%81%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99"><span class="toc-text">go-leetcode中测试函数的内部代码如何编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%9A%84%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84%E5%A6%82%E4%B8%8B%EF%BC%9A"><span class="toc-text">基本的目录结构如下：</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
 
     
       <div class="comments-container">
@@ -569,12 +535,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-AVL + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F27%2F0005-%25E5%25B9%25B3%25E8%25A1%25A1%25E4%25BA%258C%25E5%258F%2589%25E6%2590%259C%25E7%25B4%25A2%25E6%25A0%2591-AVL%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%85%B3%E4%BA%8E%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAleetcode-go%E7%9A%84%E5%88%B7%E9%A2%98%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F27%2F0005-%25E5%2585%25B3%25E4%25BA%258E%25E6%259C%25AC%25E5%259C%25B0%25E6%2590%25AD%25E5%25BB%25BA%25E4%25B8%2580%25E4%25B8%25AAleetcode-go%25E7%259A%2584%25E5%2588%25B7%25E9%25A2%2598%25E9%25A1%25B9%25E7%259B%25AE%25E6%25A1%2586%25E6%259E%25B6%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/27/0005-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-AVL/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/27/0005-%E5%85%B3%E4%BA%8E%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAleetcode-go%E7%9A%84%E5%88%B7%E9%A2%98%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         

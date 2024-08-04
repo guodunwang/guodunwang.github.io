@@ -13,7 +13,7 @@
   
   <title>
     
-      初步利用go、llm、k8s、docker、pg、pgvector打造rag应用 
+      gotest和go test的使用 
       
       
       |
@@ -157,22 +157,34 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">初步利用go、llm、k8s、docker、pg、pgvector打造rag应用</div>
+      <div class="post-title">gotest和go test的使用</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-07-31 22:33:57
+          2024-08-04 17:42:47
         </span>
         
       </div>
       <div class="markdown-body">
-        <h4 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h4><h4 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h4><h4 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h4>
+        <h4 id="什么是gotest"><a href="#什么是gotest" class="headerlink" title="什么是gotest"></a>什么是gotest</h4><ol>
+<li><p>来自通义千问的说法</p>
+</li>
+<li><p>来自gotest官方文档的说法</p>
+</li>
+</ol>
+<h4 id="什么是go-test"><a href="#什么是go-test" class="headerlink" title="什么是go test"></a>什么是go test</h4><ol>
+<li><p>来自通义千问的说法</p>
+</li>
+<li><p>来自go官方文档的说法</p>
+</li>
+</ol>
+<h4 id="gotest用法一览"><a href="#gotest用法一览" class="headerlink" title="gotest用法一览"></a>gotest用法一览</h4><h4 id="go-test用法一览"><a href="#go-test用法一览" class="headerlink" title="go test用法一览"></a>go test用法一览</h4><h4 id="实践一-待测文件和测试代码在同目录"><a href="#实践一-待测文件和测试代码在同目录" class="headerlink" title="实践一: 待测文件和测试代码在同目录"></a>实践一: 待测文件和测试代码在同目录</h4><h4 id="实践二-待测文件和测试代码不在同目录"><a href="#实践二-待测文件和测试代码不在同目录" class="headerlink" title="实践二: 待测文件和测试代码不在同目录"></a>实践二: 待测文件和测试代码不在同目录</h4>
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/07/27/0002-%E5%9D%9A%E6%8C%81%E5%88%B7%E9%A2%98/" target="_self">
+              <a href="/2024/07/27/0005-%E5%85%B3%E4%BA%8E%E6%9C%AC%E5%9C%B0%E6%90%AD%E5%BB%BA%E4%B8%80%E4%B8%AAleetcode-go%E7%9A%84%E5%88%B7%E9%A2%98%E9%A1%B9%E7%9B%AE%E6%A1%86%E6%9E%B6/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -181,13 +193,13 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-07-31 22:33:57
+              2024-08-04 17:42:47
             </span>
             
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2024/07/27/0005-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-AVL/" target="_self">
+              <a href="/2024/07/28/0007-draw-io%E6%8F%92%E4%BB%B6%E5%9C%A8vscode%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%9A%84%E5%87%A0%E4%B8%AA%E8%A6%81%E7%82%B9%E3%80%82/" target="_self">
                 <span>Next</span>
                 <i class="iconfont icon-chevronright"></i>
               </a>
@@ -204,7 +216,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF"><span class="toc-text">整体思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">组件介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D"><span class="toc-text">功能介绍</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFgotest"><span class="toc-text">什么是gotest</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFgo-test"><span class="toc-text">什么是go test</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#gotest%E7%94%A8%E6%B3%95%E4%B8%80%E8%A7%88"><span class="toc-text">gotest用法一览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#go-test%E7%94%A8%E6%B3%95%E4%B8%80%E8%A7%88"><span class="toc-text">go test用法一览</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E4%B8%80-%E5%BE%85%E6%B5%8B%E6%96%87%E4%BB%B6%E5%92%8C%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%E5%9C%A8%E5%90%8C%E7%9B%AE%E5%BD%95"><span class="toc-text">实践一: 待测文件和测试代码在同目录</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%AE%9E%E8%B7%B5%E4%BA%8C-%E5%BE%85%E6%B5%8B%E6%96%87%E4%BB%B6%E5%92%8C%E6%B5%8B%E8%AF%95%E4%BB%A3%E7%A0%81%E4%B8%8D%E5%9C%A8%E5%90%8C%E7%9B%AE%E5%BD%95"><span class="toc-text">实践二: 待测文件和测试代码不在同目录</span></a></li></ol>
       
     </div>
   </div>
@@ -517,12 +529,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F27%2F0004-%25E5%2588%259D%25E6%25AD%25A5%25E5%2588%25A9%25E7%2594%25A8go%25E3%2580%2581llm%25E3%2580%2581k8s%25E3%2580%2581docker%25E3%2580%2581pg%25E3%2580%2581pgvector%25E6%2589%2593%25E9%2580%25A0rag%25E5%25BA%2594%25E7%2594%25A8%25E2%2580%2594%25E2%2580%2594%25E8%2587%25AA%25E5%258A%25A8%25E5%258C%2596%25E6%2596%2587%25E6%25A1%25A3%25E7%25BF%25BB%25E8%25AF%2591%25E3%2580%2581%25E6%25B3%25A8%25E9%2587%258A%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + gotest%E5%92%8Cgo%20test%E7%9A%84%E4%BD%BF%E7%94%A8 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F27%2F0006-go-test%25E4%25BD%25BF%25E7%2594%25A8%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/27/0004-%E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E8%87%AA%E5%8A%A8%E5%8C%96%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%81%E6%B3%A8%E9%87%8A/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/27/0006-go-test%E4%BD%BF%E7%94%A8/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
