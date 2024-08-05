@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="muxunting" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      局域网扫描一个网段中的可用ip-用于配置虚拟机的静态ip 
+      
+      
+      |
+    
+     Tech Space
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Tech Space</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/diary/">
+          <a href="/diary/">Diary</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">局域网扫描一个网段中的可用ip-用于配置虚拟机的静态ip</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-08-05 11:05:43
+        </span>
+        
+              <span class="post-tags">
+                <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                
+                <span class="span--tag mr-8">
+                  <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                    #计算机网络
+                  </a>
+                </span>
+                
+              </span>
+          
+      </div>
+      <div class="markdown-body">
+        <h4 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h4><ul>
+<li>一个网段aaa.bbb.ccc.xxx中，搜索其中可用的没有被其他主机占用的ip用以配置虚拟机的ip。</li>
+<li>其中，网关是aaa.bbb.ccc.1。</li>
+<li>子网掩码是255.255.255.0。</li>
+</ul>
+<h4 id="nmap工具"><a href="#nmap工具" class="headerlink" title="nmap工具"></a>nmap工具</h4><ul>
+<li><p>安装: sudo apt install nmap</p>
+</li>
+<li><p>需求：使用nmap工具来扫描网段aaa.bbb.ccc.0&#x2F;24中未被使用的IP地址。</p>
+</li>
+<li><p>aaa.bbb.ccc.0 作为网络地址。</p>
+</li>
+<li><p>aaa.bbb.ccc.255 作为广播地址。</p>
+</li>
+<li><p>aaa.bbb.ccc.1 作为网关地址。</p>
+</li>
+<li><p>所以搜寻地址范围是：[aaa.bbb.ccc.2, aaa.bbb.ccc.254]</p>
+</li>
+<li><p>方案：</p>
+<blockquote>
+<p>方案1:<br>使用-sP参数进行Ping扫描，来检查主机是否在线，但不进行端口扫描。</p>
+</blockquote>
+<blockquote>
+<p>方案2:<br>使用-sS参数进行TCP SYN扫描</p>
+</blockquote>
+<blockquote>
+<p>方案3:<br>使用-sT参数进行TCP连接扫描</p>
+</blockquote>
+</li>
+<li><p>实践：</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">nmap -sP aaa.bbb.ccc.2-254</span><br></pre></td></tr></table></figure>
+<p>  结果如下：</p>
+  <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br><span class="line">207</span><br><span class="line">208</span><br><span class="line">209</span><br><span class="line">210</span><br><span class="line">211</span><br><span class="line">212</span><br><span class="line">213</span><br><span class="line">214</span><br><span class="line">215</span><br><span class="line">216</span><br><span class="line">217</span><br><span class="line">218</span><br><span class="line">219</span><br><span class="line">220</span><br><span class="line">221</span><br><span class="line">222</span><br><span class="line">223</span><br><span class="line">224</span><br><span class="line">225</span><br><span class="line">226</span><br><span class="line">227</span><br><span class="line">228</span><br><span class="line">229</span><br><span class="line">230</span><br><span class="line">231</span><br><span class="line">232</span><br><span class="line">233</span><br><span class="line">234</span><br><span class="line">235</span><br><span class="line">236</span><br><span class="line">237</span><br><span class="line">238</span><br><span class="line">239</span><br><span class="line">240</span><br><span class="line">241</span><br><span class="line">242</span><br><span class="line">243</span><br><span class="line">244</span><br><span class="line">245</span><br><span class="line">246</span><br><span class="line">247</span><br><span class="line">248</span><br><span class="line">249</span><br><span class="line">250</span><br><span class="line">251</span><br><span class="line">252</span><br><span class="line">253</span><br><span class="line">254</span><br><span class="line">255</span><br><span class="line">256</span><br><span class="line">257</span><br><span class="line">258</span><br><span class="line">259</span><br><span class="line">260</span><br><span class="line">261</span><br><span class="line">262</span><br><span class="line">263</span><br><span class="line">264</span><br><span class="line">265</span><br><span class="line">266</span><br><span class="line">267</span><br><span class="line">268</span><br><span class="line">269</span><br><span class="line">270</span><br><span class="line">271</span><br><span class="line">272</span><br><span class="line">273</span><br><span class="line">274</span><br><span class="line">275</span><br><span class="line">276</span><br><span class="line">277</span><br><span class="line">278</span><br><span class="line">279</span><br><span class="line">280</span><br><span class="line">281</span><br><span class="line">282</span><br><span class="line">283</span><br><span class="line">284</span><br><span class="line">285</span><br><span class="line">286</span><br><span class="line">287</span><br><span class="line">288</span><br><span class="line">289</span><br><span class="line">290</span><br><span class="line">291</span><br><span class="line">292</span><br><span class="line">293</span><br><span class="line">294</span><br><span class="line">295</span><br><span class="line">296</span><br><span class="line">297</span><br><span class="line">298</span><br><span class="line">299</span><br><span class="line">300</span><br><span class="line">301</span><br><span class="line">302</span><br><span class="line">303</span><br><span class="line">304</span><br><span class="line">305</span><br><span class="line">306</span><br><span class="line">307</span><br><span class="line">308</span><br><span class="line">309</span><br><span class="line">310</span><br><span class="line">311</span><br><span class="line">312</span><br><span class="line">313</span><br><span class="line">314</span><br><span class="line">315</span><br><span class="line">316</span><br><span class="line">317</span><br><span class="line">318</span><br><span class="line">319</span><br><span class="line">320</span><br><span class="line">321</span><br><span class="line">322</span><br><span class="line">323</span><br><span class="line">324</span><br><span class="line">325</span><br><span class="line">326</span><br><span class="line">327</span><br><span class="line">328</span><br><span class="line">329</span><br><span class="line">330</span><br><span class="line">331</span><br><span class="line">332</span><br><span class="line">333</span><br><span class="line">334</span><br><span class="line">335</span><br><span class="line">336</span><br><span class="line">337</span><br><span class="line">338</span><br><span class="line">339</span><br><span class="line">340</span><br><span class="line">341</span><br><span class="line">342</span><br><span class="line">343</span><br><span class="line">344</span><br><span class="line">345</span><br><span class="line">346</span><br><span class="line">347</span><br><span class="line">348</span><br><span class="line">349</span><br><span class="line">350</span><br><span class="line">351</span><br><span class="line">352</span><br><span class="line">353</span><br><span class="line">354</span><br><span class="line">355</span><br><span class="line">356</span><br><span class="line">357</span><br><span class="line">358</span><br><span class="line">359</span><br><span class="line">360</span><br><span class="line">361</span><br><span class="line">362</span><br><span class="line">363</span><br><span class="line">364</span><br><span class="line">365</span><br><span class="line">366</span><br><span class="line">367</span><br><span class="line">368</span><br><span class="line">369</span><br><span class="line">370</span><br><span class="line">371</span><br><span class="line">372</span><br><span class="line">373</span><br><span class="line">374</span><br><span class="line">375</span><br></pre></td><td class="code"><pre><span class="line">user1@k8s-master01:~$ sudo nmap -sP aaa.bbb.ccc.2-254</span><br><span class="line"></span><br><span class="line">Starting Nmap 7.60 ( https://nmap.org ) at 2024-08-05 02:58 UTC</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.7</span><br><span class="line">Host is up (0.00032s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.11</span><br><span class="line">Host is up (0.00067s latency).</span><br><span class="line">MAC Address: ---------------- (Super Micro Computer)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.25</span><br><span class="line">Host is up (0.00018s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.31</span><br><span class="line">Host is up (0.00028s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.32</span><br><span class="line">Host is up (0.00021s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.33</span><br><span class="line">Host is up (0.00027s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.37</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Inventec)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.38</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Intel Corporate)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.39</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Super Micro Computer)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.41</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Intel Corporate)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.42</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Intel Corporate)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.43</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.44</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.45</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Shenzhen Bitland Information Technology)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.47</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.48</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Intel Corporate)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.49</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.50</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.51</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Inspur Electronic Information Industry)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.52</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Inspur Electronic Information Industry)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.55</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Beijing Sinead Technology)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.81</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Intel Corporate)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.85</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.89</span><br><span class="line">Host is up (0.00016s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.94</span><br><span class="line">Host is up (0.00032s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.95</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.97</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.98</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.99</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.102</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.103</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.104</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for k8s-master02 (aaa.bbb.ccc.105)</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for k8s-worker01 (aaa.bbb.ccc.106)</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for k8s-worker02 (aaa.bbb.ccc.107)</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for k8s-worker03 (aaa.bbb.ccc.108)</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.109</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.110</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.111</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.112</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.113</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.114</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.115</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.116</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Intel Corporate)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.117</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.119</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Hewlett Packard)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.120</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Hewlett Packard)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.121</span><br><span class="line">Host is up (-0.10s latency).</span><br><span class="line">MAC Address: ---------------- (VMware)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.134</span><br><span class="line">Host is up (0.00013s latency).</span><br><span class="line">MAC Address: ---------------- (Realtek Semiconductor)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.138</span><br><span class="line">Host is up (0.00017s latency).</span><br><span class="line">MAC Address: ---------------- (Super Micro Computer)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.149</span><br><span class="line">Host is up (0.00036s latency).</span><br><span class="line">MAC Address: ---------------- (Asustek Computer)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.150</span><br><span class="line">Host is up (0.00012s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.151</span><br><span class="line">Host is up (0.10s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.154</span><br><span class="line">Host is up (0.00048s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.155</span><br><span class="line">Host is up (0.00051s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.156</span><br><span class="line">Host is up (0.00017s latency).</span><br><span class="line">MAC Address: ---------------- (Dell)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.160</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.165</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.166</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.168</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.169</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.171</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.172</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.173</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.174</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.175</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.176</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.177</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Hewlett Packard)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.180</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.181</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.183</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.184</span><br><span class="line">Host is up (0.00013s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.185</span><br><span class="line">Host is up (0.00073s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.186</span><br><span class="line">Host is up (0.00025s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.190</span><br><span class="line">Host is up (0.00043s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.191</span><br><span class="line">Host is up (0.00018s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.192</span><br><span class="line">Host is up (0.00019s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.193</span><br><span class="line">Host is up (0.00018s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.194</span><br><span class="line">Host is up (0.00051s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.196</span><br><span class="line">Host is up (0.00026s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.199</span><br><span class="line">Host is up (0.00059s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.200</span><br><span class="line">Host is up (0.00016s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.201</span><br><span class="line">Host is up (0.00022s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.202</span><br><span class="line">Host is up (0.00048s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.203</span><br><span class="line">Host is up (0.00014s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.204</span><br><span class="line">Host is up (0.00026s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.205</span><br><span class="line">Host is up (0.00043s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.207</span><br><span class="line">Host is up (0.00013s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.208</span><br><span class="line">Host is up (0.00014s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.210</span><br><span class="line">Host is up (0.00012s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.211</span><br><span class="line">Host is up (0.00029s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.212</span><br><span class="line">Host is up (0.00023s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.213</span><br><span class="line">Host is up (0.00014s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.214</span><br><span class="line">Host is up (0.00023s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.215</span><br><span class="line">Host is up (0.00016s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.216</span><br><span class="line">Host is up (0.00029s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.217</span><br><span class="line">Host is up (0.00020s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.218</span><br><span class="line">Host is up (0.00018s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.219</span><br><span class="line">Host is up (0.00013s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.220</span><br><span class="line">Host is up (0.00044s latency).</span><br><span class="line">MAC Address: ---------------- (Realtek Semiconductor)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.222</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Asustek Computer)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.223</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.224</span><br><span class="line">Host is up (-0.099s latency).</span><br><span class="line">MAC Address: ---------------- (Asustek Computer)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.227</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Hewlett Packard)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.229</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.231</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.232</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.233</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.236</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.237</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.240</span><br><span class="line">Host is up (0.00019s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.241</span><br><span class="line">Host is up (0.00014s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.244</span><br><span class="line">Host is up (-0.099s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.245</span><br><span class="line">Host is up (-0.100s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.246</span><br><span class="line">Host is up (0.00068s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.247</span><br><span class="line">Host is up (0.00021s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.248</span><br><span class="line">Host is up (0.00012s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.249</span><br><span class="line">Host is up (0.00014s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.250</span><br><span class="line">Host is up (0.00020s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.251</span><br><span class="line">Host is up (0.00013s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.252</span><br><span class="line">Host is up (0.00024s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.253</span><br><span class="line">Host is up (0.00037s latency).</span><br><span class="line">MAC Address: ---------------- (Hewlett Packard)</span><br><span class="line">Nmap scan report for aaa.bbb.ccc.254</span><br><span class="line">Host is up (0.00015s latency).</span><br><span class="line">MAC Address: ---------------- (Unknown)</span><br><span class="line">Nmap scan report for k8s-master01 (aaa.bbb.ccc.122)</span><br><span class="line">Host is up.</span><br><span class="line">Nmap done: 253 IP addresses (124 hosts up) scanned in 1.99 seconds</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/08/04/0019-%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-BST/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-08-05 11:05:43
+            </span>
+            
+                  <span class="post-tags">
+                    <i class="iconfont icon-tags mr-10" title="Tags"></i>
+                    
+                    <span class="span--tag mr-8">
+                      <a href="/tags/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C/" title="计算机网络">
+                        #计算机网络
+                      </a>
+                    </span>
+                    
+                  </span>
+              
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9C%BA%E6%99%AF"><span class="toc-text">场景</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#nmap%E5%B7%A5%E5%85%B7"><span class="toc-text">nmap工具</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Tech Space</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索中...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%B1%80%E5%9F%9F%E7%BD%91%E6%89%AB%E6%8F%8F%E4%B8%80%E4%B8%AA%E7%BD%91%E6%AE%B5%E4%B8%AD%E7%9A%84%E5%8F%AF%E7%94%A8ip-%E7%94%A8%E4%BA%8E%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E9%9D%99%E6%80%81ip + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F05%2F0020-%25E5%25B1%2580%25E5%259F%259F%25E7%25BD%2591%25E6%2589%25AB%25E6%258F%258F%25E4%25B8%2580%25E4%25B8%25AA%25E7%25BD%2591%25E6%25AE%25B5%25E4%25B8%25AD%25E7%259A%2584%25E5%258F%25AF%25E7%2594%25A8ip-%25E7%2594%25A8%25E4%25BA%258E%25E9%2585%258D%25E7%25BD%25AE%25E8%2599%259A%25E6%258B%259F%25E6%259C%25BA%25E7%259A%2584%25E9%259D%2599%25E6%2580%2581ip%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/05/0020-%E5%B1%80%E5%9F%9F%E7%BD%91%E6%89%AB%E6%8F%8F%E4%B8%80%E4%B8%AA%E7%BD%91%E6%AE%B5%E4%B8%AD%E7%9A%84%E5%8F%AF%E7%94%A8ip-%E7%94%A8%E4%BA%8E%E9%85%8D%E7%BD%AE%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%9A%84%E9%9D%99%E6%80%81ip/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
