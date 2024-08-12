@@ -13,7 +13,7 @@
   
   <title>
     
-      Leetcode坚持刷题 
+      0036-使用excalidraw工具 
       
       
       |
@@ -165,19 +165,19 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">Leetcode坚持刷题</div>
+      <div class="post-title">0036-使用excalidraw工具</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-08-04 17:36:44
+          2024-08-12 10:00:29
         </span>
         
               <span class="post-categories">
                 <i class="iconfont icon-bookmark" title="Categories"></i>
                 
                 <span class="span--category">
-                  <a href="/categories/leetcode%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%85%B8150%E9%A2%98/" title="leetcode面试经典150题">
-                    <b>#</b> leetcode面试经典150题
+                  <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E3%80%81%E7%BB%98%E5%9B%BE/" title="工具使用、绘图">
+                    <b>#</b> 工具使用、绘图
                   </a>
                 </span>
                 
@@ -187,32 +187,8 @@
                 <i class="iconfont icon-tags mr-10" title="Tags"></i>
                 
                 <span class="span--tag mr-8">
-                  <a href="/tags/%E5%9F%BA%E6%9C%AC%E5%8A%9F/" title="基本功">
-                    #基本功
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/leetcode/" title="leetcode">
-                    #leetcode
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E6%B1%82%E8%81%8C/" title="求职">
-                    #求职
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E8%B7%B3%E6%A7%BD/" title="跳槽">
-                    #跳槽
-                  </a>
-                </span>
-                
-                <span class="span--tag mr-8">
-                  <a href="/tags/%E6%95%B0%E7%BB%84-%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="数组/字符串">
-                    #数组/字符串
+                  <a href="/tags/vscode%E6%8F%92%E4%BB%B6/" title="vscode插件">
+                    #vscode插件
                   </a>
                 </span>
                 
@@ -220,21 +196,22 @@
           
       </div>
       <div class="markdown-body">
-        <p>本篇博文将随着刷题进度持续更新。</p>
-<h4 id="2024-07-31日"><a href="#2024-07-31日" class="headerlink" title="2024.07.31日"></a>2024.07.31日</h4><h4 id="2024-07-27日"><a href="#2024-07-27日" class="headerlink" title="2024.07.27日"></a>2024.07.27日</h4><p>今天比较捞，就刷了一题还没刷对。题还是要坚持刷的呀。</p>
-<p>代码如下：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> goleetcode</span><br><span class="line"></span><br><span class="line"><span class="comment">// link: https://leetcode.cn/studyplan/top-interview-150/</span></span><br><span class="line"><span class="comment">// 题解: xxx</span></span><br><span class="line"><span class="comment">// 我尝试在O(1)的空间复杂度和O(m+n)的时间复杂度来解决这道题目, 但是失败了。</span></span><br><span class="line"><span class="comment">// 这个代码应该是最蠢的代码了。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">merge</span><span class="params">(nums1 []<span class="type">int</span>, m <span class="type">int</span>, nums2 []<span class="type">int</span>, n <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">	nums3 := <span class="built_in">make</span>([]<span class="type">int</span>, m+n)</span><br><span class="line">	p21 := <span class="number">0</span></span><br><span class="line">	p22 := <span class="number">0</span></span><br><span class="line">	p23 := <span class="number">0</span></span><br><span class="line">	<span class="keyword">for</span> p21 &lt; m &amp;&amp; p22 &lt; n &#123;</span><br><span class="line">		<span class="keyword">if</span> nums1[p21] &lt;= nums2[p22] &#123;</span><br><span class="line">			nums3[p23] = nums1[p21]</span><br><span class="line">			p21 += <span class="number">1</span></span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			nums3[p23] = nums1[p22]</span><br><span class="line">			p22 += <span class="number">1</span></span><br><span class="line">		&#125;</span><br><span class="line">		p23 += <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> p21 &lt; m &#123;</span><br><span class="line">		nums3[p23] = nums2[p21]</span><br><span class="line">		p23 += <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> p22 &lt; n &#123;</span><br><span class="line">		nums3[p23] = nums2[p22]</span><br><span class="line">		p23 += <span class="number">1</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> p := <span class="number">0</span>; p &lt; m+n; p++ &#123;</span><br><span class="line">		nums1[p] = nums3[p]</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>总结：</p>
-<blockquote>
-<p>这个题目的思路是，先将nums1和nums2合并到一个新的数组中，然后再将新的数组赋值给nums1。<br>这个是我的最愚蠢的思路。<br>不知道更好的思路是什么。</p>
-</blockquote>
+        <ol>
+<li>vscode插件市场检索、安装excalidraw插件。</li>
+<li>重启vscode。</li>
+<li>创建ceshi.excalidraw.svg文件。</li>
+<li>开始绘制。</li>
+<li>要想简单地支持中文，需要使用Excalidraw-cj插件，并且只能绘制png格式的。</li>
+<li>示例：<br>其实，没啥用，建议不要用这个cj结尾的插件了。<br>欸不对欸，你可以看到，是可以使用svg结尾的手写体的。<br>搞不懂，再说吧。</li>
+</ol>
+<p><img src="https://4blog.s3.bitiful.net/fuck.excalidraw.png" alt="fuck.excalidraw.png"><br><img src="https://4blog.s3.bitiful.net/ceshi.excalidraw.svg" alt="ceshi.excalidraw.svg"></p>
 
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/07/25/0001-%E6%A5%94%E5%AD%90/" target="_self">
+              <a href="/2024/08/12/0035-%E8%BF%9B%E7%A8%8B%E3%80%81%E7%BA%BF%E7%A8%8B%E3%80%81%E5%8D%8F%E7%A8%8B%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E5%B9%B6%E5%8F%91%E4%B8%8E%E9%80%9A%E4%BF%A1/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -243,15 +220,15 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-08-04 17:36:44
+              2024-08-12 10:00:29
             </span>
             
                   <span class="post-categories">
                     <i class="iconfont icon-bookmark" title="Categories"></i>
                     
                     <span class="span--category">
-                      <a href="/categories/leetcode%E9%9D%A2%E8%AF%95%E7%BB%8F%E5%85%B8150%E9%A2%98/" title="leetcode面试经典150题">
-                        <b>#</b> leetcode面试经典150题
+                      <a href="/categories/%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E3%80%81%E7%BB%98%E5%9B%BE/" title="工具使用、绘图">
+                        <b>#</b> 工具使用、绘图
                       </a>
                     </span>
                     
@@ -261,32 +238,8 @@
                     <i class="iconfont icon-tags mr-10" title="Tags"></i>
                     
                     <span class="span--tag mr-8">
-                      <a href="/tags/%E5%9F%BA%E6%9C%AC%E5%8A%9F/" title="基本功">
-                        #基本功
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/leetcode/" title="leetcode">
-                        #leetcode
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E6%B1%82%E8%81%8C/" title="求职">
-                        #求职
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E8%B7%B3%E6%A7%BD/" title="跳槽">
-                        #跳槽
-                      </a>
-                    </span>
-                    
-                    <span class="span--tag mr-8">
-                      <a href="/tags/%E6%95%B0%E7%BB%84-%E5%AD%97%E7%AC%A6%E4%B8%B2/" title="数组/字符串">
-                        #数组/字符串
+                      <a href="/tags/vscode%E6%8F%92%E4%BB%B6/" title="vscode插件">
+                        #vscode插件
                       </a>
                     </span>
                     
@@ -295,33 +248,11 @@
           </div>
           <div class="post-foot-prev">
             
-              <a href="/2024/07/27/0003-%E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E8%87%AA%E5%8A%A8%E5%8C%96%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%81%E6%B3%A8%E9%87%8A/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
-            
           </div>
         </div>
       
     </div>
     
-  <div id="btn-catalog" class="btn-catalog">
-    <i class="iconfont icon-catalog"></i>
-  </div>
-  <div class="post-catalog hidden" id="catalog">
-    <div class="title">Contents</div>
-    <div class="catalog-content">
-      
-        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#2024-07-31%E6%97%A5"><span class="toc-text">2024.07.31日</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2024-07-27%E6%97%A5"><span class="toc-text">2024.07.27日</span></a></li></ol>
-      
-    </div>
-  </div>
-
-  
-<script src="/js/catalog.js"></script>
-
-
-
 
     
       <div class="comments-container">
@@ -625,12 +556,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + Leetcode%E5%9D%9A%E6%8C%81%E5%88%B7%E9%A2%98 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F27%2F0002-%25E5%259D%259A%25E6%258C%2581%25E5%2588%25B7%25E9%25A2%2598%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + 0036-%E4%BD%BF%E7%94%A8excalidraw%E5%B7%A5%E5%85%B7 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F12%2F0036-%25E4%25BD%25BF%25E7%2594%25A8excalidraw%25E7%25BB%2598%25E5%259B%25BE%25E5%25B7%25A5%25E5%2585%25B7%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/27/0002-%E5%9D%9A%E6%8C%81%E5%88%B7%E9%A2%98/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/12/0036-%E4%BD%BF%E7%94%A8excalidraw%E7%BB%98%E5%9B%BE%E5%B7%A5%E5%85%B7/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
