@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="muxunting" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      如何阅读Go源代码-转载 
+      
+      
+      |
+    
+     Tech Space
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Tech Space</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/tags/">
+          <a href="/tags/">Tags</a>
+        </li>
+      
+        <li class="nav-item" data-path="/diary/">
+          <a href="/diary/">Diary</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+        <li class="nav-item" data-path="/todo/">
+          <a href="/todo/">ToDo</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">如何阅读Go源代码-转载</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-08-15 14:54:17
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <p>As Linus once said, if one wants to understand<br>the details of a software project, one should<br>“RTFSC—Read The F**king Source Code.”</p>
+<hr>
+<p><a target="_blank" rel="noopener" href="https://mp.weixin.qq.com/s?__biz=MzkzNjYxNTU3MQ==&mid=2247487399&idx=1&sn=b268eba74a55cbbfc41745be6d513ba7&source=41#wechat_redirect">原文链接</a></p>
+<hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><blockquote>
+<p>哈喽，大家好，我是<code>asong</code>​；最近在看Go语言调度器相关的源码，发现看源码真是个技术活，所以本文就简单总结一下该如何查看<code>Go</code>​源码，希望对你们有帮助。</p>
+</blockquote>
+<h2 id="Go源码包括哪些？"><a href="#Go源码包括哪些？" class="headerlink" title="Go源码包括哪些？"></a>Go源码包括哪些？</h2><p>以我个人理解，<code>Go</code>​源码主要分为两部分，一部分是官方提供的标准库，一部分是<code>Go</code>​语言的底层实现，<code>Go</code>​语言的所有源码&#x2F;标准库&#x2F;编译器都在<code>src</code>​目录下：<a target="_blank" rel="noopener" href="https://github.com/golang/go/tree/master/src%EF%BC%8C%E6%83%B3%E7%9C%8B%E4%BB%80%E4%B9%88%E5%BA%93%E7%9A%84%E6%BA%90%E7%A0%81%E4%BB%BB%E5%90%9B%E9%80%89%E6%8B%A9%EF%BC%9B">https://github.com/golang/go/tree/master/src，想看什么库的源码任君选择；</a></p>
+<p>观看<code>Go</code>​标准库 and <code>Go</code>​底层实现的源代码难易度也是不一样的，我们一般也可以先从标准库入手，挑选你感兴趣的模块，把它吃透，有了这个基础后，我们在看<code>Go</code>​语言底层实现的源代码会稍微轻松一些；下面就针对我个人的一点学习心得分享一下如何查看<code>Go</code>​源码；</p>
+<h2 id="查看标准库源代码"><a href="#查看标准库源代码" class="headerlink" title="查看标准库源代码"></a>查看标准库源代码</h2><p>标准库的源代码看起来稍容易些，因为标准库也属于上层应用，我们可以借助IDE的帮忙，其在IDE上就可以跳转到源代码包，我们只需要不断来回跳转查看各个函数实现做好笔记即可，因为一些源代码设计的比较复杂，大家在看时最好通过画图辅助一下，个人觉得画<code>UML</code>​是最有助于理解的，能更清晰的理清各个实体的关系；</p>
+<p>有些时候只看代码是很难理解的，这时我们使用在线调试辅助我们理解，使用IDE提供的调试器或者<code>GDB</code>​都可以达到目的，写一个简单的<code>demo</code>​，断点一打，单步调试走起来，比如你要查看<code>fmt.Println</code>​的源代码，开局一个小红点，然后就是点点点；</p>
+<p>​<img src="https://4blog.s3.bitiful.net/640-20240815144804-jxd442r.webp" alt="640-20240815144804-jxd442r.webp">​</p>
+<h2 id="查看Go语言底层实现"><a href="#查看Go语言底层实现" class="headerlink" title="查看Go语言底层实现"></a>查看Go语言底层实现</h2><p>人都是会对未知领域充满好奇，当使用一段时间<code>Go</code>​语言后，就想更深入的搞明白一些事情，例如：Go程序的启动过程是怎样的，<code>goroutine</code>​是怎么调度的，<code>map</code>​是怎么实现的等等一些<code>Go</code>​底层的实现，这种直接依靠IDE跳转追溯代码是办不到的，这些都属于<code>Go</code>​语言的内部实现，大都在<code>src</code>​目录下的<code>runtime</code>​包内实现，其实现了垃圾回收，并发控制， 栈管理以及其他一些 Go 语言的关键特性，在编译<code>Go</code>​代码为机器代码时也会将其也编译进来，<code>runtime</code>​就是<code>Go</code>​程序执行时候使用的库，所以一些<code>Go</code>​底层原理都在这个包内，我们需要借助一些方式才能查看到<code>Go</code>​程序执行时的代码，这里分享两种方式：分析汇编代码、dlv调试；</p>
+<p>​<img src="https://4blog.s3.bitiful.net/640-20240815144804-sjshhm5.webp" alt="640-20240815144804-sjshhm5.webp">​</p>
+<h3 id="分析汇编代码"><a href="#分析汇编代码" class="headerlink" title="分析汇编代码"></a>分析汇编代码</h3><p>前面我们已经介绍了<code>Go</code>​语言实现了<code>runtime</code>​库，我们想看到一些<code>Go</code>​语言关键字特性对应<code>runtime</code>​里的那个函数，可以查看汇编代码，<code>Go</code>​语言的汇编使用的<code>plan9</code>​，与<code>x86</code>​汇编差别还是很大，很多朋友都不熟悉<code>plan9</code>​的汇编，但是要想看懂<code>Go</code>​源码还是要对<code>plan9</code>​汇编有一个基本的了解的，这里推荐曹大的文章：plan9 assembly 完全解析，会一点汇编我们就可以看源代码了，比如想在我们想看<code>make</code>​是怎么初始化<code>slice</code>​的，这时我们可以先写一个简单的<code>demo</code>​：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// main.go</span><br><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"> s := make([]int, 10, 20)</span><br><span class="line"> fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>有两种方式可以查看汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">1. go tool compile -S -N -l main.go</span><br><span class="line">2. go build main.go &amp;&amp; go tool objdump ./main</span><br></pre></td></tr></table></figure>
+
+<p>方式一是将源代码编译成<code>.o</code>​文件，并输出汇编代码，方式二是反汇编，这里推荐使用方式一，执行方式一命令后，我们可以看到对应的汇编代码如下：</p>
+<p>​<img src="https://4blog.s3.bitiful.net/640-20240815144804-b2lb346.webp" alt="640-20240815144804-b2lb346.webp">​</p>
+<p>​<code>s := make([]int, 10, 20)</code>​对应的源代码就是<code> runtime.makeslice(SB)</code>​，这时候我们就去<code>runtime</code>​包下找<code>makeslice</code>​函数，不断追踪下去就可查看源码实现了，可在<code>runtime/slice.go</code>​中找到：</p>
+<p>​<img src="https://4blog.s3.bitiful.net/640-20240815144804-aa8mv1p.webp" alt="640-20240815144804-aa8mv1p.webp">​</p>
+<h3 id="在线调试"><a href="#在线调试" class="headerlink" title="在线调试"></a>在线调试</h3><p>虽然上面的方法可以帮助我们定位到源代码，但是后续的操作全靠<code>review</code>​还是难于理解的，如果能在线调试跟踪代码可以更好助于我们理解，目前<code>Go</code>​语言支持<code>GDB</code>​、<code>LLDB</code>​、<code>Delve</code>​调试器，但只有<code>Delve</code>​是专门为<code>Go</code>​语言设计开发的调试工具，所以使用<code>Delve</code>​可以轻松调试<code>Go</code>​汇编程序，<code>Delve</code>​的入门文章有很多，这篇就不在介绍<code>Delve</code>​的详细使用方法，入门大家可以看曹大的文章：<a target="_blank" rel="noopener" href="https://chai2010.cn/advanced-go-programming-book/ch3-asm/ch3-09-debug.html%EF%BC%8C%E6%9C%AC%E6%96%87%E5%B0%B1%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E5%B0%8F%E4%BE%8B%E5%AD%90%E5%B8%A6%E5%A4%A7%E5%AE%B6%E6%9D%A5%E7%9C%8B%E4%B8%80%E7%9C%8B%60dlv%60%E2%80%8B%E5%A6%82%E4%BD%95%E8%B0%83%E8%AF%95%60Go%60%E2%80%8B%E6%BA%90%E7%A0%81%EF%BC%8C%E5%A4%A7%E5%AE%B6%E9%83%BD%E7%9F%A5%E9%81%93%E5%90%91%E4%B8%80%E4%B8%AA%60nil%60%E2%80%8B%E7%9A%84%E5%88%87%E7%89%87%E8%BF%BD%E5%8A%A0%E5%85%83%E7%B4%A0%EF%BC%8C%E4%B8%8D%E4%BC%9A%E6%9C%89%E4%BB%BB%E4%BD%95%E9%97%AE%E9%A2%98%EF%BC%8C%E5%9C%A8%E6%BA%90%E7%A0%81%E4%B8%AD%E6%98%AF%E6%80%8E%E4%B9%88%E5%AE%9E%E7%8E%B0%E7%9A%84%E5%91%A2%EF%BC%9F%E6%8E%A5%E4%B8%8B%E8%80%81%E6%88%91%E4%BB%AC%E4%BD%BF%E7%94%A8%60dlv%60%E2%80%8B%E8%B0%83%E8%AF%95%E8%B7%9F%E8%B8%AA%E4%B8%80%E4%B8%8B%EF%BC%8C%E5%85%88%E5%86%99%E4%B8%80%E4%B8%AA%E5%B0%8F%60demo%60%E2%80%8B%EF%BC%9A">https://chai2010.cn/advanced-go-programming-book/ch3-asm/ch3-09-debug.html，本文就使用一个小例子带大家来看一看`dlv`​如何调试`Go`​源码，大家都知道向一个`nil`​的切片追加元素，不会有任何问题，在源码中是怎么实现的呢？接下老我们使用`dlv`​调试跟踪一下，先写一个小`demo`​：</a></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import &quot;fmt&quot;</span><br><span class="line"></span><br><span class="line">func main() &#123;</span><br><span class="line"> var s []int</span><br><span class="line"> s = append(s, 1)</span><br><span class="line"> fmt.Println(s)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>进入命令行包目录，然后输入<code>dlv debug</code>​进入调试</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ dlv debug</span><br><span class="line">Type &#x27;help&#x27; for list of commands.</span><br><span class="line">(dlv)</span><br></pre></td></tr></table></figure>
+
+<p>因为这里我们想看到<code>append</code>​的内部实现，所以在<code>append</code>​那行加上断点，执行如下命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(dlv) break main.go:7</span><br><span class="line">Breakpoint 1 set at 0x10aba57 for main.main() ./main.go:7</span><br></pre></td></tr></table></figure>
+
+<p>执行<code>continue</code>​命令，运行到断点处：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">(dlv) continue</span><br><span class="line">&gt; main.main() ./main.go:7 (hits goroutine(1):1 total:1) (PC: 0x10aba57)</span><br><span class="line">     2: </span><br><span class="line">     3: import &quot;fmt&quot;</span><br><span class="line">     4: </span><br><span class="line">     5: func main() &#123;</span><br><span class="line">     6:         var s []int</span><br><span class="line">=&gt;   7:         s = append(s, 1)</span><br><span class="line">     8:         fmt.Println(s)</span><br><span class="line">     9: &#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来我们执行<code>disassemble</code>​反汇编命令查看<code>main</code>​函数对应的汇编代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line">(dlv) disassemble</span><br><span class="line">TEXT main.main(SB) /Users/go/src/asong.cloud/Golang_Dream/code_demo/src_code/main.go</span><br><span class="line">        main.go:5       0x10aba20       4c8d6424e8                      lea r12, ptr [rsp-0x18]</span><br><span class="line">        main.go:5       0x10aba25       4d3b6610                        cmp r12, qword ptr [r14+0x10]</span><br><span class="line">        main.go:5       0x10aba29       0f86f6000000                    jbe 0x10abb25</span><br><span class="line">        main.go:5       0x10aba2f       4881ec98000000                  sub rsp, 0x98</span><br><span class="line">        main.go:5       0x10aba36       4889ac2490000000                mov qword ptr [rsp+0x90], rbp</span><br><span class="line">        main.go:5       0x10aba3e       488dac2490000000                lea rbp, ptr [rsp+0x90]</span><br><span class="line">        main.go:6       0x10aba46       48c744246000000000              mov qword ptr [rsp+0x60], 0x0</span><br><span class="line">        main.go:6       0x10aba4f       440f117c2468                    movups xmmword ptr [rsp+0x68], xmm15</span><br><span class="line">        main.go:7       0x10aba55       eb00                            jmp 0x10aba57</span><br><span class="line">=&gt;      main.go:7       0x10aba57*      488d05a2740000                  lea rax, ptr [rip+0x74a2]</span><br><span class="line">        main.go:7       0x10aba5e       31db                            xor ebx, ebx</span><br><span class="line">        main.go:7       0x10aba60       31c9                            xor ecx, ecx</span><br><span class="line">        main.go:7       0x10aba62       4889cf                          mov rdi, rcx</span><br><span class="line">        main.go:7       0x10aba65       be01000000                      mov esi, 0x1</span><br><span class="line">        main.go:7       0x10aba6a       e871c3f9ff                      call $runtime.growslice</span><br><span class="line">        main.go:7       0x10aba6f       488d5301                        lea rdx, ptr [rbx+0x1]</span><br><span class="line">        main.go:7       0x10aba73       eb00                            jmp 0x10aba75</span><br><span class="line">        main.go:7       0x10aba75       48c70001000000                  mov qword ptr [rax], 0x1</span><br><span class="line">        main.go:7       0x10aba7c       4889442460                      mov qword ptr [rsp+0x60], rax</span><br><span class="line">        main.go:7       0x10aba81       4889542468                      mov qword ptr [rsp+0x68], rdx</span><br><span class="line">        main.go:7       0x10aba86       48894c2470                      mov qword ptr [rsp+0x70], rcx</span><br><span class="line">        main.go:8       0x10aba8b       440f117c2450                    movups xmmword ptr [rsp+0x50], xmm15</span><br><span class="line">        main.go:8       0x10aba91       488d542450                      lea rdx, ptr [rsp+0x50]</span><br><span class="line">        main.go:8       0x10aba96       4889542448                      mov qword ptr [rsp+0x48], rdx</span><br><span class="line">        main.go:8       0x10aba9b       488b442460                      mov rax, qword ptr [rsp+0x60]</span><br><span class="line">        main.go:8       0x10abaa0       488b5c2468                      mov rbx, qword ptr [rsp+0x68]</span><br><span class="line">        main.go:8       0x10abaa5       488b4c2470                      mov rcx, qword ptr [rsp+0x70]</span><br><span class="line">        main.go:8       0x10abaaa       e8f1dff5ff                      call $runtime.convTslice</span><br><span class="line">        main.go:8       0x10abaaf       4889442440                      mov qword ptr [rsp+0x40], rax</span><br><span class="line">        main.go:8       0x10abab4       488b542448                      mov rdx, qword ptr [rsp+0x48]</span><br><span class="line">        main.go:8       0x10abab9       8402                            test byte ptr [rdx], al</span><br><span class="line">        main.go:8       0x10ababb       488d35be640000                  lea rsi, ptr [rip+0x64be]</span><br><span class="line">        main.go:8       0x10abac2       488932                          mov qword ptr [rdx], rsi</span><br><span class="line">        main.go:8       0x10abac5       488d7a08                        lea rdi, ptr [rdx+0x8]</span><br><span class="line">        main.go:8       0x10abac9       833d30540d0000                  cmp dword ptr [runtime.writeBarrier], 0x0</span><br><span class="line">        main.go:8       0x10abad0       7402                            jz 0x10abad4</span><br><span class="line">        main.go:8       0x10abad2       eb06                            jmp 0x10abada</span><br><span class="line">        main.go:8       0x10abad4       48894208                        mov qword ptr [rdx+0x8], rax</span><br><span class="line">        main.go:8       0x10abad8       eb08                            jmp 0x10abae2</span><br><span class="line">        main.go:8       0x10abada       e8213ffbff                      call $runtime.gcWriteBarrier</span><br><span class="line">        main.go:8       0x10abadf       90                              nop</span><br><span class="line">        main.go:8       0x10abae0       eb00                            jmp 0x10abae2</span><br><span class="line">        main.go:8       0x10abae2       488b442448                      mov rax, qword ptr [rsp+0x48]</span><br><span class="line">        main.go:8       0x10abae7       8400                            test byte ptr [rax], al</span><br><span class="line">        main.go:8       0x10abae9       eb00                            jmp 0x10abaeb</span><br><span class="line">        main.go:8       0x10abaeb       4889442478                      mov qword ptr [rsp+0x78], rax</span><br><span class="line">        main.go:8       0x10abaf0       48c784248000000001000000        mov qword ptr [rsp+0x80], 0x1</span><br><span class="line">        main.go:8       0x10abafc       48c784248800000001000000        mov qword ptr [rsp+0x88], 0x1</span><br><span class="line">        main.go:8       0x10abb08       bb01000000                      mov ebx, 0x1</span><br><span class="line">        main.go:8       0x10abb0d       4889d9                          mov rcx, rbx</span><br><span class="line">        main.go:8       0x10abb10       e8aba8ffff                      call $fmt.Println</span><br><span class="line">        main.go:9       0x10abb15       488bac2490000000                mov rbp, qword ptr [rsp+0x90]</span><br><span class="line">        main.go:9       0x10abb1d       4881c498000000                  add rsp, 0x98</span><br><span class="line">        main.go:9       0x10abb24       c3                              ret</span><br><span class="line">        main.go:5       0x10abb25       e8f61efbff                      call $runtime.morestack_noctxt</span><br><span class="line">        .:0             0x10abb2a       e9f1feffff                      jmp $main.main</span><br></pre></td></tr></table></figure>
+
+<p>从以上内容我们看到调用了<code>runtime.growslice</code>​方法，我们在这里加一个断点：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(dlv) break runtime.growslice</span><br><span class="line">Breakpoint 2 set at 0x1047dea for runtime.growslice() /usr/local/opt/go/libexec/src/runtime/slice.go:162</span><br></pre></td></tr></table></figure>
+
+<p>之后我们再次执行<code>continue</code>​执行到该断点处：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">(dlv) continue</span><br><span class="line">&gt; runtime.growslice() /usr/local/opt/go/libexec/src/runtime/slice.go:162 (hits goroutine(1):1 total:1) (PC: 0x1047dea)</span><br><span class="line">Warning: debugging optimized function</span><br><span class="line">   157: // NOT to the new requested capacity.</span><br><span class="line">   158: // This is for codegen convenience. The old slice&#x27;s length is used immediately</span><br><span class="line">   159: // to calculate where to write new values during an append.</span><br><span class="line">   160: // TODO: When the old backend is gone, reconsider this decision.</span><br><span class="line">   161: // The SSA backend might prefer the new length or to return only ptr/cap and save stack space.</span><br><span class="line">=&gt; 162: func growslice(et *_type, old slice, cap int) slice &#123;</span><br><span class="line">   163:         if raceenabled &#123;</span><br><span class="line">   164:                 callerpc := getcallerpc()</span><br><span class="line">   165:                 racereadrangepc(old.array, uintptr(old.len*int(et.size)), callerpc, funcPC(growslice))</span><br><span class="line">   166:         &#125;</span><br><span class="line">   167:         if msanenabled &#123;</span><br></pre></td></tr></table></figure>
+
+<p>之后就是不断的单步调试可以看出来切片的扩容策略；到这里大家也就明白了为啥向<code>nil</code>​的切片追加数据不会有问题了，因为在容量不够时会调用<code>growslice</code>​函数进行扩容，具体扩容规则大家可以继续追踪，打脸网上那些瞎写的文章。</p>
+<p>上文我们介绍调试汇编的一个基本流程，下面在介绍两个我在看源代码时经常使用的命令；</p>
+<ul>
+<li><strong>goroutines</strong>命令：通过<code>goroutines</code>​命令（简写grs），我们可以查看所<code>goroutine</code>​，通过<code>goroutine (alias: gr)</code>​命令可以查看当前的<code>gourtine</code>​：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(dlv) grs</span><br><span class="line">* Goroutine 1 - User: ./main.go:7 main.main (0x10aba6f) (thread 218565)</span><br><span class="line">  Goroutine 2 - User: /usr/local/opt/go/libexec/src/runtime/proc.go:367 runtime.gopark (0x1035232) [force gc (idle)]</span><br><span class="line">  Goroutine 3 - User: /usr/local/opt/go/libexec/src/runtime/proc.go:367 runtime.gopark (0x1035232) [GC sweep wait]</span><br><span class="line">  Goroutine 4 - User: /usr/local/opt/go/libexec/src/runtime/proc.go:367 runtime.gopark (0x1035232) [GC scavenge wait]</span><br><span class="line">  Goroutine 5 - User: /usr/local/opt/go/libexec/src/runtime/proc.go:367 runtime.gopark (0x1035232) [finalizer wait]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>​<code>stack</code>​命令：通过<code>stack</code>​命令（简写bt），我们可查看当前函数调用栈信息：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">(dlv) bt</span><br><span class="line">0  0x0000000001047e15 in runtime.growslice</span><br><span class="line">   at /usr/local/opt/go/libexec/src/runtime/slice.go:183</span><br><span class="line">1  0x00000000010aba6f in main.main</span><br><span class="line">   at ./main.go:7</span><br><span class="line">2  0x0000000001034e13 in runtime.main</span><br><span class="line">   at /usr/local/opt/go/libexec/src/runtime/proc.go:255</span><br><span class="line">3  0x000000000105f9c1 in runtime.goexit</span><br><span class="line">   at /usr/local/opt/go/libexec/src/runtime/asm_amd64.s:1581</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>​<code>regs</code>​命令：通过<code>regs</code>​命令可以查看全部的寄存器状态，可以通过单步执行来观察寄存器的变化：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">(dlv) regs</span><br><span class="line">   Rip = 0x0000000001047e15</span><br><span class="line">   Rsp = 0x000000c00010de68</span><br><span class="line">   Rax = 0x00000000010b2f00</span><br><span class="line">   Rbx = 0x0000000000000000</span><br><span class="line">   Rcx = 0x0000000000000000</span><br><span class="line">   Rdx = 0x0000000000000008</span><br><span class="line">   Rsi = 0x0000000000000001</span><br><span class="line">   Rdi = 0x0000000000000000</span><br><span class="line">   Rbp = 0x000000c00010ded0</span><br><span class="line">    R8 = 0x0000000000000000</span><br><span class="line">    R9 = 0x0000000000000008</span><br><span class="line">   R10 = 0x0000000001088c40</span><br><span class="line">   R11 = 0x0000000000000246</span><br><span class="line">   R12 = 0x000000c00010df60</span><br><span class="line">   R13 = 0x0000000000000000</span><br><span class="line">   R14 = 0x000000c0000001a0</span><br><span class="line">   R15 = 0x00000000000000c8</span><br><span class="line">Rflags = 0x0000000000000202     [IF IOPL=0]</span><br><span class="line">    Cs = 0x000000000000002b</span><br><span class="line">    Fs = 0x0000000000000000</span><br><span class="line">    Gs = 0x0000000000000000</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>​<code>locals</code>​命令：通过<code>locals</code>​命令，可以查看当前函数所有变量值：</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">(dlv) locals</span><br><span class="line">newcap = 1</span><br><span class="line">doublecap = 0</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>看源代码的过程是没有捷径可走的，如果说有，那就是可以先看一些大佬输出的底层原理的文章，然后参照其文章一步步入门源码阅读，最终还是要自己去克服这个困难，本文介绍了我自己查看源码的一些方式，你是否有更简便的方式呢？欢迎评论区分享出来～。</p>
+<p>好啦，本文到这里就结束了，我是​<strong>asong</strong>​，我们下期见。</p>
+<p><strong>创建了读者交流群，欢迎各位大佬们踊跃入群，一起学习交流。入群方式：关注公众号获取。更多学习资料请到公众号领取。</strong></p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/08/15/0060-%E4%B8%80%E4%B8%AA%E5%8D%8F%E7%A8%8B%E5%88%B0%E5%BA%95%E6%9C%89%E5%93%AA%E4%BA%9B%E8%B5%84%E6%BA%90%E5%92%8C%E4%B8%8A%E4%B8%8B%E6%96%87/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-08-15 14:54:17
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Go%E6%BA%90%E7%A0%81%E5%8C%85%E6%8B%AC%E5%93%AA%E4%BA%9B%EF%BC%9F"><span class="toc-text">Go源码包括哪些？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8B%E6%A0%87%E5%87%86%E5%BA%93%E6%BA%90%E4%BB%A3%E7%A0%81"><span class="toc-text">查看标准库源代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9F%A5%E7%9C%8BGo%E8%AF%AD%E8%A8%80%E5%BA%95%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="toc-text">查看Go语言底层实现</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%88%86%E6%9E%90%E6%B1%87%E7%BC%96%E4%BB%A3%E7%A0%81"><span class="toc-text">分析汇编代码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%9C%A8%E7%BA%BF%E8%B0%83%E8%AF%95"><span class="toc-text">在线调试</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93"><span class="toc-text">总结</span></a></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Tech Space</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索中...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%A6%82%E4%BD%95%E9%98%85%E8%AF%BBGo%E6%BA%90%E4%BB%A3%E7%A0%81-%E8%BD%AC%E8%BD%BD + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F15%2F%25E5%25A6%2582%25E4%25BD%2595%25E9%2598%2585%25E8%25AF%25BBGo%25E6%25BA%2590%25E4%25BB%25A3%25E7%25A0%2581-%25E8%25BD%25AC%25E8%25BD%25BD%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/15/%E5%A6%82%E4%BD%95%E9%98%85%E8%AF%BBGo%E6%BA%90%E4%BB%A3%E7%A0%81-%E8%BD%AC%E8%BD%BD/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
