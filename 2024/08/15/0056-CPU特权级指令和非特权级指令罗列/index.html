@@ -169,12 +169,14 @@
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-08-15 11:13:51
+          2024-08-16 17:52:30
         </span>
         
       </div>
       <div class="markdown-body">
-        <p>这部分内容，网上居然不怎么搜得到。<br>相关资料这么少的吗，这么不好找的吗。</p>
+        <blockquote>
+<p>有少量非常关键的指令属于特权指令，这些指令只有0特权级任务有权限执行。在我们的操作系统中，特权指令包括以下几种：<br>hlt指令。显然，低特权级任务不能随意将CPU挂起<br>sti、cli指令，以及其他试图修改IF位的指令，如popf。低特权级任务不能关中断，否则抢占式任务切换就失效了<br>试图修改IOPL的指令，如popf。低特权级任务不能修改IO特权级，否则对IO端口的保护机制就失效了<br>任何试图读取或修改控制寄存器、GDTR、LDTR（局部描述符表，在我们的操作系统中未使用）、IDTR、TR（见下文）的指令。如mov cr0, eax、lgdt等。这些指令对CPU有重大影响，例如，修改CR0能开关保护模式和分页模式，这显然不能供低特权级任务随意使用<br>invlpg指令。低特权级任务不能干预TLB</p>
+</blockquote>
 <h3 id="谁来决定哪些指令应保持特权？是硬件制造商还是操作系统开发人员"><a href="#谁来决定哪些指令应保持特权？是硬件制造商还是操作系统开发人员" class="headerlink" title="谁来决定哪些指令应保持特权？是硬件制造商还是操作系统开发人员."></a>谁来决定哪些指令应保持特权？是硬件制造商还是操作系统开发人员.</h3><p>这个是stack overflow上的一个问题。</p>
 <ul>
 <li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/61957135/who-decides-which-instructions-are-to-be-kept-privileged-is-it-the-hardware-man">https://stackoverflow.com/questions/61957135/who-decides-which-instructions-are-to-be-kept-privileged-is-it-the-hardware-man</a></li>
@@ -182,7 +184,8 @@
 <h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
 <li>《Intel64与IA-32架构软件开发者手册》</li>
 <li>《Intel 80386程序员参考手册》</li>
-<li></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/yingyulou/p/17825525.html">https://www.cnblogs.com/yingyulou/p/17825525.html</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/yanbw/article/details/123883866">https://blog.csdn.net/yanbw/article/details/123883866</a></li>
 </ol>
 
       </div>
@@ -199,7 +202,7 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-08-15 11:13:51
+              2024-08-16 17:52:30
             </span>
             
           </div>
