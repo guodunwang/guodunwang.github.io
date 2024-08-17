@@ -13,7 +13,7 @@
   
   <title>
     
-      详解上下文切换 
+      interview 
       
       
       |
@@ -165,80 +165,52 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">详解上下文切换</div>
+      <div class="post-title">interview</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-08-12 13:53:20
+          2024-08-17 21:01:43
         </span>
         
       </div>
       <div class="markdown-body">
-        <ol>
-<li>xxx<blockquote>
-<p>进程上下文切换是在进程级别进行的切换,意味着CPU从执行一个进程切换到执行另一个进程。因为进程具有独立的地址空间,所以在切换时需要保存和恢复较多的上下文信息,成本较高。<br>线程上下文切换是在线程级别进行的切换,意味着CPU从执行一个线程切换到执行同一进程中的另一个线程。因为线程共享进程的地址空间,在切换时只需要保存和恢复较少的上下文信息,所以成本较低。</p>
+        <blockquote>
+<p>面试主要分三大块：项目-技术栈、基本功-学习力、算法-思维。可能不是这样分的，但是目前就先这么认为吧。<br>只能同时进行两个，同时进行三个太分散了，容易被干碎，一个都抓不住。</p>
 </blockquote>
-</li>
+<hr>
+<h2 id="项目-技术栈"><a href="#项目-技术栈" class="headerlink" title="项目-技术栈"></a>项目-技术栈</h2><h3 id="项目一：AIGC-文档翻译项目"><a href="#项目一：AIGC-文档翻译项目" class="headerlink" title="项目一：AIGC-文档翻译项目"></a>项目一：AIGC-文档翻译项目</h3><ol>
+<li>这个Github上应该是有的，也很简单，可以选择改一改。</li>
 </ol>
-<p>所以，从上面这段我是不是可以这么理解：</p>
-<blockquote>
-<p>无论是进程上下文切换，线程上下文切换，协程上下文切换。都会涉及到CPU的上下文切换，内存堆栈的上下文切换(包括内核态虚拟地址空间和用户态虚拟地址空间)、内存管理上下文、调度信息、线程本地存储(TLS)。唯一的区别在于切换的数据量的多少是不同的。</p>
-</blockquote>
-<ol start="2">
-<li><p>协程的切换也要涉及CPU寄存器上下文的切换，而用户态无法操作CPU寄存器，也是需要在内核态执行，那么，凭什么说协程切换不涉及内核态呢。</p>
-</li>
-<li><p>那么，寄存器到底可不可以在用户态清零或者进行上下文切换！</p>
-</li>
-<li><p>下面是GPT说的：</p>
-<blockquote>
-<p>用户态程序不能直接操作CPU寄存器的上下文切换。寄存器的保存和恢复必须在内核态完成，操作系统负责在进程或线程切换时处理这些操作。用户态的协程切换虽然涉及到寄存器的状态保存和恢复，但这些操作是通过用户态的调度机制来实现的，不直接涉及到内核态。</p>
-</blockquote>
-</li>
+<h3 id="项目二：自制对话工具"><a href="#项目二：自制对话工具" class="headerlink" title="项目二：自制对话工具"></a>项目二：自制对话工具</h3><ol>
+<li>同样的，这个Github上应该也不少，也很简单，就是一个自制的工具。</li>
+<li>这个是要做成桌面端，最好是类似于豆包的，但是那个太难了。</li>
 </ol>
-<blockquote>
-<p>踏马的这个逻辑，CPU寄存器上下文切换要涉及内核态，协程切换要涉及CPU寄存器上下文切换。最后你跟我说协程切换不涉及内核态，这尼玛什么什么意思？“杀人者非我也，兵也？”</p>
-</blockquote>
-<blockquote>
-<p>所以，CPU是存在内核态的寄存器的？但是，最起码的PC寄存器得变吧。</p>
-</blockquote>
-<blockquote>
-<p>进程上下文切换涉及进程级资源，线程上下文切换仅涉及线程级资源，那么协程上下文切换仅涉及协程级资源。</p>
-</blockquote>
-<h2 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h2><ol>
-<li><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/xzy186/p/17330347.html">https://www.cnblogs.com/xzy186/p/17330347.html</a></p>
-</li>
-<li><p><a target="_blank" rel="noopener" href="https://gzh.readthedocs.io/en/latest/blogs/GoLang/2020-09-21-goroutine%E5%8F%91%E7%94%9F%E5%88%87%E6%8D%A2%E6%97%B6%E8%83%8C%E5%90%8E%E5%8F%91%E7%94%9F%E4%BA%86%E4%BB%80%E4%B9%88.html">goroutine切换那些事儿</a></p>
-</li>
-<li><p>《操作系统真相还原》</p>
-</li>
-<li><p>《x86汇编语言-从实模式到保护模式》</p>
-</li>
+<h3 id="桌面软件——仿豆包"><a href="#桌面软件——仿豆包" class="headerlink" title="桌面软件——仿豆包"></a>桌面软件——仿豆包</h3><ol>
+<li>其实做到复刻就行了。主要新的需求就是能自定义连接吧。这个我怀疑，其实Github上也有了。和项目二类似其实。</li>
+<li>主要是和GPT要结对编程。</li>
 </ol>
-
+<h2 id="基本功-学习力"><a href="#基本功-学习力" class="headerlink" title="基本功-学习力"></a>基本功-学习力</h2><ul>
+<li><input disabled="" type="checkbox"> 操作系统-进程管理</li>
+<li><input disabled="" type="checkbox"> 操作系统和编程语言-协程管理</li>
+</ul>
+<ul>
+<li>[] 没了</li>
+</ul>
+<h2 id="算法-思维"><a href="#算法-思维" class="headerlink" title="算法-思维"></a>算法-思维</h2>
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/08/12/0038-goroutine-1-14%E4%B9%8B%E5%89%8D%E5%92%8C1-14%E4%B9%8B%E5%90%8E/" target="_self">
-                <i class="iconfont icon-chevronleft"></i>
-                <span>Prev</span>
-              </a>
-            
           </div>
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-08-12 13:53:20
+              2024-08-17 21:01:43
             </span>
             
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2024/08/12/0041-%E5%A6%82%E4%BD%95%E5%88%A4%E6%96%AD%E4%B8%80%E4%B8%AA%E7%A8%8B%E5%BA%8F%E6%98%AF%E5%9C%A8%E7%94%A8%E6%88%B7%E6%80%81%E6%89%A7%E8%A1%8C%E8%BF%98%E6%98%AF%E5%86%85%E6%A0%B8%E6%80%81%E6%89%A7%E8%A1%8C%EF%BC%9F%E5%85%B6%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
@@ -252,7 +224,7 @@
     <div class="title">Contents</div>
     <div class="catalog-content">
       
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%8C%AE"><span class="toc-text">参考文献</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE-%E6%8A%80%E6%9C%AF%E6%A0%88"><span class="toc-text">项目-技术栈</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%B8%80%EF%BC%9AAIGC-%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E9%A1%B9%E7%9B%AE"><span class="toc-text">项目一：AIGC-文档翻译项目</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B9%E7%9B%AE%E4%BA%8C%EF%BC%9A%E8%87%AA%E5%88%B6%E5%AF%B9%E8%AF%9D%E5%B7%A5%E5%85%B7"><span class="toc-text">项目二：自制对话工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A1%8C%E9%9D%A2%E8%BD%AF%E4%BB%B6%E2%80%94%E2%80%94%E4%BB%BF%E8%B1%86%E5%8C%85"><span class="toc-text">桌面软件——仿豆包</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E5%8A%9F-%E5%AD%A6%E4%B9%A0%E5%8A%9B"><span class="toc-text">基本功-学习力</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AE%97%E6%B3%95-%E6%80%9D%E7%BB%B4"><span class="toc-text">算法-思维</span></a></li></ol>
       
     </div>
   </div>
@@ -565,12 +537,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E8%AF%A6%E8%A7%A3%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F12%2F0040-%25E8%25AF%25A6%25E8%25A7%25A3%25E4%25B8%258A%25E4%25B8%258B%25E6%2596%2587%25E5%2588%2587%25E6%258D%25A2%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + interview + '&url=' + http%3A%2F%2Fexample.com%2Finterview%2Findex.html + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/12/0040-%E8%AF%A6%E8%A7%A3%E4%B8%8A%E4%B8%8B%E6%96%87%E5%88%87%E6%8D%A2/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/interview/index.html" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
