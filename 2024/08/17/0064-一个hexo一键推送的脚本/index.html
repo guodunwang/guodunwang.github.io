@@ -13,7 +13,7 @@
   
   <title>
     
-      初步利用go、llm、k8s、docker、pg、pgvector打造rag应用 
+      一个hexo一键推送的脚本 
       
       
       |
@@ -165,22 +165,26 @@
   <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
   <div class="container post-details" id="post-details">
     <div class="post-content">
-      <div class="post-title">初步利用go、llm、k8s、docker、pg、pgvector打造rag应用</div>
+      <div class="post-title">一个hexo一键推送的脚本</div>
       <div class="post-attach">
         <span class="post-pubtime">
           <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-          2024-07-31 22:33:57
+          2024-08-17 21:42:00
         </span>
         
       </div>
       <div class="markdown-body">
-        <h4 id="整体思路"><a href="#整体思路" class="headerlink" title="整体思路"></a>整体思路</h4><h4 id="组件介绍"><a href="#组件介绍" class="headerlink" title="组件介绍"></a>组件介绍</h4><h4 id="功能介绍"><a href="#功能介绍" class="headerlink" title="功能介绍"></a>功能介绍</h4>
+        <p>该脚本由ChatGPT、Claude联合调整而成，目前还是好用的。<br>运行于Win11下, .ps1后缀。</p>
+<blockquote>
+<p>name.ps1</p>
+</blockquote>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置执行环境为 UTF-8</span></span><br><span class="line">[Console]::OutputEncoding = [System.Text.Encoding]::UTF8</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行 hexo clean</span></span><br><span class="line">hexo clean</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置LF和CRLF的转换, 这个好像不是这样搞的，算了。</span></span><br><span class="line">git config --global core.autocrlf false</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查退出状态</span></span><br><span class="line">if ($LASTEXITCODE -ne 0) &#123;</span><br><span class="line">    Write-Host &quot;hexo clean 失败，请检查错误日志。&quot;</span><br><span class="line">    Exit 1</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">运行 hexo generate</span></span><br><span class="line">hexo generate</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查退出状态</span></span><br><span class="line">if ($LASTEXITCODE -ne 0) &#123;</span><br><span class="line">    Write-Host &quot;hexo generate 失败，请检查错误日志。&quot;</span><br><span class="line">    Exit 1</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">-------------------------------------------------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="comment"># 运行 hexo deploy</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">hexo deploy</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="comment"># 检查退出状态</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="keyword">if</span> (<span class="variable">$LASTEXITCODE</span> -ne 0) &#123;</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">    Write-Host <span class="string">&quot;hexo deploy 失败，请检查错误日志。&quot;</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">    Exit 1</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">&#125;</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">Write-Output <span class="string">&quot;Hexo, 部署成功!&quot;</span></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">--------------------------------------------------</span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">初始化变量</span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">deploySuccess = <span class="variable">$false</span></span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">maxAttempts = 20  <span class="comment"># 定义最大尝试次数</span></span></span><br><span class="line"><span class="meta prompt_">$</span><span class="language-bash">attemptCount = 0</span></span><br><span class="line"></span><br><span class="line">while (-not $deploySuccess -and $attemptCount -lt $maxAttempts) &#123;</span><br><span class="line"></span><br><span class="line">    # 运行 hexo deploy</span><br><span class="line">    hexo deploy</span><br><span class="line"></span><br><span class="line">    # 检查退出状态</span><br><span class="line">    if ($LASTEXITCODE -eq 0) &#123;</span><br><span class="line">        $deploySuccess = $true</span><br><span class="line">        Write-Output &quot;Hexo 部署成功!&quot;</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        Write-Host &quot;hexo deploy 失败，请检查错误日志。&quot;</span><br><span class="line">        $attemptCount++</span><br><span class="line">        Start-Sleep -Seconds 10  # 等待一段时间后重试</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if (-not $deploySuccess) &#123;</span><br><span class="line">    Write-Host &quot;达到最大尝试次数，部署仍然失败。&quot;</span><br><span class="line">    Exit 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
       </div>
       
         <div class="prev-or-next">
           <div class="post-foot-next">
             
-              <a href="/2024/07/27/0002-%E5%9D%9A%E6%8C%81%E5%88%B7%E9%A2%98/" target="_self">
+              <a href="/2024/08/16/0063-%E9%98%85%E8%AF%BB%E5%BD%92%E7%BA%B3-Go%E9%A2%86%E5%9F%9F%E9%82%A3%E4%BA%9B%E5%B9%B4%E6%88%91%E4%BB%AC%E4%B8%80%E8%B5%B7%E8%BF%BD%E8%BF%87%E7%9A%84%E5%A4%A7%E4%BD%AC/" target="_self">
                 <i class="iconfont icon-chevronleft"></i>
                 <span>Prev</span>
               </a>
@@ -189,39 +193,17 @@
           <div class="post-attach">
             <span class="post-pubtime">
               <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
-              2024-07-31 22:33:57
+              2024-08-17 21:42:00
             </span>
             
           </div>
           <div class="post-foot-prev">
-            
-              <a href="/2024/07/27/0004-%E5%B9%B3%E8%A1%A1%E4%BA%8C%E5%8F%89%E6%90%9C%E7%B4%A2%E6%A0%91-AVL/" target="_self">
-                <span>Next</span>
-                <i class="iconfont icon-chevronright"></i>
-              </a>
             
           </div>
         </div>
       
     </div>
     
-  <div id="btn-catalog" class="btn-catalog">
-    <i class="iconfont icon-catalog"></i>
-  </div>
-  <div class="post-catalog hidden" id="catalog">
-    <div class="title">Contents</div>
-    <div class="catalog-content">
-      
-        <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E6%95%B4%E4%BD%93%E6%80%9D%E8%B7%AF"><span class="toc-text">整体思路</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E4%BB%8B%E7%BB%8D"><span class="toc-text">组件介绍</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%8A%9F%E8%83%BD%E4%BB%8B%E7%BB%8D"><span class="toc-text">功能介绍</span></a></li></ol>
-      
-    </div>
-  </div>
-
-  
-<script src="/js/catalog.js"></script>
-
-
-
 
     
       <div class="comments-container">
@@ -525,12 +507,12 @@
       </a>
       <div class="share-content hidden">
         
-          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F07%2F27%2F0003-%25E5%2588%259D%25E6%25AD%25A5%25E5%2588%25A9%25E7%2594%25A8go%25E3%2580%2581llm%25E3%2580%2581k8s%25E3%2580%2581docker%25E3%2580%2581pg%25E3%2580%2581pgvector%25E6%2589%2593%25E9%2580%25A0rag%25E5%25BA%2594%25E7%2594%25A8%25E2%2580%2594%25E2%2580%2594%25E8%2587%25AA%25E5%258A%25A8%25E5%258C%2596%25E6%2596%2587%25E6%25A1%25A3%25E7%25BF%25BB%25E8%25AF%2591%25E3%2580%2581%25E6%25B3%25A8%25E9%2587%258A%2F + '" target="_blank" title="Twitter">
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E4%B8%80%E4%B8%AAhexo%E4%B8%80%E9%94%AE%E6%8E%A8%E9%80%81%E7%9A%84%E8%84%9A%E6%9C%AC + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F17%2F0064-%25E4%25B8%2580%25E4%25B8%25AAhexo%25E4%25B8%2580%25E9%2594%25AE%25E6%258E%25A8%25E9%2580%2581%25E7%259A%2584%25E8%2584%259A%25E6%259C%25AC%2F + '" target="_blank" title="Twitter">
             <i class="iconfont icon-twitter"></i>
           </a>
         
         
-          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/07/27/0003-%E5%88%9D%E6%AD%A5%E5%88%A9%E7%94%A8go%E3%80%81llm%E3%80%81k8s%E3%80%81docker%E3%80%81pg%E3%80%81pgvector%E6%89%93%E9%80%A0rag%E5%BA%94%E7%94%A8%E2%80%94%E2%80%94%E8%87%AA%E5%8A%A8%E5%8C%96%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91%E3%80%81%E6%B3%A8%E9%87%8A/" target="_blank" title="Facebook">
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/17/0064-%E4%B8%80%E4%B8%AAhexo%E4%B8%80%E9%94%AE%E6%8E%A8%E9%80%81%E7%9A%84%E8%84%9A%E6%9C%AC/" target="_blank" title="Facebook">
             <i class="iconfont icon-facebooksquare"></i>
           </a>
         
