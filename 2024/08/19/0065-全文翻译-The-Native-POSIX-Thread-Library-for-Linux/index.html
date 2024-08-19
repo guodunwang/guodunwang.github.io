@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="muxunting" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      全文翻译 The Native POSIX Thread Library for Linux 
+      
+      
+      |
+    
+     Tech Space
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Tech Space</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/diary/">
+          <a href="/diary/">Diary</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/todo/">
+          <a href="/todo/">ToDo</a>
+        </li>
+      
+        <li class="nav-item" data-path="/interview/">
+          <a href="/interview/">Interview</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">全文翻译 The Native POSIX Thread Library for Linux</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-08-19 15:46:54
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <h3 id="Abstract"><a href="#Abstract" class="headerlink" title="Abstract"></a>Abstract</h3><p>The Linux Threads library which is currently part of the standard runtime<br>environment of a Linux system does a poor job of satisfying the demand for<br>POSIX compliant threading used in modern systems. It is not designed to<br>leverage the Linux kernel extensions present and in development today, it does not scale efficiently, and it does not take modern processor architectures into account. A completely new design is necessary and this paper will outline the design and implementation.</p>
+<h3 id="Table-of-Contents"><a href="#Table-of-Contents" class="headerlink" title="Table of Contents"></a>Table of Contents</h3><p>The Initial Implementation 	3<br>Improvements Over Time 	3<br>Problems with the Existing Implementation 	5<br>Goals For A New Implementation 	6<br>Design Decisions 	8<br>1-on-1 vs. M-on-N 	8<br>Signal Handling 	9<br>Helper&#x2F;Manager Thread or Not 	10<br>List of all Threads 	11<br>Synchronization Primitives 	 12<br>Memory Allocation 	 12<br>Kernel Improvements 	13<br>Results 	15<br>Thread Creation and Destruction Timing 	16<br>Contention Handling 	 17<br>Remaining Challenges 	17</p>
+<p>‍</p>
+<h3 id="The-Initial-Implementation"><a href="#The-Initial-Implementation" class="headerlink" title="The Initial Implementation"></a>The Initial Implementation</h3><p>The Linux Threads implementation, which is currently the standard POSIX<br>thread library for Linux, is based on the principles outlined by the kernel<br>developers at the time the code was written in 1996. The basic assumption was that context switches among related processes would be fast enough to handle each user-level thread by one kernel thread. Kernel processes can have various degrees of relationships for sharing. The POSIX thread specification requires sharing of almost all resources between threads.</p>
+<p>Missing thread-aware Application Binary Interface Specifications (ABIs) for the target architectures, the design did not use thread registers. The thread-local memory was instead located using fixed relationships between the stack pointer and the position of the thread descriptor.</p>
+<p>A manager thread was required to implement correct semantics for signals, thread creation, and various other parts of process management.</p>
+<p>Perhaps the biggest problem was the absence of usable synchronization<br>primitives in the kernel which forced the implementation to resort to using<br>signals. The absence of a concept for thread groups in the kernel versions of the time led to non-compliant and fragile signal handling in the thread library.</p>
+<p>‍</p>
+<h3 id="Improvements-Over-Time"><a href="#Improvements-Over-Time" class="headerlink" title="Improvements Over Time"></a>Improvements Over Time</h3><p>The code of the thread library was significantly improved in the six years<br>following its creation. The improvements came in two principal areas: the ABI and the kernel.</p>
+<p>Newly defined ABI extensions allowed the use of thread registers or constructs, which can work like registers. This was an essential improvement making locating thread-local data a less time consuming operation. Locating thread-local data is essential to almost any operation in the thread library itself. This data is used by the rest of the runtime environment and user applications as well.</p>
+<p>For some CPU architectures the changes were easy. Some had registers<br>specifically set aside for this purpose, while others had special processor<br>features which allowed storing values in the execution context. But some<br>architectures were left out since they had neither. Those architectures still<br>defered to the method of calculating the thread-local data position based on the stack address. Besides being a time costing calculation, the APIs that allow the programmer to select the position and size of the stack cannot function correctly for these architectures. These interfaces are especially important when large numbers of threads are used, either at one time or in succession.</p>
+<p>The solution used for Intel’s 32-bit CPU Architecture (IA-32) is worth noting since it is not straight-forward and, as undoubtedly the most prevalent microcomputer architecture, it influences the design. IA-32, being register starved, has two registers which were not used in the original ABI: the segment registers %fs and %gs. Though not generally usable for storing arbitrary values, they can be used to access memory at arbitrary positions in the virtual memory address space of the process given a fixed offset. The segment register value is used to access data structures the kernel creates for the processor to access and which contains a base address for each valid segment index. With different base addresses it is possible to access different parts of the virtual address space using the same offset; this is exactly what is needed for thread-local data access.</p>
+<p>The problem with this approach is that the segment registers must be supported by some data structures the processor uses. The base address of the segment is stored in a descriptor table. Access to these data structures is limited to the operating system itself and not the user level code, which means operations to modify the descriptor table are slow. Context switching between different processes is also slower since additional data structures must be reloaded at every context switch. Additionally, the kernel must handle memory allocation for the table which can be problematic if many entries are needed due to the limited nature of the memory required (it must be in permanently mapped memory).</p>
+<p>Finally, the number of different values the segment register can have, and<br>therefore the number of different addresses which can be represented, is limited to 8192.</p>
+<p>Overall, using “thread registers” brought more speed, flexibility, and Applications Programming Interface (API) completeness but restricted the number of threads and had negative impacts on the system’s overall performance.</p>
+<p>The changes made in the development of the kernel up to version 2.4 consisted of stabilizing the functionality which allowed use of the IA32 segment registers as well as improvements to the clone system call which is used to create the kernel threads. These changes eliminate some of the requirements for the existence of the manager thread and also provide the correct process ID semantics as the process ID is the same for all threads.</p>
+<p>Unfortunately, the manager thread still could not be eliminated completely for a number of reasons. One reason is that the stack memory deallocation could not be performed by the thread which uses the memory itself. A second reason is that terminated threads must be waited on in order to avoid zombie kernel threads. Since these and numerous other problems were not yet solved, there was limited incentive to rewrite the thread library to take advantage of the new features which became available.</p>
+<p>‍</p>
+<h3 id="Problems-with-the-Existing-Implementation"><a href="#Problems-with-the-Existing-Implementation" class="headerlink" title="Problems with the Existing Implementation"></a>Problems with the Existing Implementation</h3><p>The existing Linux Threads implementation has been found to perform<br>reasonably well in many applications;nevertheless, it has numerous problems, especially when operated in extreme circumstances:</p>
+<ul>
+<li>The existence of the manager thread causes problems. If the manager thread gets killed the remainder of the process is in a state which must be manually cleaned up. Having the manager handle operations like thread creation and cleanup makes it a bottleneck.</li>
+<li>The signal system is severely broken. It does not conform with the behavior POSIX specifies. Sending a signal to the process as a whole could not be implemented.</li>
+<li>The use of signals to implement the synchronization primitives causes<br> enormous problems. The latency of the operations is high and the already<br> complicated signal handling in the thread library gets even more complicated. Spurious wakeups are frequent and must be distinguished from normal<br> wakeup conditions and handled appropriately. In addition to the probability of misinterpreting a wakeup, this adds additional pressure on the kernel signal system.</li>
+<li>The incorrect implementation- of SIGSTOP and SIGCONT is a noteworthy case of broken signal handling. Without the kernel handling these signals<br> correctly the user cannot stop a multi-threaded process (e.g., with Control-Z in shells with job handling support). In that case only one thread is stopped. Debuggers make use of this interface and therefore have similar problems.</li>
+<li>Each thread having a different process ID causes compatibility problems with other POSIX thread implementations. This is in part a moot point since<br> signals can’tbe used very well but is still noticeable.</li>
+<li>On IA-32, the artificial limit on the number of threads (8192, minus one for the manager) has proven troublesome. Although threads are often misused in<br> such situations, the offending applications are known to work on other platforms.<br> On the kernel side there are also problems:</li>
+<li>Processes with hundreds or thousands of threads render the &#x2F;proc filesystem barely usable. Each thread shows up as a separate process.</li>
+<li>The problems with the signal implementation are mainly due to missing<br> kernel support. Special signals like SIGSTOP would have to be handled by the kernel and for all threads.</li>
+<li>The misuse of signals to implement synchronization primitives adds even<br> more to the problems. Delivering signals is a very heavy-handed approach to ensure synchronization.</li>
+</ul>
+<p>‍</p>
+<h3 id="Goals-For-A-New-Implementation"><a href="#Goals-For-A-New-Implementation" class="headerlink" title="Goals For A New Implementation"></a>Goals For A New Implementation</h3><p>Trying to incrementally fix the existing implementation would not have been efficient. The whole design is centered around limitations of 1996-era Linux kernel technology. A complete rewrite taking into account modern kernel features was necessary. The goal was to be ABI compatible with Linux Threads,which is not an unobtainable goal thanks to the way the old thread</p>
+<p>API was designed. Still it was necessary to reevaluate every design decision made. Making the right decisions meant knowing the requirements of the implementation. The requirements which were collected include:</p>
+<h6 id="POSIX-compliance"><a href="#POSIX-compliance" class="headerlink" title="POSIX compliance"></a>POSIX compliance</h6><p>Compliance with the latest POSIX standard is the highest goal to achieve source code compatibility with other platforms. This does not mean that extensions beyond the POSIX specification are not added, but rather that POSIX compliance must take precedence.</p>
+<h6 id="Effective-use-of-SMP"><a href="#Effective-use-of-SMP" class="headerlink" title="Effective use of SMP"></a>Effective use of SMP</h6><p>One of the main goals of using threads is to provide means to use thecapabilities of multi-processor systems. Splitting the work in as many parts as there are CPUs can ideally provide linear speedups.</p>
+<h6 id="Low-startup-cost"><a href="#Low-startup-cost" class="headerlink" title="Low startup cost"></a>Low startup cost</h6><p>Creating new threads should have very low associated costs so that it’s possible to create threads even for small pieces of work.</p>
+<h6 id="Low-link-in-cost"><a href="#Low-link-in-cost" class="headerlink" title="Low link-in cost"></a>Low link-in cost</h6><p>Programs linked with the thread library (directly or in-directly) but not using threads should be minimally affected.</p>
+<h6 id="Binary-compatibility"><a href="#Binary-compatibility" class="headerlink" title="Binary compatibility"></a>Binary compatibility</h6><p>The new library should be maximally binary compatible with the Linux Threads implementation. Some semantic differences are unavoidable as the LinuxThreads implementation is not POSIX compliant; the non-compliant functionality necessarily must change.</p>
+<h6 id="Hardware-Scalability"><a href="#Hardware-Scalability" class="headerlink" title="Hardware Scalability"></a>Hardware Scalability</h6><p>The thread implementation should run sufficiently well on large numbers of processors. The administrative costs should not rise much with increasing numbers of processors.</p>
+<h6 id="Software-Scalability"><a href="#Software-Scalability" class="headerlink" title="Software Scalability"></a>Software Scalability</h6><p>Another use of threads is to solve sub-problems of the user application in separate execution contexts. In Java environments threads are used toimplement the programming environment due to missing asynchronousoperations. The result is the same: enormous amounts of threads can be created. The new implementation should ideally have no fixed limits on the number of threads or any other object.</p>
+<h6 id="Machine-Architecture-Support"><a href="#Machine-Architecture-Support" class="headerlink" title="Machine Architecture Support"></a>Machine Architecture Support</h6><p>Designs for mainframe machines have always been more complicated thanthose for consumer and mainstream machines. Efficient support for thesemachines requires the kernel and user-level code close to the OS to knowdetails about the machine’s architecture. For instance, processors in thesemachines are often divided into separate nodes, and using resources on other nodes is more expensive.</p>
+<h6 id="NUMA-Support"><a href="#NUMA-Support" class="headerlink" title="NUMA Support"></a>NUMA Support</h6><p>One special class of future machines of interest are based on non-uniformmemory architectures (NUMA). Code like the thread library should be designed with this in mind to leverage the benefits of NUMA when using threads on such machines. For these systems the design of data structures is critical.</p>
+<h6 id="Integration-With-C"><a href="#Integration-With-C" class="headerlink" title="Integration With C++"></a>Integration With C++</h6><p>C++ defines exception handling, which deals automatically with the cleanup of objects in the scopes left when throwing an exception. Cancellation of a thread is similar to this, and it is reasonable to expect that cancellation also calls the necessary object destructors.</p>
+<p>‍</p>
+<h3 id="Design-Decisions"><a href="#Design-Decisions" class="headerlink" title="Design Decisions"></a>Design Decisions</h3><p>Before starting the implementation, a number of basic decisions have to be made. They affect the implementation fundamentally.</p>
+<h5 id="1-on-1-vs-M-on-N"><a href="#1-on-1-vs-M-on-N" class="headerlink" title="1-on-1 vs. M-on-N"></a>1-on-1 vs. M-on-N</h5><p>The most basic design decision involves the relationship between the kernel<br>threads and the user-level threads. It need not be mentioned that kernel threads are used; a pure user-level implementation could exist, but it would not be able to take advantage of multi-processing, which was one of the primary goals listed previously.</p>
+<p>One valid possibility is the 1-on-1 model of the Linux Threads implementation<br>where each user-level thread has an underlying kernel thread. The whole thread library could be a relatively thin layer on top of the kernel functions.</p>
+<p>The most popular alternative is a library following the M-on-N model where the number of kernel threads and user-level threads do not have to be in a fixed correlation. Such an implementation schedules the user-level threads on the available kernel threads. In this case we actually have two schedulers at work. Since there is no default mechanism for explicit collaboration between the two schedulers, the independent scheduling decisions can significantly reduce performance. Various schemes to achieve collaboration have been proposed. The most promising and most used is Scheduler Activations. Here the two schedulers work closely together; the user-level scheduler can give the kernel scheduler hints while the kernel scheduler notifies the user-level scheduler about its decisions.</p>
+<p>The consensus among the kernel developers was that an M-on-N<br>implementation would not fit into the Linux kernel concept. The necessary<br>coordinated scheduling infrastructure that must be added comes with a cost<br>which is too high. To allow context switching in the user-level scheduler it would be often necessary to copy the contents of the registers from the kernel space.</p>
+<p>Additionally many of the problems the user-level scheduling helps to prevent are not real problems for the Linux kernel. Huge numbers of threads are not a significant issue since the schedulerandall the other core routines have<br>constant execution time (O(1)) as opposed to linear time with respect to the number of active processes and threads.</p>
+<p>Finally, the costs of maintaining the additional code necessary for an M-on-N<br>implementation cannot be neglected. Especially for highly complicated code like a thread library,there’s a lot to be said for a clean and slim implementation.</p>
+<h5 id="Signal-Handling"><a href="#Signal-Handling" class="headerlink" title="Signal Handling"></a>Signal Handling</h5><p>Another reason for using an M-on-N model is to simplify the signal handling in the kernel. Signal masks are maintained on a per-thread basis whereas the<br>registration of a signal handler, and therefore also the fact whether a signal is<br>ignored, is a process wide property. With large numbers of threads in a process the kernel potentially must check every thread’s signal mask to determine whether a signal can be delivered. If the number of kernel threads would be kept low by the M-on-N model the equivalent work would be done at the user level.</p>
+<p>Handling the final signal delivery at the user-level has several drawbacks. A<br>thread which does not expect a certain signal must not be able to detect that it received a signal. The signal would be noticeable if the thread’s stack were used for the signal delivery or if the thread received an interrupted by signal (EINTR) error from a system call. The former situation can be avoided by using an alternate stack to deliver signals but adds complexity since the use of an alternate stack is also available to the user through the sigaltstack call. To prevent unacceptable EINTR results from system calls, the system call wrappers have to be extended which introduces additional overhead for normal operation.</p>
+<p>There are two alternatives for the signal delivery scenario:</p>
+<ol>
+<li>Signals are delivered to a dedicated thread which does not execute any user code (or at least no code which is not willing to receive all possible signals). The drawbacks include the costs for the additional thread and, more importantly, the serialization of signals. The latter means that, even if the dedicated signal thread distributes the handling of signals to other threads all signals are funneled through the dedicated signal thread. This is contrary to the intent (but not the words) of the POSIX signal model which allows parallel handling of signals. If reaction time on signals is an issue, an application might create a number of threads with the sole purpose of handling signals. This would be defeated by the use of a signal thread.</li>
+<li>Signals could also be delivered to the user level by a different means. Instead of the signal handler, a separate up call mechanism is used.<br> This is what would be used in a Scheduler Activation based implementation. The costs are increased complexity in the kernel, which would have to implement a second signal delivery mechanism, and the required emulation of some signal functionality by the user level code.<br> For instance, if all threads block in a read call and a signal is expected to wake one thread by returning with EINTR, this thread must receive the return code and continue processing.</li>
+</ol>
+<p>In summary, it is certainly possible to implement the signal handling of a M-on-N implementation at user-level, but it adds complexity, bulk, and unnecessary delay.</p>
+<p>Alternatively all POSIX signal handling can be implemented in the kernel. In this case the kernel must resolve the multitude of signal masks, but the<br>implementation is otherwise straightforward. Since the signal will only be sent to a thread if it is unblocked, no unnecessary interruptions through signals occur. The kernel is also in a much better situation to determine the best thread to receive the signal. Obviously this helps only if the1-on-1 model is used.</p>
+<p>‍</p>
+<h5 id="Helper-Manager-Thread-or-Not"><a href="#Helper-Manager-Thread-or-Not" class="headerlink" title="Helper&#x2F;Manager Thread or Not"></a>Helper&#x2F;Manager Thread or Not</h5><p>In the current Linux Threads library a so-called manager thread is used to<br>handle a variety of internal work. The manager thread never executes user  program code. Instead all the other threads send requests like’create a new thread’which are centrally and sequentially executed by the manager thread. This is necessary to help implement the correct semantics for a number of<br>problems:</p>
+<ul>
+<li>To be able to react to fatal signals and kill the entire process, the creator of a thread constantly has to watch all the children. This is not possible except in a dedicated thread if the kernel does not take over the job.</li>
+<li>Deallocation of the memory used as stacks has to happen after the thread is finished; therefore the thread cannot deallocate it’s own stack.</li>
+<li>Terminating threads have to be waited on to avoid turning them into zombies.</li>
+<li>If the main thread calls pthread_exit the process is not terminated; the<br> main thread goes to sleep and it is the job of the manager to wake it once the process terminates.</li>
+<li>In some situations threads need help to handle semaphore operations.</li>
+<li>The deallocation of thread-local data requires iterating over all threads which has to be done by the manager.</li>
+</ul>
+<p>None of these problems necessarily implies that a manager thread must be used. With some support in the kernel the manager thread is not necessary at all. With a correct implementation of the POSIX signal handling in the kernel the first item is solved. The second problem can be solved by letting the kernel perform the deallocation (whatever this actually might mean in an implementation). The third item can be solved by the kernel’s automatically reaping terminated threads. The other items also have solutions, either in the kernel or in the thread library.</p>
+<p>Not being forced to serialize important and frequently performed requests like creating a thread can be a significant performance benefit. The manager thread can only run on one of the CPUs, so any synchronization done can cause serious scalability problems on SMP systems, and even worse scalability<br>problems on NUMA systems. Frequent reliance on the manager thread also causes a significantly increased rate of context-switching. Having no manager thread in any case simplifies the design. The goal for the new implementation therefore should be to avoid a manager thread.</p>
+<p>‍</p>
+<h5 id="List-of-all-Threads"><a href="#List-of-all-Threads" class="headerlink" title="List of all Threads"></a>List of all Threads</h5><p>The Linux Threads implementation keeps a list of all running threads which is occasionally traversed to perform operations involving all threads. The most important operation is killing all threads at process termination. This could be avoided if the kernel were responsible for killing the threads when the process exits.</p>
+<p>The thread list is also used to implement the pthread key delete function. If a key is deleted by a call topthread_key_delete and later reused when a following call topthread_key_create returns the same key, the implementation must make sure that the value associated with the key for all threads is NULL. The Linux Threads implementation achieves this by walking the list to actively clear the slots of the thread-specific memory data structures at the time the key is deleted.</p>
+<p>This is a cumbersome implementation of pthread_key_delete. If a thread list (or walking it) has to be avoided, it must be possible to determine whether a<br>destructor must be called. One possible implementation involves generation<br>counters. Each key for thread-local storage and the associated memory in the thread’s data structures would have such a counter. Upon allocation the key’s generation counter would be incremented and the new value assigned to the<br>counter in the thread data structure for the key. Deleting a key also causes the key’s generation counter to be incremented. On exit it is only necessary to<br>execute the destructors for which the generation counter of the key matches the counter in the thread’s data structure are executed. The deletion of a key<br>therefore becomes a simple increment operation.</p>
+<p>Maintaining the list of threads can not be entirely avoided. Implementation of the fork function without memory leaks requires reclaiming the memory used for stacks and other internal information of all threads except the thread calling fork. The kernel can not help in this situation.</p>
+<p>‍</p>
+<h5 id="Synchronization-Primitives"><a href="#Synchronization-Primitives" class="headerlink" title="Synchronization Primitives"></a>Synchronization Primitives</h5><p>The implementation of the synchronization primitives such as mutexes, read-<br>write locks, condition variables, semaphores, and barriers requires some form of kernel support. Busy waiting is inefficient and fails to account for differences in thread priorities. The same arguments rule out the exclusive use of sched yield. Signals were the only viable solution for the Linux Threads implementation. Threads block in the kernel until woken by a signal. This method has severe drawbacks in terms of speed and reliability caused by spurious wakeups and degradation of the quality of the signal handling in the application.</p>
+<p>Fortunately some new functionality was added to the kernel to implement all<br>kinds of synchronization primitives in the form offutexes [Futex]. The underlying principle is simple but powerful enough to adapt to all kinds of uses. Callers can block in the kernel and be woken either explicitly as a result of an interrupt or after a timeout.</p>
+<p>For example, a mutex can be implemented in half a dozen instructions with the fast path being entirely at user-level. The wait queue is maintained by the kernel. There are no further user-level data structures needed which have to be maintained and cleaned up in case of cancellation. The other three synchronization primitives can be equally well implemented using futexes.</p>
+<p>Another benefit of the futex approach is that it works on shared memory regions and can therefore be shared by processes having access to the same piece of shared memory. This, together with the wait queues being entirely handled by the kernel, is exactly the requirement the inter-process POSIX synchronization primitives have. It now becomes possible to implement the desired PTHREAD_PROCESS_SHARED option.</p>
+<h5 id="Memory-Allocation"><a href="#Memory-Allocation" class="headerlink" title="Memory Allocation"></a>Memory Allocation</h5><p>One of the goals for the library is to have minimal startup costs for threads. The biggest time consuming operation outside the kernel is allocating the memory needed for the thread data structures, thread-local storage, and the stack.<br>Optimizing this memory allocation is done in two steps:</p>
+<ul>
+<li>The necessary memory blocks are merged,i.e., the thread data structures and the thread-local storage are placed on the stack. The usable stack array starts just below (or above in case of an upward growing stack) the memory needed for the two. In the thread-local storage, ABI defined in the ELF gABI requires only one ad- ditional data structure, the DTV (Dynamic Thread Vector). The memory<br> needed for it might vary and therefore cannot be allocated statically at thread start time.</li>
+<li>Since the memory handling, especially the de-allocation, is slow, major<br> improvements can be achieved by avoiding unnecessary allocation and<br> deallocation. An munmap of the stack frame causes expensive translation look-aside buffer (TLB) operations, e.g., on IA-32 it causes a global TLB<br> flush, which must also be broadcast to other CPUs on SMP systems. If<br> memory blocks are kept for reuse and not freed directly when the thread<br> terminates, the number of allocation&#x2F;deallocation cycles is reduced. Hence the caching of stack frames is a key step toward good thread-create and thread-exit performance.</li>
+</ul>
+<p> A by-product advantage is that at the time a thread terminates some of the information in the thread descriptor is in a useful state and does not have to be re-initialized when the descriptor gets reused. </p>
+<p> It is not possible to keep unlimited memory around for reuse, especially on 32-bit machines due to their restricted address space. A maximum size for the memory cache is needed.</p>
+<p>This is a tuning variable which on 64-bit machines might as well have a value large enough to never be exceeded. This scheme works fine most of the time since the threads in one process often have only a very limited number of different stack sizes. </p>
+<p>One potential drawback of this scheme is that the thread handle is simply the pointer to the thread descriptor, so successively created threads will get the same handle. This might hide bugs and lead to strange results. If this became a significant problem, the thread descriptor allocation routine could have a debug mode in which it would avoid producing the same thread handles again. This is nothing the standard runtime environment should be troubled with.</p>
+<p>‍</p>
+<h3 id="Kernel-Improvements"><a href="#Kernel-Improvements" class="headerlink" title="Kernel Improvements"></a><strong>Kernel Improvements</strong></h3><p>The early 2.5.x development version of the Linux kernel provided only a portion of the functionality needed for a good thread implementation. Additional changes to the official kernel were made in August and September 2002 by Ingo Molnar as part of this project. The design of the kernel functionality and thread library went hand in hand to ensure optimal interfaces between the two components. Changes to the kernel include:</p>
+<ul>
+<li>Support for an arbitrary number of thread-specific data areas on IA-32 and x86-64 through the introduction of the TLS system call. This system call allocates one or more GDT (Global Descriptor Table, a CPU data structure) entries which can be used to access memory with a selected offset. This is an effective replacement for a thread register. The GDT data structure is per- CPU and the GDT entries per-thread are kept current by the scheduler.</li>
+<li>The TLS patch enabled the implementation of the 1-on-1 threading model<br> without limitation on the number of threads. The previously used method (via the LDT, local descriptor table, CPU data structure) had limited the number of threads per process to 8192. To achieve maximalscalability without this new system call, an M-on-N implementation would have been necessary.</li>
+<li>The clone system call was extended to optimize the creation of new threads and to facilitate the termination of threads without the help of another thread. The manager thread fulfilled this role in the Linux Threads implementation. In the new implementation the kernel stores the thread ID of the new thread in a given memory location if the CLONE_PARENT_SETTID flag is set. This implementation also clears this memory location once the thread is terminated if the CLONE_CLEARTID flag is set. This can be used by user-level memory management functionality to recognize an unused memory<br> block. This helps enable implementation of user-level memory management without kernel intervention.</li>
+</ul>
+<p> Furthermore the kernel does a futex wakeup on the thread ID. This feature is used by the pthread_join implementation. </p>
+<p> Another important change is adding support for a signal safe loading of the thread register. Since signals can arrive at any time they either have to be disabled for the duration of the clone call, or the new thread must be started with the thread register already loaded. The latter is what another extension to clone implements, via the CLONE_TLS flag. The exact form of the parameter passed to the kernel is architecture specific.</p>
+<ul>
+<li><p>The POSIX signal handling for multi-threaded processes is now implemented in the kernel. Signals sent to the process are now delivered to one of the available threads of the process. Fatal signals terminate the entire process. Stop and continue signals affect the entire process, enabling job control for multi-threaded processes, a desirable feature missing in the Linux Threads implementation. Shared pending signals are also supported.</p>
+</li>
+<li><p>A second variant of the exit system call was introduced: exit_group. The old system call kept the meaning of terminating the current thread. The new system call terminates the entire process.</p>
+</li>
+<li><p>Simultaneously the implementation of the exit handling was significantly improved. The time to stop a process with many threads now takes only a fraction of what it used to. In one instance starting and stopping 100,000 threads formerly took 15 minutes compared to the 2 seconds it now takes.</p>
+</li>
+<li><p>The exec system call now provides the newly created process with the process ID of the original process. All other threads in the process are terminated before the new process image gets control.</p>
+</li>
+<li><p>Resource usage reported to the parent (CPU time, wall time, page faults,<br> etc.) are reported for the entire process and not just the initial thread.</p>
+</li>
+<li><p>The &#x2F;proc directory implementation was improved to cope with the<br> potentially thousands of entries resulting from the threads in all the<br> processes. Each thread has its own subdirectory but all names, except those of the main thread, start with a dot and are therefore not visible in the normal output of ls. The overall implementation of the &#x2F;proc filesystem has been improved and optimized to handle huge amounts of data</p>
+</li>
+<li><p>Support for detached threads, for which no wait has to be performed by the joining thread. This join is now implemented via a futex wakeup in the kernel upon thread exit.</p>
+</li>
+<li><p>The kernel maintains the initial thread until every thread has exited. This<br> ensures the visibility of the process in &#x2F;proc, and ensures signal delivery as well.</p>
+</li>
+<li><p>The kernel has been extended to handle an arbitrary number of threads. The PID space has been extended to a maximum of 2 billion threads on IA-32, and the scalability of massively-threaded workloads has been improved significantly. The &#x2F;proc filesystem can now support more than 64k processes.</p>
+</li>
+<li><p>The way the kernel signals termination of a thread makes it possible for pthread_join to return after the child is really dead,i.e., all TSD destructors ran, and therefore stack memory can be reused, which is important if the stack was allocated by the user.</p>
+</li>
+</ul>
+<p>‍</p>
+<h3 id="Results"><a href="#Results" class="headerlink" title="Results"></a><strong>Results</strong></h3><p>This section presents the results of two completely different measurements. The first set is a measurement of the time needed for thread creation and<br>destruction. The second measurement concerns itself with measuring the handling of lock contention.</p>
+<h5 id="Thread-Creation-and-Destruction-Timing"><a href="#Thread-Creation-and-Destruction-Timing" class="headerlink" title="Thread Creation and Destruction Timing"></a>Thread Creation and Destruction Timing</h5><p>What is measured is simply the time to create and destroy threads under various conditions. The first variable in this testis the number of threads which exist at one time. If the maximum number of parallel threads is reached, the program waits for a thread to terminate before creating a new one. This keeps resource requirements at a manageable level. New threads are created by possibly more than one thread; the exact number is the second variable in the test series.</p>
+<p>The tests performed were:</p>
+<ul>
+<li>for 1 to 20 top level threads creating new threads</li>
+<li>create for each top level thread up to 1 to 10 children</li>
+</ul>
+<p>The number of times we repeated the thread creation operation is 100,000 - this was only done to get a measurable test time and should not be confused with earlier tests that tended to start up 100,000 parallel threads at once. The result is a table measuring 200 execution times. Each time is indexed with the number of top level threads and the maximum number of threads each top level thread can create before having to wait for one to finish. The created threads do no work at all,they just finish.</p>
+<p>The results of the benchmark runs are summarized in two tables. In both cases we flatten one dimension of the measurement result matrix with a minimal function. Figure 1 (see page 18) shows the result for the different number of top level threads creating the actual threads we count. The value used is the minimal time required of all the runs with different numbers of threads which can run in parallel. What we can see is that NGPT is indeed a significant improvement over Linux Threads; NGPT is twice as fast. The thread creation process of Linux Threads was really complicated and slow, so it is surprising that a difference to NPTL is so large (a factor of four).The second summary looks similar. Figure 2 (see page19) shows the minimum time needed based on the number of top level threads. The optimal number of threads which are used by each top level thread determines the time.</p>
+<p>In Figure 2 we see thescalability effects. If too many threads in parallel try to create even more threads all implementations are impacted, some more, some less.</p>
+<h5 id="Contention-Handling"><a href="#Contention-Handling" class="headerlink" title="Contention Handling"></a>Contention Handling</h5><p>Figure 3 (see page 20) shows timings of a program which creates 32 threads<br>and a variable number of critical regions which the threads try to enter, a total of 50,000 times [csfast]. The fewer critical regions that exist, the higher the probability of contention.</p>
+<p>Figure 3 shows significant variations even though the numbers are averages<br>over 6 runs. These differences are caused by scheduling effects which affect all programs. These threads are not responsible for real work and instead spend all of their execution time creating scheduling situations (like blocking on a mutex). The results for the two kernel versions show that:</p>
+<ul>
+<li>the times for NPTL are significantly lower than those for Linux Threads.</li>
+<li>the 2.4.20-2.21 kernel has a scheduler which was changed to handle new situations that frequent use offutexes create. Similar changes will be made for the 2.5 development kernel. The message from this development is that tuning of the kernel scheduler is necessary and provides significant gains. There is no reason to believe the code in 2.4.20-2.21 is in any way optimal.</li>
+<li>the expected asymptotic behavior is visible.</li>
+</ul>
+<p>‍</p>
+<h2 id="Remaining-Challenges"><a href="#Remaining-Challenges" class="headerlink" title="Remaining Challenges"></a>Remaining Challenges</h2><p>A few challenges remain before 100% POSIX compliance can be achieved. The selection of a remedy path will depend on how well a solution fits into the Linux kernel implementation. The setuid and setgid families of system calls must affect the entire process and not just the initial thread.</p>
+<p>The nice level is a process-wide property. After adjusting it, all threads in the<br>process must be affected. The CPU usage limit, which can be selected with<br>setrlimit, limits the time spent by all threads in the process together. Real time support is mostly missing from the library implementation. The system calls to select scheduling parameters are available but they have no guaranteed effect as large parts of the kernel do not follow the rules for realtime scheduling. For instance, waking one of the threads that is waiting for a futex is done without looking at the priorities of the threads in the queue. There are additional places where the kernel misses appropriate realtime support. For this reason the NPTL does not attempt to support something which cannot be achieved at the kernel level.</p>
+<p>The library implementation contains a number of places with tunable variables. In real world situations reasonable default values must be determined.</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/08/17/0064-%E4%B8%80%E4%B8%AAhexo%E4%B8%80%E9%94%AE%E6%8E%A8%E9%80%81%E7%9A%84%E8%84%9A%E6%9C%AC/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-08-19 15:46:54
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#Abstract"><span class="toc-text">Abstract</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Table-of-Contents"><span class="toc-text">Table of Contents</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#The-Initial-Implementation"><span class="toc-text">The Initial Implementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Improvements-Over-Time"><span class="toc-text">Improvements Over Time</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Problems-with-the-Existing-Implementation"><span class="toc-text">Problems with the Existing Implementation</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Goals-For-A-New-Implementation"><span class="toc-text">Goals For A New Implementation</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#POSIX-compliance"><span class="toc-text">POSIX compliance</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Effective-use-of-SMP"><span class="toc-text">Effective use of SMP</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Low-startup-cost"><span class="toc-text">Low startup cost</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Low-link-in-cost"><span class="toc-text">Low link-in cost</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Binary-compatibility"><span class="toc-text">Binary compatibility</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Hardware-Scalability"><span class="toc-text">Hardware Scalability</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Software-Scalability"><span class="toc-text">Software Scalability</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Machine-Architecture-Support"><span class="toc-text">Machine Architecture Support</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#NUMA-Support"><span class="toc-text">NUMA Support</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Integration-With-C"><span class="toc-text">Integration With C++</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Design-Decisions"><span class="toc-text">Design Decisions</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-on-1-vs-M-on-N"><span class="toc-text">1-on-1 vs. M-on-N</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Signal-Handling"><span class="toc-text">Signal Handling</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Helper-Manager-Thread-or-Not"><span class="toc-text">Helper&#x2F;Manager Thread or Not</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#List-of-all-Threads"><span class="toc-text">List of all Threads</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Synchronization-Primitives"><span class="toc-text">Synchronization Primitives</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Memory-Allocation"><span class="toc-text">Memory Allocation</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Kernel-Improvements"><span class="toc-text">Kernel Improvements</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Results"><span class="toc-text">Results</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#Thread-Creation-and-Destruction-Timing"><span class="toc-text">Thread Creation and Destruction Timing</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#Contention-Handling"><span class="toc-text">Contention Handling</span></a></li></ol></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Remaining-Challenges"><span class="toc-text">Remaining Challenges</span></a>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Tech Space</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索中...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + %E5%85%A8%E6%96%87%E7%BF%BB%E8%AF%91%20The%20Native%20POSIX%20Thread%20Library%20for%20Linux + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F19%2F0065-%25E5%2585%25A8%25E6%2596%2587%25E7%25BF%25BB%25E8%25AF%2591-The-Native-POSIX-Thread-Library-for-Linux%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/19/0065-%E5%85%A8%E6%96%87%E7%BF%BB%E8%AF%91-The-Native-POSIX-Thread-Library-for-Linux/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
