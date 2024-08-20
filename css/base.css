@@ -16,13 +16,24 @@ body.hidden {
   padding-right: 6px;
 }
 
-.markdown-body {
+/* .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
   line-height: 2;
   color: #24292e;
   font-size: 1.6rem;
   line-height: 2;
+  word-wrap: break-word;
+  color: var(--color-text-md-content)
+} */
+
+.markdown-body {
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  line-height: 1.5;
+  color: #24292e;
+  font-size: 1.6rem;
+  line-height: 1.5;
   word-wrap: break-word;
   color: var(--color-text-md-content)
 }
