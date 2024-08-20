@@ -926,7 +926,7 @@ figure .pin-copy {
   padding: 10px;
   overflow: auto;
   font-size: 90%;
-  line-height: 1.8;
+  line-height: 1.5;
   background-color: var(--bg-block-md-pre);
   border-radius: 5px;
 }
@@ -1560,7 +1560,7 @@ a:hover {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  line-height: 2;
+  line-height: 1.5;
 }
 
 .toc-link {
