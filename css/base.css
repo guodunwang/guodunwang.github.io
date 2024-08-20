@@ -30,10 +30,10 @@ body.hidden {
 .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  line-height: 1.5;
+  line-height: 1.2;
   color: #24292e;
   font-size: 1.6rem;
-  line-height: 1.5;
+  line-height: 1.2;
   word-wrap: break-word;
   color: var(--color-text-md-content)
 }
@@ -495,7 +495,7 @@ a:hover {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
-  line-height: 1.5;
+  line-height: 1.2;
 }
 
 .toc-link {
