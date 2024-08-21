@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en" color-mode="light">
+
+  <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="muxunting" />
+  <!-- Open Graph Description 简短摘要-->
+  
+  <!-- 用于搜索引擎的文章摘要 -->
+  
+  
+  
+  <title>
+    
+      postgresql系列之编译安装-步骤拆解 
+      
+      
+      |
+    
+     Tech Space
+  </title>
+
+  
+    <link rel="apple-touch-icon" href="/images/favicon.png">
+    <link rel="icon" href="/images/favicon.png">
+  
+
+  <!-- Raleway-Font -->
+  <link href="https://fonts.googleapis.com/css?family=Raleway&display=swap" rel="stylesheet">
+
+  <!-- hexo site css -->
+  <link rel="stylesheet" href="/css/main.css" />
+  <link rel="stylesheet" href="//at.alicdn.com/t/font_1886449_67xjft27j1l.css" />
+  <!-- 代码块风格 -->
+  
+
+  <!-- jquery3.3.1 -->
+  
+    <script defer type="text/javascript" src="/plugins/jquery.min.js"></script>
+  
+
+  <!-- fancybox -->
+  
+    <link href="/plugins/jquery.fancybox.min.css" rel="stylesheet">
+    <script defer type="text/javascript" src="/plugins/jquery.fancybox.min.js"></script>
+  
+  
+<script src="/js/fancybox.js"></script>
+
+
+  
+
+  
+
+  <script>
+    var html = document.documentElement
+    const colorMode = localStorage.getItem('color-mode')
+    if (colorMode) {
+      document.documentElement.setAttribute('color-mode', colorMode)
+    }
+  </script>
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+
+  <body>
+    <div id="app">
+      <div class="header">
+  <div class="avatar">
+    <a href="/">
+      <!-- 头像取消懒加载，添加no-lazy -->
+      
+        <img src="/images/avatar.png" alt="">
+      
+    </a>
+    <div class="nickname"><a href="/">Tech Space</a></div>
+  </div>
+  <div class="navbar">
+    <ul>
+      
+        <li class="nav-item" data-path="/">
+          <a href="/">Home</a>
+        </li>
+      
+        <li class="nav-item" data-path="/archives/">
+          <a href="/archives/">Archives</a>
+        </li>
+      
+        <li class="nav-item" data-path="/categories/">
+          <a href="/categories/">Categories</a>
+        </li>
+      
+        <li class="nav-item" data-path="/diary/">
+          <a href="/diary/">Diary</a>
+        </li>
+      
+        <li class="nav-item" data-path="/friends/">
+          <a href="/friends/">Friends</a>
+        </li>
+      
+        <li class="nav-item" data-path="/todo/">
+          <a href="/todo/">ToDo</a>
+        </li>
+      
+        <li class="nav-item" data-path="/interview/">
+          <a href="/interview/">Interview</a>
+        </li>
+      
+        <li class="nav-item" data-path="/about/">
+          <a href="/about/">About</a>
+        </li>
+      
+    </ul>
+  </div>
+</div>
+
+
+<script src="/js/activeNav.js"></script>
+
+
+
+      <div class="flex-container">
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
+
+
+  <!-- LaTex Display -->
+
+  
+    <script async type="text/javascript" src="/plugins/mathjax/tex-chtml.js"></script>
+  
+  <script>
+    MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']]
+      }
+    }
+  </script>
+
+
+
+
+
+  <!-- clipboard -->
+
+  
+    <script async type="text/javascript" src="/plugins/clipboard.min.js"></script>
+  
+  
+<script src="/js/codeCopy.js"></script>
+
+
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  <!-- 文章内容页 url形式：https://yoursite/文章标题/ -->
+  <div class="container post-details" id="post-details">
+    <div class="post-content">
+      <div class="post-title">postgresql系列之编译安装-步骤拆解</div>
+      <div class="post-attach">
+        <span class="post-pubtime">
+          <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+          2024-08-21 15:18:30
+        </span>
+        
+      </div>
+      <div class="markdown-body">
+        <ul>
+<li>基本按照这个步骤来的：<a target="_blank" rel="noopener" href="https://blog.frognew.com/2021/11/postgresql-get-started.html">https://blog.frognew.com/2021/11/postgresql-get-started.html</a></li>
+<li>本文目的不仅仅在于普通的安装，而更加侧重于“是什么”，“为什么”。</li>
+<li>我这一步在安装什么？我为什么要这么安装？必要吗？这一步的配置可选吗？等等问题。</li>
+</ul>
+<hr>
+<h2 id="正式步骤"><a href="#正式步骤" class="headerlink" title="正式步骤"></a>正式步骤</h2><h4 id="一-下载源码包并解压"><a href="#一-下载源码包并解压" class="headerlink" title="一. 下载源码包并解压"></a>一. 下载源码包并解压</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -O -k https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar -zxvf postgresql-16.1.tar.gz</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明：</strong></p>
+<p>下载解压没有什么好说的。curl和tar的用法自己去看。</p>
+<h4 id="二-安装编译工具及相关依赖"><a href="#二-安装编译工具及相关依赖" class="headerlink" title="二. 安装编译工具及相关依赖"></a>二. 安装编译工具及相关依赖</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install make gcc bison g++ libreadline-dev \</span><br><span class="line">  zlib1g zlib1g-dev perl libperl-dev libsystemd-dev libicu-dev acl</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明，依次介绍一下这些库：</strong></p>
+<ul>
+<li><p>make：自动化编译工具，用于管理和构建大型程序。</p>
+</li>
+<li><p>gcc：GNU Compiler Collection，主要用于编译C</p>
+</li>
+<li><p>bision：GNU的语法分析器生成器,用于创建解析器。</p>
+</li>
+<li><p>g++:</p>
+<ul>
+<li>GCC的C++编译器。</li>
+</ul>
+</li>
+<li><p>libreadline-dev:</p>
+<ul>
+<li>GNU readline库的开发文件,用于命令行编辑和历史功能。</li>
+</ul>
+</li>
+<li><p>zlib1g 和 zlib1g-dev:</p>
+<ul>
+<li>数据压缩库及其开发文件。</li>
+</ul>
+</li>
+<li><p>perl:</p>
+<ul>
+<li>广泛使用的脚本语言。</li>
+</ul>
+</li>
+<li><p>libperl-dev:</p>
+<ul>
+<li>Perl语言的开发库。</li>
+</ul>
+</li>
+<li><p>libsystemd-dev:</p>
+<ul>
+<li>systemd系统和服务管理器的开发库。</li>
+</ul>
+</li>
+<li><p>libicu-dev:</p>
+<ul>
+<li>International Components for Unicode (ICU)库的开发文件,用于Unicode和全球化支持。</li>
+</ul>
+</li>
+<li><p>acl:</p>
+<ul>
+<li>Access Control Lists,用于文件系统的访问控制。</li>
+</ul>
+</li>
+</ul>
+<p>RedHat系相关的命令是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo yum install -y make gcc bison gcc-c++ readline readline-devel zlib zlib-devel systemd-devel libicu-devel</span><br></pre></td></tr></table></figure>
+
+<h4 id="三-在服务器上额外创建postgres用户"><a href="#三-在服务器上额外创建postgres用户" class="headerlink" title="三. 在服务器上额外创建postgres用户"></a>三. 在服务器上额外创建postgres用户</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">useradd -m postgres</span><br></pre></td></tr></table></figure>
+
+<p>下面是创建postgresql相关目录：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir /home/postgres/data</span><br><span class="line">mkdir /home/postgres/init</span><br><span class="line">chown -R postgres:postgres /home/postgres</span><br></pre></td></tr></table></figure>
+
+<p><strong>命令说明：</strong></p>
+<ul>
+<li><p>这边为什么要单独为postgres设置一个用户呢。</p>
+</li>
+<li><p>​<code>/home/postgres/data</code>​是可以作为数据库的数据目录</p>
+</li>
+<li><p>​<code> /home/postgres/init</code>​的用处(可能)</p>
+<ul>
+<li>初始化脚本：可能包含在PostgreSQL服务启动时需要执行的SQL脚本或shell脚本。</li>
+<li>配置文件：可能存储一些自定义的配置文件。</li>
+<li>临时文件：在数据库初始化过程中可能用到的临时文件。</li>
+</ul>
+</li>
+</ul>
+<h4 id="四-编译安装PostgreSQL"><a href="#四-编译安装PostgreSQL" class="headerlink" title="四. 编译安装PostgreSQL"></a>四. 编译安装PostgreSQL</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cd postgresql-16.1</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/lib</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">./configure --with-pgport=5432 \</span><br><span class="line">  --prefix=/usr/local/pgsql \</span><br><span class="line">  --with-systemd \</span><br><span class="line">  --with-segsize=16 \</span><br><span class="line">  --with-blocksize=8 \</span><br><span class="line">  --with-wal-blocksize=8 \</span><br><span class="line">  --datadir=/home/postgres/init</span><br></pre></td></tr></table></figure>
+
+<p>可能有个疑问，原文中的这个datadir选项是不是搞错了，为什么设置成为init。别急，其实没搞错。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">make</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo make install</span><br></pre></td></tr></table></figure>
+
+<p><strong>说明：</strong></p>
+<ul>
+<li><p>​<code>LD_LIBRARY_PATH</code>​是一个用于指定动态链接库（shared library）的搜索路径的环境变量。当程序启动时，动态链接器会在这些目录中查找程序所需的共享库。</p>
+</li>
+<li><p>​<code>--with-pgport=5432</code>​</p>
+<p>设置PostgreSQL服务器的默认监听端口为5432</p>
+</li>
+<li><p>​<code>--prefix=/usr/local/pgsql</code></p>
+<p>指定安装目录的前缀路径,PostgreSQL将安装到这个目录下。</p>
+</li>
+<li><p>​<code>--with-systemd</code></p>
+<p>启用systemd支持,允许使用systemd管理PostgreSQL服务</p>
+</li>
+<li><p>​<code>--with-segsize=SEGSIZE</code>​设置数据库段大小（以GB为单位）。大型表分为多个操作系统文件，每个文件的大小等于段大小。建议（尽管不是绝对必需）此值为2的幂。这样可以避免许多平台上存在的文件大小限制问题。默认段大小1GB，在所有受支持的平台上都是安全的。如果您的操作系统具有“大文件”支持（现在大多数都支持），则可以使用更大的段大小。这有助于减少处理非常大的表时消耗的文件描述符数。请注意，更改此值会破坏磁盘上的数据库兼容性，这意味着您无法用于 pg_upgrade 升级到具有不同段大小的内部版本。</p>
+</li>
+<li><p>​<code>--with-blocksize=BLOCKSIZE</code>​设置块大小（以KB为单位）。这是表中的存储和I&#x2F;O单元，是数据存储的基本单位。默认值8KB适用于大多数情况;但其他值在特殊情况下可能有用。该值必须是介于1和32（千字节）之间的2次幂。请注意，更改此值会破坏磁盘上的数据库兼容性，这意味着您无法用于pg_upgrade升级到具有不同块大小的生内部版本。</p>
+</li>
+<li><p>​<code>--with-wal-blocksize=WALBLOCKSIZE</code>​设置WAL(预写式日志)块大小（以KB为单位）。这是WAL日志中的存储和 I&#x2F;O 单元。默认值8KB适用于大多数情况;但其他值在特殊情况下可能有用。该值必须是介于1和64（千字节）之间的2次方。请注意，更改此值会破坏磁盘数据库兼容性，这意味着您无法用于 pg_upgrade 升级到具有不同WAL块大小的版本。</p>
+</li>
+<li><p>指定数据目录的位置。注意,这通常用于指定实际的数据存储位置,而不是初始化脚本目录。</p>
+</li>
+</ul>
+<h4 id="五-初始化数据库设置"><a href="#五-初始化数据库设置" class="headerlink" title="五. 初始化数据库设置"></a>五. 初始化数据库设置</h4><p>首先切换到<code>postgres</code>​用户中：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su - postgres</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/local/pgsql/bin/initdb -D /home/postgres/data</span><br></pre></td></tr></table></figure>
+
+<p>创建systemd配置文件<code>/etc/systemd/system/postgresql.service</code>​:</p>
+<p>如果在postgres用户下的话，不要忘了在一个别的具有sudo权限的账户下将其加入sudo用户组：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo usermod -aG sudo postgres</span><br></pre></td></tr></table></figure>
+
+<p>ok，接下来继续操作</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/systemd/system/postgresql.service</span><br></pre></td></tr></table></figure>
+
+<p>文件内容为：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=PostgreSQL database server</span><br><span class="line">Documentation=man:postgres(1)</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">User=postgres</span><br><span class="line">ExecStart=/usr/local/pgsql/bin/postgres -D /home/postgres/data</span><br><span class="line">ExecReload=/bin/kill -HUP $MAINPID</span><br><span class="line">KillMode=mixed</span><br><span class="line">KillSignal=SIGINT</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<p>配置开机启动并启动PostgreSQL：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl enable postgresql --now</span><br></pre></td></tr></table></figure>
+
+<p>查看postgresql运行状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemctl status postgresql</span><br></pre></td></tr></table></figure>
+
+<!-- ​![image](assets/image-20240821133402-usszfq1.png)​ -->
+<!-- ![alt text](../../pictures/image-20240821133402-usszfq1.png) -->
+<p><img src="https://4blog.s3.bitiful.net/image-20240821133402-usszfq1.png"></p>
+<p><strong>说明：</strong></p>
+<ol>
+<li><p>关于initdb工具</p>
+<blockquote>
+<p>这行命令是用来初始化PostgreSQL数据库集群的。让我详细解释一下：</p>
+<p>​<code>/usr/local/pgsql/bin/initdb -D /home/postgres/data</code>​</p>
+<ol>
+<li><p>​<code>/usr/local/pgsql/bin/initdb</code>​</p>
+<ul>
+<li>这是PostgreSQL的<code>initdb</code>​工具的完整路径。</li>
+<li>​<code>initdb</code>​是用来初始化一个新的PostgreSQL数据库集群的工具。</li>
+</ul>
+</li>
+<li><p>​<code>-D /home/postgres/data</code>​</p>
+<ul>
+<li>​<code>-D</code>​选项用来指定数据目录的位置。</li>
+<li>​<code>/home/postgres/data</code>​是新数据库集群将要创建的目录。</li>
+</ul>
+</li>
+</ol>
+<p>这个命令的作用是：</p>
+<ol>
+<li>创建数据目录：如果<code>/home/postgres/data</code>​目录不存在，它会被创建。</li>
+<li>初始化数据库集群：在指定的目录中创建所有必要的子目录和文件。</li>
+<li>创建系统表：初始化PostgreSQL所需的系统表和视图。</li>
+<li>创建模板数据库：设置<code>template0</code>​和<code>template1</code>​数据库。</li>
+<li>生成配置文件：在数据目录中创建初始的<code>postgresql.conf</code>​和<code>pg_hba.conf</code>​文件。</li>
+<li>设置默认区域设置：根据系统环境设置默认的字符集和排序规则。</li>
+<li>创建初始用户：通常会创建一个超级用户，默认名称通常是运行这个命令的系统用户名。</li>
+</ol>
+<p>执行这个命令后，一个新的PostgreSQL数据库集群就准备好了，可以启动PostgreSQL服务器并开始创建数据库和表了。</p>
+<p>注意：</p>
+<ul>
+<li>运行这个命令的用户需要有足够的权限来创建和写入指定的数据目录。</li>
+<li>数据目录应该是空的，或者不存在（命令会创建它）。</li>
+<li>这个命令只需要在首次设置PostgreSQL时运行一次。之后的日常操作不需要重复执行这个命令。</li>
+</ul>
+</blockquote>
+</li>
+</ol>
+<p>‍</p>
+<h4 id="六-生成简易一键安装脚本"><a href="#六-生成简易一键安装脚本" class="headerlink" title="六. 生成简易一键安装脚本"></a>六. 生成简易一键安装脚本</h4><p>就是简单的组合一下，倒也没什么用处，主要是为了便于我看。主要是有助于一目了然。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">curl -O -k https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz</span><br><span class="line"></span><br><span class="line">tar -zxvf postgresql-16.1.tar.gz</span><br><span class="line"></span><br><span class="line">sudo apt install make gcc bison g++ libreadline-dev \</span><br><span class="line">  zlib1g zlib1g-dev perl libperl-dev libsystemd-dev libicu-dev acl</span><br><span class="line"></span><br><span class="line">useradd -m postgres</span><br><span class="line"></span><br><span class="line">mkdir /home/postgres/data &amp;&amp; mkdir /home/postgres/init</span><br><span class="line">chown -R postgres:postgres /home/postgres</span><br><span class="line"></span><br><span class="line">cd postgresql-16.1</span><br><span class="line"></span><br><span class="line">export LD_LIBRARY_PATH=/usr/lib</span><br><span class="line"></span><br><span class="line">./configure --with-pgport=5432 \</span><br><span class="line">  --prefix=/usr/local/pgsql \</span><br><span class="line">  --with-systemd \</span><br><span class="line">  --with-segsize=16 \</span><br><span class="line">  --with-blocksize=8 \</span><br><span class="line">  --with-wal-blocksize=8 \</span><br><span class="line">  --datadir=/home/postgres/init</span><br><span class="line"></span><br><span class="line">make</span><br><span class="line"></span><br><span class="line">sudo make install</span><br><span class="line"></span><br><span class="line">sudo usermod -aG sudo postgres</span><br><span class="line"></span><br><span class="line">su - postgres</span><br><span class="line"></span><br><span class="line">/usr/local/pgsql/bin/initdb -D /home/postgres/data</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">注意, 下面的写法会覆盖文件。</span></span><br><span class="line">sudo tee /etc/systemd/system/postgresql.service &lt;&lt; EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=PostgreSQL database server</span><br><span class="line">Documentation=man:postgres(1)</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">User=postgres</span><br><span class="line">ExecStart=/usr/local/pgsql/bin/postgres -D /home/postgres/data</span><br><span class="line">ExecReload=/bin/kill -HUP \$MAINPID</span><br><span class="line">KillMode=mixed</span><br><span class="line">KillSignal=SIGINT</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">systemctl enable postgresql --now</span><br><span class="line"></span><br><span class="line">systemctl status postgresql</span><br></pre></td></tr></table></figure>
+
+<p>基本流程是这样，现在我们让GPT润色一下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">请你润色如下脚本，1. 整个shell脚本要显得更加专业。 2. 让部分实现更加优雅一点</span><br><span class="line">3. 请你在标准输出和日志中记录，说明每一步都在做什么。4. 增强整体脚本的健壮性。</span><br></pre></td></tr></table></figure>
+
+<h6 id="DeepSeek的原结果"><a href="#DeepSeek的原结果" class="headerlink" title="DeepSeek的原结果"></a>DeepSeek的原结果</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置日志文件路径</span></span><br><span class="line">LOG_FILE=&quot;/var/log/postgresql_install.log&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">函数：记录日志并输出到标准输出</span></span><br><span class="line">log_info() &#123;</span><br><span class="line">    echo &quot;$(date &#x27;+%Y-%m-%d %H:%M:%S&#x27;) - $1&quot; | tee -a $LOG_FILE</span><br><span class="line">&#125;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">函数：错误处理</span></span><br><span class="line">handle_error() &#123;</span><br><span class="line">    log_info &quot;错误：$1&quot;</span><br><span class="line">    exit 1</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">log_info &quot;开始安装 PostgreSQL 16.1&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载 PostgreSQL 源码包</span></span><br><span class="line">log_info &quot;下载 PostgreSQL 源码包...&quot;</span><br><span class="line">curl -O -k https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz || handle_error &quot;下载失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压源码包</span></span><br><span class="line">log_info &quot;解压源码包...&quot;</span><br><span class="line">tar -zxvf postgresql-16.1.tar.gz || handle_error &quot;解压失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装依赖包</span></span><br><span class="line">log_info &quot;安装依赖包...&quot;</span><br><span class="line">sudo apt update &amp;&amp; sudo apt install -y make gcc bison g++ libreadline-dev zlib1g zlib1g-dev perl libperl-dev libsystemd-dev libicu-dev acl || handle_error &quot;依赖包安装失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建 postgres 用户和数据目录</span></span><br><span class="line">log_info &quot;创建 postgres 用户和数据目录...&quot;</span><br><span class="line">useradd -m postgres || handle_error &quot;创建用户失败&quot;</span><br><span class="line">mkdir -p /home/postgres/data /home/postgres/init || handle_error &quot;创建目录失败&quot;</span><br><span class="line">chown -R postgres:postgres /home/postgres || handle_error &quot;修改目录权限失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编译和安装 PostgreSQL</span></span><br><span class="line">cd postgresql-16.1 || handle_error &quot;进入源码目录失败&quot;</span><br><span class="line">log_info &quot;配置编译选项...&quot;</span><br><span class="line">export LD_LIBRARY_PATH=/usr/lib</span><br><span class="line">./configure --with-pgport=5432 --prefix=/usr/local/pgsql --with-systemd --with-segsize=16 --with-blocksize=8 --with-wal-blocksize=8 --datadir=/home/postgres/init || handle_error &quot;配置失败&quot;</span><br><span class="line">log_info &quot;编译源码...&quot;</span><br><span class="line">make || handle_error &quot;编译失败&quot;</span><br><span class="line">log_info &quot;安装 PostgreSQL...&quot;</span><br><span class="line">sudo make install || handle_error &quot;安装失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 postgres 用户添加到 <span class="built_in">sudo</span> 用户组</span></span><br><span class="line">log_info &quot;将 postgres 用户添加到 sudo 用户组...&quot;</span><br><span class="line">sudo usermod -aG sudo postgres || handle_error &quot;添加用户到 sudo 用户组失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">初始化数据库</span></span><br><span class="line">log_info &quot;初始化数据库...&quot;</span><br><span class="line">su - postgres -c &quot;/usr/local/pgsql/bin/initdb -D /home/postgres/data&quot; || handle_error &quot;初始化数据库失败&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建 systemd 服务文件</span></span><br><span class="line">log_info &quot;创建 systemd 服务文件...&quot;</span><br><span class="line">sudo tee /etc/systemd/system/postgresql.service &lt;&lt; EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=PostgreSQL database server</span><br><span class="line">Documentation=man:postgres(1)</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">User=postgres</span><br><span class="line">ExecStart=/usr/local/pgsql/bin/postgres -D /home/postgres/data</span><br><span class="line">ExecReload=/bin/kill -HUP \$MAINPID</span><br><span class="line">KillMode=mixed</span><br><span class="line">KillSignal=SIGINT</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动并启用 PostgreSQL 服务</span></span><br><span class="line">log_info &quot;启动并启用 PostgreSQL 服务...&quot;</span><br><span class="line">sudo systemctl enable postgresql --now || handle_error &quot;启动服务失败&quot;</span><br><span class="line">sudo systemctl status postgresql || handle_error &quot;检查服务状态失败&quot;</span><br><span class="line"></span><br><span class="line">log_info &quot;PostgreSQL 16.1 安装完成&quot;</span><br></pre></td></tr></table></figure>
+
+<h6 id="ChatGPT的原结果："><a href="#ChatGPT的原结果：" class="headerlink" title="ChatGPT的原结果："></a>ChatGPT的原结果：</h6><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">!/bin/bash</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">设置脚本出错时终止执行</span></span><br><span class="line">set -euo pipefail</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">定义日志文件</span></span><br><span class="line">LOG_FILE=&quot;/var/log/postgresql_install.log&quot;</span><br><span class="line">exec &gt; &gt;(tee -a &quot;$LOG_FILE&quot;) 2&gt;&amp;1</span><br><span class="line"></span><br><span class="line">echo &quot;开始安装 PostgreSQL 16.1&quot;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">下载并验证 PostgreSQL 源码包</span></span><br><span class="line">POSTGRES_URL=&quot;https://ftp.postgresql.org/pub/source/v16.1/postgresql-16.1.tar.gz&quot;</span><br><span class="line">echo &quot;Downloading PostgreSQL 16.1 from $POSTGRES_URL&quot;</span><br><span class="line">if curl -fLO &quot;$POSTGRES_URL&quot;; then</span><br><span class="line">    echo &quot;PostgreSQL 16.1 下载成功&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;下载失败，请检查网络连接或 URL 是否正确&quot; &gt;&amp;2</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">解压源码包</span></span><br><span class="line">echo &quot;解压 PostgreSQL 源码包...&quot;</span><br><span class="line">tar -zxf postgresql-16.1.tar.gz</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">安装依赖包</span></span><br><span class="line">echo &quot;安装必要的依赖包...&quot;</span><br><span class="line">sudo apt update</span><br><span class="line">sudo apt install -y make gcc bison g++ libreadline-dev zlib1g-dev perl libperl-dev libsystemd-dev libicu-dev acl</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">添加 postgres 用户</span></span><br><span class="line">echo &quot;创建 postgres 用户...&quot;</span><br><span class="line">if id &quot;postgres&quot; &amp;&gt;/dev/null; then</span><br><span class="line">    echo &quot;postgres 用户已存在，跳过创建&quot;</span><br><span class="line">else</span><br><span class="line">    sudo useradd -m -s /bin/bash postgres</span><br><span class="line">fi</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建数据目录和初始化目录</span></span><br><span class="line">echo &quot;创建数据目录和初始化目录...&quot;</span><br><span class="line">sudo mkdir -p /home/postgres/data /home/postgres/init</span><br><span class="line">sudo chown -R postgres:postgres /home/postgres</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">配置 PostgreSQL</span></span><br><span class="line">echo &quot;开始配置 PostgreSQL...&quot;</span><br><span class="line">cd postgresql-16.1</span><br><span class="line">export LD_LIBRARY_PATH=/usr/lib</span><br><span class="line">./configure --with-pgport=5432 --prefix=/usr/local/pgsql --with-systemd --with-segsize=16 --with-blocksize=8 --with-wal-blocksize=8 --datadir=/home/postgres/init</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">编译并安装 PostgreSQL</span></span><br><span class="line">echo &quot;编译并安装 PostgreSQL...&quot;</span><br><span class="line">make -j &quot;$(nproc)&quot;</span><br><span class="line">sudo make install</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">将 postgres 用户添加到 <span class="built_in">sudo</span> 组</span></span><br><span class="line">echo &quot;将 postgres 用户添加到 sudo 组...&quot;</span><br><span class="line">sudo usermod -aG sudo postgres</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">初始化数据库</span></span><br><span class="line">echo &quot;初始化数据库...&quot;</span><br><span class="line">sudo -i -u postgres /usr/local/pgsql/bin/initdb -D /home/postgres/data</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">创建 systemd 服务文件</span></span><br><span class="line">echo &quot;配置 PostgreSQL systemd 服务...&quot;</span><br><span class="line">sudo tee /etc/systemd/system/postgresql.service &gt; /dev/null &lt;&lt;EOF</span><br><span class="line">[Unit]</span><br><span class="line">Description=PostgreSQL database server</span><br><span class="line">Documentation=man:postgres(1)</span><br><span class="line">After=network-online.target</span><br><span class="line">Wants=network-online.target</span><br><span class="line"></span><br><span class="line">[Service]</span><br><span class="line">Type=notify</span><br><span class="line">User=postgres</span><br><span class="line">ExecStart=/usr/local/pgsql/bin/postgres -D /home/postgres/data</span><br><span class="line">ExecReload=/bin/kill -HUP \$MAINPID</span><br><span class="line">KillMode=mixed</span><br><span class="line">KillSignal=SIGINT</span><br><span class="line"></span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br><span class="line">EOF</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启用并启动 PostgreSQL 服务</span></span><br><span class="line">echo &quot;启用并启动 PostgreSQL 服务...&quot;</span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl enable --now postgresql</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">检查 PostgreSQL 服务状态</span></span><br><span class="line">echo &quot;检查 PostgreSQL 服务状态...&quot;</span><br><span class="line">if sudo systemctl status postgresql | grep -q &quot;active (running)&quot;; then</span><br><span class="line">    echo &quot;PostgreSQL 已成功启动并运行&quot;</span><br><span class="line">else</span><br><span class="line">    echo &quot;PostgreSQL 启动失败，请检查日志以获取更多信息&quot; &gt;&amp;2</span><br><span class="line">    exit 1</span><br><span class="line">fi</span><br><span class="line"></span><br><span class="line">echo &quot;PostgreSQL 16.1 安装和配置完成&quot;</span><br></pre></td></tr></table></figure>
+
+<p>最终的可用版本：</p>
+<ul>
+<li><p><input disabled="" type="checkbox"> 
+这边我还没有验证，这边我只保证一个成功的结果有了就可以了。</p>
+<p>别的坑不管了，不管什么健壮性。</p>
+</li>
+</ul>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 参考文献</span></span></span><br><span class="line"></span><br><span class="line">1. [https://blog.frognew.com/2023/11/install-postgresql-16-from-source-code.html](https://blog.frognew.com/2023/11/install-postgresql-16-from-source-code.html)</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># 附录</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">### 额外碰到过的问题</span></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment">#### 1. libicu缺失的问题</span></span></span><br><span class="line"></span><br><span class="line">AGS_SL_MODULE... yes  </span><br><span class="line">checking whether the C compiler still works... yes  </span><br><span class="line">checking how to run the C preprocessor... gcc -E  </span><br><span class="line">checking for pkg-config... no  </span><br><span class="line">checking allow thread-safe client libraries... yes  </span><br><span class="line">checking whether to build with ICU support... yes  </span><br><span class="line">checking for icu-uc icu-i18n... no  </span><br><span class="line">configure: error: ICU library not found  </span><br><span class="line">If you have ICU already installed, see config.log for details on the  </span><br><span class="line">failure.  It is possible the compiler isn&#x27;t looking in the proper directory.  </span><br><span class="line">Use --without-icu to disable ICU support.</span><br><span class="line"></span><br><span class="line">```shell</span><br><span class="line">sudo apt install libicu-dev</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install libicu70</span><br></pre></td></tr></table></figure>
+
+<p>哪个命令起作用了，我也不太清楚。</p>
+<ol>
+<li><p>安装之后，在执行<code>./configure</code>​之前，不要忘记搞这个：</p>
+ <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">export LD_LIBRARY_PATH=/usr/lib</span><br></pre></td></tr></table></figure></li>
+<li><p>在<code>make install</code>​前面不要忘记加上sudo</p>
+<p> 也就是<code>sudo make install</code>​</p>
+</li>
+<li><p>下面是某个流程：</p>
+<blockquote>
+<p>guodalu@PC:~&#x2F;postgresql-16.1$ su - postgres<br>Password:<br>Welcome to Ubuntu 22.04.4 LTS (GNU&#x2F;Linux 5.15.153.1-microsoft-standard-WSL2 x86_64)</p>
+<ul>
+<li>Documentation:  <a target="_blank" rel="noopener" href="https://help.ubuntu.com/">https://help.ubuntu.com</a></li>
+<li>Management:     <a target="_blank" rel="noopener" href="https://landscape.canonical.com/">https://landscape.canonical.com</a></li>
+<li>Support:        <a target="_blank" rel="noopener" href="https://ubuntu.com/pro">https://ubuntu.com/pro</a></li>
+</ul>
+<p>This message is shown once a day. To disable it please create the<br>&#x2F;home&#x2F;postgres&#x2F;.hushlogin file.<br>$ &#x2F;usr&#x2F;local&#x2F;pgsql&#x2F;bin&#x2F;initdb -D &#x2F;home&#x2F;postgres&#x2F;data<br>The files belonging to this database system will be owned by user “postgres”.<br>This user must also own the server process.</p>
+<p>The database cluster will be initialized with locale “C.UTF-8”.<br>The default database encoding has accordingly been set to “UTF8”.<br>The default text search configuration will be set to “english”.</p>
+<p>Data page checksums are disabled.</p>
+<p>fixing permissions on existing directory &#x2F;home&#x2F;postgres&#x2F;data … ok<br>creating subdirectories … ok<br>selecting dynamic shared memory implementation … posix<br>selecting default max_connections … 100<br>selecting default shared_buffers … 128MB<br>selecting default time zone … Asia&#x2F;Shanghai<br>creating configuration files … ok<br>running bootstrap script … ok<br>performing post-bootstrap initialization … ok<br>syncing data to disk … ok</p>
+<p>initdb: warning: enabling “trust” authentication for local connections<br>initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or –auth-local and –auth-host, the next time you run initdb.</p>
+<p>Success. You can now start the database server using:</p>
+<pre><code>/usr/local/pgsql/bin/pg_ctl -D /home/postgres/data -l logfile start
+</code></pre>
+</blockquote>
+</li>
+<li><p>‍</p>
+</li>
+</ol>
+<p>‍</p>
+<h5 id="2-postgres账户下的两个目录的作用，联系和区别"><a href="#2-postgres账户下的两个目录的作用，联系和区别" class="headerlink" title="2. postgres账户下的两个目录的作用，联系和区别"></a>2. postgres账户下的两个目录的作用，联系和区别</h5><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">/usr/local/pgsql/bin/initdb -D /home/postgres/data 中的路径和./configure --with-pgport=5432 --prefix=/usr/local/pgsql --with-systemd --with-segsize=16 --with-blocksize=8 --with-wal-blocksize=8 --datadir=/home/postgres/init中的datadir的区别和联系是什么</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>你提出了一个很好的问题。这两个命令中的路径确实容易引起混淆。让我来解释它们的区别和联系：</p>
+<ol>
+<li><p>​<code>./configure</code>​ 命令中的 <code>--datadir=/home/postgres/init</code>​：</p>
+<ul>
+<li>在 <code>configure</code>​ 脚本中，<code>--datadir</code>​ 通常用于指定安装时的默认数据目录。</li>
+<li>然而，这个参数在 PostgreSQL 的 <code>configure</code>​ 脚本中的作用有些特殊。它主要影响一些辅助文件（如文档、示例配置文件等）的安装位置，而不是实际的数据存储位置。</li>
+<li>这个设置不会直接决定运行时数据库集群的位置。</li>
+</ul>
+</li>
+<li><p>​<code>initdb</code>​ 命令中的 <code>-D /home/postgres/data</code>​：</p>
+<ul>
+<li>这个参数直接指定了实际数据库集群的位置。</li>
+<li>这是 PostgreSQL 将存储所有数据文件、配置文件和日志文件的地方。</li>
+</ul>
+</li>
+</ol>
+<p>区别：</p>
+<ul>
+<li>​<code>configure</code>​ 中的 <code>--datadir</code>​ 主要影响安装过程和某些默认路径。</li>
+<li>​<code>initdb</code>​ 中的 <code>-D</code>​ 指定实际运行时数据库集群的位置。</li>
+</ul>
+<p>联系：</p>
+<ul>
+<li>虽然这两个路径可以设置为相同，但通常它们是不同的。</li>
+<li>​<code>configure</code>​ 的 <code>--datadir</code>​ 可能会影响一些默认配置文件中的路径设置，但不会直接决定数据库集群的位置。</li>
+</ul>
+<p>最佳实践：</p>
+<ol>
+<li>使用 <code>configure</code>​ 的 <code>--datadir</code>​ 来设置辅助文件的安装位置。</li>
+<li>使用 <code>initdb -D</code>​ 来明确指定实际的数据库集群位置。</li>
+<li>在生产环境中，通常会将实际的数据目录（通过 <code>initdb -D</code>​ 指定）设置在一个有足够空间和适当权限的位置。</li>
+</ol>
+<p>注意：在你的例子中，<code>/home/postgres/init</code>​ 和 <code>/home/postgres/data</code>​ 是两个不同的目录。确保你理解它们的不同用途，并在实际操作中正确使用。</p>
+<p>———————————————————————————来自Claude</p>
+</blockquote>
+<h5 id="3-etc-systemd-system-postgresql-service文件说明"><a href="#3-etc-systemd-system-postgresql-service文件说明" class="headerlink" title="3. &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;postgresql.service文件说明"></a>3. &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;postgresql.service文件说明</h5><blockquote>
+<p>这个文件是一个systemd服务单元配置文件，用于管理PostgreSQL数据库服务。让我逐行解释：</p>
+<p>[Unit] 部分:</p>
+<ol>
+<li><p>​<code>Description=PostgreSQL database server</code>​</p>
+<ul>
+<li>描述这个服务单元的用途。</li>
+</ul>
+</li>
+<li><p>​<code>Documentation=man:postgres(1)</code>​</p>
+<ul>
+<li>指向服务的文档，这里是postgres的man页。</li>
+</ul>
+</li>
+<li><p>​<code>After=network-online.target</code>​</p>
+<ul>
+<li>指定这个服务应该在网络在线后启动。</li>
+</ul>
+</li>
+<li><p>​<code>Wants=network-online.target</code>​</p>
+<ul>
+<li>表示这个服务想要（但不强制要求）网络在线。</li>
+</ul>
+</li>
+</ol>
+<p>[Service] 部分:<br>5. <code>Type=notify</code>​</p>
+<ul>
+<li>指定服务类型为notify，意味着服务会在就绪时通知systemd。</li>
+</ul>
+<ol start="6">
+<li><p>​<code>User=postgres</code>​</p>
+<ul>
+<li>指定运行服务的用户为postgres。</li>
+</ul>
+</li>
+<li><p>​<code>ExecStart=/usr/local/pgsql/bin/postgres -D /home/postgres/data</code>​</p>
+<ul>
+<li>指定启动服务时执行的命令，这里是启动PostgreSQL服务器。</li>
+</ul>
+</li>
+<li><p>​<code>ExecReload=/bin/kill -HUP $MAINPID</code>​</p>
+<ul>
+<li>指定重新加载服务时执行的命令。</li>
+</ul>
+</li>
+<li><p>​<code>KillMode=mixed</code>​</p>
+<ul>
+<li>指定如何停止服务，mixed模式会先尝试优雅停止，然后再强制终止。</li>
+</ul>
+</li>
+<li><p>​<code>KillSignal=SIGINT</code>​</p>
+<ul>
+<li>指定用于停止服务的信号。</li>
+</ul>
+</li>
+</ol>
+<p>[Install] 部分:<br>11. <code>WantedBy=multi-user.target</code>​<br>    - 指定这个服务应该在哪个target（一组服务）下启用，这里是多用户模式。</p>
+<p>这个配置文件定义了PostgreSQL服务如何被systemd管理，包括启动、停止、重载等操作。它确保PostgreSQL在系统启动时正确启动，并在系统关闭时正确停止。</p>
+<p>——————————————————————————————Claude</p>
+</blockquote>
+<p>‍</p>
+
+      </div>
+      
+        <div class="prev-or-next">
+          <div class="post-foot-next">
+            
+              <a href="/2024/08/19/0065-%E5%85%A8%E6%96%87%E7%BF%BB%E8%AF%91-The-Native-POSIX-Thread-Library-for-Linux/" target="_self">
+                <i class="iconfont icon-chevronleft"></i>
+                <span>Prev</span>
+              </a>
+            
+          </div>
+          <div class="post-attach">
+            <span class="post-pubtime">
+              <i class="iconfont icon-updatetime mr-10" title="Update time"></i>
+              2024-08-21 15:18:30
+            </span>
+            
+          </div>
+          <div class="post-foot-prev">
+            
+          </div>
+        </div>
+      
+    </div>
+    
+  <div id="btn-catalog" class="btn-catalog">
+    <i class="iconfont icon-catalog"></i>
+  </div>
+  <div class="post-catalog hidden" id="catalog">
+    <div class="title">Contents</div>
+    <div class="catalog-content">
+      
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E5%BC%8F%E6%AD%A5%E9%AA%A4"><span class="toc-text">正式步骤</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%80-%E4%B8%8B%E8%BD%BD%E6%BA%90%E7%A0%81%E5%8C%85%E5%B9%B6%E8%A7%A3%E5%8E%8B"><span class="toc-text">一. 下载源码包并解压</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%8C-%E5%AE%89%E8%A3%85%E7%BC%96%E8%AF%91%E5%B7%A5%E5%85%B7%E5%8F%8A%E7%9B%B8%E5%85%B3%E4%BE%9D%E8%B5%96"><span class="toc-text">二. 安装编译工具及相关依赖</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%B8%89-%E5%9C%A8%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8A%E9%A2%9D%E5%A4%96%E5%88%9B%E5%BB%BApostgres%E7%94%A8%E6%88%B7"><span class="toc-text">三. 在服务器上额外创建postgres用户</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%9B%9B-%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85PostgreSQL"><span class="toc-text">四. 编译安装PostgreSQL</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E4%BA%94-%E5%88%9D%E5%A7%8B%E5%8C%96%E6%95%B0%E6%8D%AE%E5%BA%93%E8%AE%BE%E7%BD%AE"><span class="toc-text">五. 初始化数据库设置</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%85%AD-%E7%94%9F%E6%88%90%E7%AE%80%E6%98%93%E4%B8%80%E9%94%AE%E5%AE%89%E8%A3%85%E8%84%9A%E6%9C%AC"><span class="toc-text">六. 生成简易一键安装脚本</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#DeepSeek%E7%9A%84%E5%8E%9F%E7%BB%93%E6%9E%9C"><span class="toc-text">DeepSeek的原结果</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#ChatGPT%E7%9A%84%E5%8E%9F%E7%BB%93%E6%9E%9C%EF%BC%9A"><span class="toc-text">ChatGPT的原结果：</span></a></li></ol></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-postgres%E8%B4%A6%E6%88%B7%E4%B8%8B%E7%9A%84%E4%B8%A4%E4%B8%AA%E7%9B%AE%E5%BD%95%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%8C%E8%81%94%E7%B3%BB%E5%92%8C%E5%8C%BA%E5%88%AB"><span class="toc-text">2. postgres账户下的两个目录的作用，联系和区别</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#3-etc-systemd-system-postgresql-service%E6%96%87%E4%BB%B6%E8%AF%B4%E6%98%8E"><span class="toc-text">3. &#x2F;etc&#x2F;systemd&#x2F;system&#x2F;postgresql.service文件说明</span></a></li></ol></li></ol></li></ol></li></ol>
+      
+    </div>
+  </div>
+
+  
+<script src="/js/catalog.js"></script>
+
+
+
+
+    
+      <div class="comments-container">
+        
+
+
+
+
+  
+    <script async type="text/javascript" src='https://cdn.jsdelivr.net/npm/valine@1.4.18/dist/Valine.min.js' onload="loadValineSuc(this)"></script>
+  
+
+  <div id="vcomments"></div>
+
+  <script>
+    function loadValineSuc() {
+      new Valine({
+        el: '#vcomments',
+        appId: 'RNUXg9CDnQHrUbIBL7BK9BZe-gzGzoHsz',
+        appKey: 'igEOxsrAKLMDPldTNfQBDFch',
+        placeholder: 'Welcome!',
+        avatar: 'retro',
+        lang: 'en'
+      })
+    }
+  </script>
+
+    <style>
+      .comments-container .v .vempty {
+        display: none!important;
+      }
+    </style>
+
+
+
+
+      </div>
+    
+  </div>
+
+
+        
+<div class="footer">
+  <div class="social">
+    <ul>
+      
+        <li>
+          
+              <a title="github" target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">
+                <i class="iconfont icon-github"></i>
+              </a>
+              
+        </li>
+        
+    </ul>
+  </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Copyright © 2024 Tech Space</a>
+        
+    </div>
+  
+    
+    <div class="footer-more">
+      
+        <a target="_blank" rel="noopener" href="https://github.com/zchengsite/hexo-theme-oranges">Theme by Oranges | Powered by Hexo</a>
+        
+    </div>
+  
+  
+</div>
+
+      </div>
+
+      <div class="tools-bar">
+        <div class="back-to-top tools-bar-item hidden">
+  <a href="javascript: void(0)">
+    <i class="iconfont icon-chevronup"></i>
+  </a>
+</div>
+
+
+<script src="/js/backtotop.js"></script>
+
+
+
+        
+  <div class="search-icon tools-bar-item" id="search-icon">
+    <a href="javascript: void(0)">
+      <i class="iconfont icon-search"></i>
+    </a>
+  </div>
+
+  <div class="search-overlay hidden">
+    <div class="search-content" tabindex="0">
+      <div class="search-title">
+        <span class="search-icon-input">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-search"></i>
+          </a>
+        </span>
+        
+          <input type="text" class="search-input" id="search-input" placeholder="搜索中...">
+        
+        <span class="search-close-icon" id="search-close-icon">
+          <a href="javascript: void(0)">
+            <i class="iconfont icon-close"></i>
+          </a>
+        </span>
+      </div>
+      <div class="search-result" id="search-result"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    var inputArea = document.querySelector("#search-input")
+    var searchOverlayArea = document.querySelector(".search-overlay")
+
+    inputArea.onclick = function() {
+      getSearchFile()
+      this.onclick = null
+    }
+
+    inputArea.onkeydown = function() {
+      if(event.keyCode == 13)
+        return false
+    }
+
+    function openOrHideSearchContent() {
+      let isHidden = searchOverlayArea.classList.contains('hidden')
+      if (isHidden) {
+        searchOverlayArea.classList.remove('hidden')
+        document.body.classList.add('hidden')
+        // inputArea.focus()
+      } else {
+        searchOverlayArea.classList.add('hidden')
+        document.body.classList.remove('hidden')
+      }
+    }
+
+    function blurSearchContent(e) {
+      if (e.target === searchOverlayArea) {
+        openOrHideSearchContent()
+      }
+    }
+
+    document.querySelector("#search-icon").addEventListener("click", openOrHideSearchContent, false)
+    document.querySelector("#search-close-icon").addEventListener("click", openOrHideSearchContent, false)
+    searchOverlayArea.addEventListener("click", blurSearchContent, false)
+
+    var searchFunc = function (path, search_id, content_id) {
+      'use strict';
+      var $input = document.getElementById(search_id);
+      var $resultContent = document.getElementById(content_id);
+      $resultContent.innerHTML = "<ul><span class='local-search-empty'>First search, index file loading, please wait...<span></ul>";
+      $.ajax({
+        // 0x01. load xml file
+        url: path,
+        dataType: "xml",
+        success: function (xmlResponse) {
+          // 0x02. parse xml file
+          var datas = $("entry", xmlResponse).map(function () {
+            return {
+              title: $("title", this).text(),
+              content: $("content", this).text(),
+              url: $("url", this).text()
+            };
+          }).get();
+          $resultContent.innerHTML = "";
+
+          $input.addEventListener('input', function () {
+            // 0x03. parse query to keywords list
+            var str = '<ul class=\"search-result-list\">';
+            var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+            $resultContent.innerHTML = "";
+            if (this.value.trim().length <= 0) {
+              return;
+            }
+            // 0x04. perform local searching
+            datas.forEach(function (data) {
+              var isMatch = true;
+              var content_index = [];
+              if (!data.title || data.title.trim() === '') {
+                data.title = "Untitled";
+              }
+              var orig_data_title = data.title.trim();
+              var data_title = orig_data_title.toLowerCase();
+              var orig_data_content = data.content.trim().replace(/<[^>]+>/g, "");
+              var data_content = orig_data_content.toLowerCase();
+              var data_url = data.url;
+              var index_title = -1;
+              var index_content = -1;
+              var first_occur = -1;
+              // only match artiles with not empty contents
+              if (data_content !== '') {
+                keywords.forEach(function (keyword, i) {
+                  index_title = data_title.indexOf(keyword);
+                  index_content = data_content.indexOf(keyword);
+
+                  if (index_title < 0 && index_content < 0) {
+                    isMatch = false;
+                  } else {
+                    if (index_content < 0) {
+                      index_content = 0;
+                    }
+                    if (i == 0) {
+                      first_occur = index_content;
+                    }
+                    // content_index.push({index_content:index_content, keyword_len:keyword_len});
+                  }
+                });
+              } else {
+                isMatch = false;
+              }
+              // 0x05. show search results
+              if (isMatch) {
+                str += "<li><a href='" + data_url + "' class='search-result-title'>" + orig_data_title + "</a>";
+                var content = orig_data_content;
+                if (first_occur >= 0) {
+                  // cut out 100 characters
+                  var start = first_occur - 20;
+                  var end = first_occur + 80;
+
+                  if (start < 0) {
+                    start = 0;
+                  }
+
+                  if (start == 0) {
+                    end = 100;
+                  }
+
+                  if (end > content.length) {
+                    end = content.length;
+                  }
+
+                  var match_content = content.substr(start, end);
+
+                  // highlight all keywords
+                  keywords.forEach(function (keyword) {
+                    var regS = new RegExp(keyword, "gi");
+                    match_content = match_content.replace(regS, "<span class=\"search-keyword\">" + keyword + "</span>");
+                  });
+
+                  str += "<p class=\"search-result-abstract\">" + match_content + "...</p>"
+                }
+                str += "</li>";
+              }
+            });
+            str += "</ul>";
+            if (str.indexOf('<li>') === -1) {
+              return $resultContent.innerHTML = "<ul><span class='local-search-empty'>No result<span></ul>";
+            }
+            $resultContent.innerHTML = str;
+          });
+        },
+        error: function(xhr, status, error) {
+          $resultContent.innerHTML = ""
+          if (xhr.status === 404) {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The search.xml file was not found, please refer to：<a href='https://github.com/zchengsite/hexo-theme-oranges#configuration' target='_black'>configuration</a><span></ul>";
+          } else {
+            $resultContent.innerHTML = "<ul><span class='local-search-empty'>The request failed, Try to refresh the page or try again later.<span></ul>";
+          }
+        }
+      });
+      $(document).on('click', '#search-close-icon', function() {
+        $('#search-input').val('');
+        $('#search-result').html('');
+      });
+    }
+
+    var getSearchFile = function() {
+        var path = "/search.xml";
+        searchFunc(path, 'search-input', 'search-result');
+    }
+  </script>
+
+
+
+
+        
+  <div class="tools-bar-item theme-icon" id="switch-color-scheme">
+    <a href="javascript: void(0)">
+      <i id="theme-icon" class="iconfont icon-moon"></i>
+    </a>
+  </div>
+
+  
+<script src="/js/colorscheme.js"></script>
+
+
+
+
+
+        
+  
+    <div class="share-icon tools-bar-item">
+      <a href="javascript: void(0)" id="share-icon">
+        <i class="iconfont iconshare"></i>
+      </a>
+      <div class="share-content hidden">
+        
+          <a class="share-item" href="https://twitter.com/intent/tweet?text=' + postgresql%E7%B3%BB%E5%88%97%E4%B9%8B%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-%E6%AD%A5%E9%AA%A4%E6%8B%86%E8%A7%A3 + '&url=' + http%3A%2F%2Fexample.com%2F2024%2F08%2F21%2F0066-postgresql%25E7%25B3%25BB%25E5%2588%2597%25E4%25B9%258B%25E7%25BC%2596%25E8%25AF%2591%25E5%25AE%2589%25E8%25A3%2585-%25E6%25AD%25A5%25E9%25AA%25A4%25E6%258B%2586%25E8%25A7%25A3%2F + '" target="_blank" title="Twitter">
+            <i class="iconfont icon-twitter"></i>
+          </a>
+        
+        
+          <a class="share-item" href="https://www.facebook.com/sharer.php?u=http://example.com/2024/08/21/0066-postgresql%E7%B3%BB%E5%88%97%E4%B9%8B%E7%BC%96%E8%AF%91%E5%AE%89%E8%A3%85-%E6%AD%A5%E9%AA%A4%E6%8B%86%E8%A7%A3/" target="_blank" title="Facebook">
+            <i class="iconfont icon-facebooksquare"></i>
+          </a>
+        
+      </div>
+    </div>
+  
+  
+<script src="/js/shares.js"></script>
+
+
+
+      </div>
+    </div>
+  </body>
+</html>
